@@ -17,16 +17,55 @@ html, body {
   width: inherit;
 }
 
-.side-bar {
-  width: 30%;
+.side-bar-container {
+  width: 14%;
   height: 100%;
   background-color: #0fc;
   float: left;
+  margin-right: 1%;
+}
+.logo {
+  background-color: bisque;
+  height: 15%;
+  margin: 8px;
+}
+.side-bar {
+  margin: 8px;
+  height: 85%;
+  background-color: blueviolet;
 }
 
+
+
 .home-container {
-  width: 70%;
+  width: 85%;
   height: 100%;
   background-color: #f00;
   float: left;
 }
+.menu-container {
+  display: flex;
+  margin-top: 5px;
+}
+
+.search-bar {
+  background-color: cornsilk;
+  flex-grow: 1;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.source-manage {
+  width: 100px;
+  margin-right: 20px;
+  background-color: beige;
+}
+
+.show-container {
+  background-color: cyan;
+  width: 100%;
+  height: 100%;
+  margin: 5px;
+}
+
+
