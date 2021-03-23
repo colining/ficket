@@ -26,7 +26,7 @@
         scripts.push('../.erb/dll/renderer.dev.dll.js');
 
         // Dynamically insert the bundled app script in the renderer process
-        const port = process.env.PORT || 1212;
+        const port = process.env.PORT || 8627;
         scripts.push(`http://localhost:${port}/dist/renderer.dev.js`);
       } else {
         scripts.push('./dist/renderer.prod.js');
