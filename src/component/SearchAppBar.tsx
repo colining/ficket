@@ -6,17 +6,32 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import MovieIcon from '@material-ui/icons/Movie';
 import {
   createStyles,
   fade,
   Theme,
   makeStyles,
 } from '@material-ui/core/styles';
+import {
+  Divider,
+  Drawer,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from '@material-ui/core';
+
+const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      flexGrow: 1,
+      display: 'flex',
+      height: 'inherit',
+      width: 'inherit',
+    },
+    appBar: {
+      zIndex: theme.zIndex.drawer + 1,
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -60,11 +75,26 @@ const useStyles = makeStyles((theme: Theme) =>
       transition: theme.transitions.create('width'),
       width: '100%',
       [theme.breakpoints.up('sm')]: {
-        width: '12ch',
+        width: '20ch',
         '&:focus': {
-          width: '20ch',
+          width: '30ch',
         },
       },
+    },
+    drawer: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+    drawerPaper: {
+      width: drawerWidth,
+    },
+    drawerContainer: {
+      overflow: 'auto',
+    },
+    content: {
+      flexGrow: 1,
+      padding: theme.spacing(3),
+      backgroundColor: 'red',
     },
   })
 );
@@ -74,7 +104,7 @@ export default function SearchAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -85,7 +115,7 @@ export default function SearchAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            Material-UI
+            Ficket
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -102,6 +132,29 @@ export default function SearchAppBar() {
           </div>
         </Toolbar>
       </AppBar>
+      <Drawer
+        className={classes.drawer}
+        variant="permanent"
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <Toolbar />
+        <div className={classes.drawerContainer}>
+          <ListItem button key="online-video">
+            <ListItemIcon>
+              <MovieIcon />
+            </ListItemIcon>
+            <ListItemText primary="在线视频" />
+          </ListItem>
+          <Divider />
+        </div>
+      </Drawer>
+
+      <main className={classes.content}>
+        <Toolbar />
+        <Typography paragraph>this is the main</Typography>
+      </main>
     </div>
   );
 }
