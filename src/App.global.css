@@ -2,7 +2,8 @@
  * @NOTE: Prepend a `~` to css file paths that are in your node_modules
  *        See https://github.com/webpack-contrib/sass-loader#imports
  */
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
 }
@@ -35,8 +36,6 @@ html, body {
   background-color: blueviolet;
 }
 
-
-
 .home-container {
   width: 85%;
   height: 100%;
@@ -68,4 +67,6 @@ html, body {
   margin: 5px;
 }
 
-
+webview {
+  height: 100%;
+}

@@ -7,6 +7,7 @@ import InputBase from '@material-ui/core/InputBase';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import MovieIcon from '@material-ui/icons/Movie';
+import WebView from 'react-electron-web-view';
 import {
   createStyles,
   fade,
@@ -93,8 +94,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     content: {
       flexGrow: 1,
-      padding: theme.spacing(3),
-      backgroundColor: 'red',
     },
   })
 );
@@ -153,7 +152,12 @@ export default function SearchAppBar() {
 
       <main className={classes.content}>
         <Toolbar />
-        <Typography paragraph>this is the main</Typography>
+        <WebView
+          style={{ height: '100%' }}
+          src="https://e.duboku.fun/vodplay/1953-1-15.html"
+          devtools={false}
+          plugins
+        />
       </main>
     </div>
   );
