@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.global.css';
 import { CssBaseline } from '@material-ui/core';
-import SearchAppBar from './component/SearchAppBar';
+import Ficket from './component/Ficket';
 
 export default function App() {
   return (
     <div className="main-body">
       <CssBaseline />
-      <SearchAppBar />
+      <Ficket />
     </div>
   );
 }
