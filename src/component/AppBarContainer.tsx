@@ -69,8 +69,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function AppBarContainer() {
+export default function AppBarContainer(props: any) {
   const classes = useStyles();
+
+  const { keyPress } = props;
+
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
@@ -96,6 +99,7 @@ export default function AppBarContainer() {
               input: classes.inputInput,
             }}
             inputProps={{ 'aria-label': 'search' }}
+            onKeyDown={keyPress}
           />
         </div>
       </Toolbar>

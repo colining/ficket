@@ -16,9 +16,15 @@ const useStyles = makeStyles(() =>
 
 export default function Ficket() {
   const classes = useStyles();
+  const keyPress = (e: any) => {
+    if (e.keyCode === 13) {
+      console.log('value', e.target.value);
+    }
+  };
+
   return (
     <div className={classes.root}>
-      <AppBarContainer />
+      <AppBarContainer keyPress={keyPress} />
       <DrawerContainer />
       <MainContainer />
     </div>
