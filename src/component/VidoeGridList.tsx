@@ -8,38 +8,12 @@ import {
   Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import VideoInfo from '../utils/VideoInfo';
 
-const style = {
-  height: 'auto',
-  width: 'auto',
-  cursor: 'default',
-  color: '#514713',
-  fontSize: '80px',
-  lineHeight: '100px',
-  textAlign: 'center',
-  fontWeight: 'bold',
-  textShadow: '1px 1px 0px #ab9a3c',
-  userSelect: 'none',
-};
 const useStyles = makeStyles({
   root: {
     minWidth: 200,
     minHeight: 300,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  media: {
-    height: 140,
-    objectFit: 'cover',
   },
   cardTitle: {
     zIndex: 2,
@@ -50,48 +24,32 @@ const useStyles = makeStyles({
     margin: 'auto',
     bottom: 0,
   },
+  item: {
+    cursor: 'default',
+    color: '#514713',
+    fontSize: '80px',
+    lineHeight: '100px',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    textShadow: '1px 1px 0px #ab9a3c',
+    userSelect: 'none',
+    height: 'auto',
+    width: 'auto',
+  },
 });
 export default function VideoGridList(props: any) {
-  const [arrayList] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-  const [itemMargin] = useState(10);
-  const [horizontalDirection] = useState('left');
-  const [verticalDirection] = useState('top');
-  const [containerHeight] = useState(null);
   const [containerWidth, setContainerWidth] = useState(null);
 
   const container = useRef(AutoResponsive);
 
-  const { infos } = props;
+  const { infos, setSrc } = props;
 
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
 
-  const renderItems = (infos: any) => {
-    console.log('infos', infos);
-    return infos.map(function (i: any, index: number) {
-      return (
-        // <div className="item" style={style} key={index}>
-        //   <img src={i.imgUrl} />
-        // </div>
-        <div className="item" style={style} key={index}>
-          <Card className={classes.root}>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                image={i.imgUrl}
-                title="here is title"
-                alt="Contemplative Reptile"
-              />
-              <CardContent className={classes.cardTitle}>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {i.title}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </div>
-      );
-    });
+  const handleClick = (info: VideoInfo) => {
+    console.log('transform the url to webVIew when click', info);
+    setSrc(info.href);
+    props.history.push('/main/webview');
   };
 
   const handleResize = useCallback(() => {
@@ -107,25 +65,50 @@ export default function VideoGridList(props: any) {
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
-    console.log('here');
   }, [handleResize]);
 
   const getAutoResponsiveProps = () => {
     return {
-      horizontalDirection,
-      verticalDirection,
+      horizontalDirection: 'left',
+      verticalDirection: 'top',
       itemMargin: 10,
       containerWidth,
       itemClassName: 'item',
-      containerHeight,
+      containerHeight: null,
       transitionDuration: '.8',
       transitionTimingFunction: 'linear',
     };
   };
 
+  const renderItems = () => {
+    console.log('props', props);
+    return infos.map((videoInfo: VideoInfo) => {
+      return (
+        // todo 'style={{}}' can't delete it's seems because the css order
+        <div className={classes.item} key={videoInfo.href} style={{}}>
+          <Card className={classes.root}>
+            <CardActionArea onClick={() => handleClick(videoInfo)}>
+              <CardMedia
+                component="img"
+                image={videoInfo.imgUrl}
+                title="here is title"
+                alt="Contemplative Reptile"
+              />
+              <CardContent className={classes.cardTitle}>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {videoInfo.title}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </div>
+      );
+    });
+  };
   return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
     <AutoResponsive ref={container} {...getAutoResponsiveProps()}>
-      {renderItems(infos)}
+      {renderItems()}
     </AutoResponsive>
   );
 }

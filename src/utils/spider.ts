@@ -1,5 +1,6 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
+import VideoInfo from './VideoInfo';
 
 export default async function getVideoInfo(
   searchKey: string,
@@ -11,7 +12,7 @@ export default async function getVideoInfo(
 ) {
   const searchUrl = encodeURI(searchUrlPrefix.concat(searchKey));
   console.log(searchUrl);
-  return await axios
+  return axios
     .get(searchUrl)
     .catch((error: any) => console.log(error))
     .then((response: any) => {
@@ -28,12 +29,9 @@ export default async function getVideoInfo(
         .get()
         .map((x) => $(x).text());
       for (let i = 0; i < hrefs.length; i += 1) {
-        result.push({
-          href: homePageUrl + hrefs[i],
-          imgUrl: imgs[i],
-          title: titles[i],
-          w: 'w1',
-        });
+        result.push(
+          new VideoInfo(homePageUrl + hrefs[i], imgs[i] || '', titles[i])
+        );
       }
       return result;
     });
