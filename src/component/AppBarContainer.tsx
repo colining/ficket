@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import BuildIcon from '@material-ui/icons/Build';
+import { Link } from 'react-router-dom';
 import {
   createStyles,
   fade,
@@ -66,6 +68,10 @@ const useStyles = makeStyles((theme: Theme) =>
         },
       },
     },
+    editSourceButton: {
+      marginLeft: 'auto',
+      marginRight: 0,
+    },
   })
 );
 
@@ -102,6 +108,15 @@ export default function AppBarContainer(props: any) {
             onKeyDown={keyPress}
           />
         </div>
+        <IconButton
+          className={classes.editSourceButton}
+          color="inherit"
+          aria-label="edit source"
+          component={Link}
+          to="/main/source"
+        >
+          <BuildIcon />
+        </IconButton>
       </Toolbar>
     </AppBar>
   );

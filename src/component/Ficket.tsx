@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Route } from 'react-router-dom';
 import MainContainer from './MainContainer';
 import DrawerContainer from './DrawerContainer';
 import AppBarContainer from './AppBarContainer';
@@ -42,10 +41,7 @@ export default function Ficket(props: any) {
     <div className={classes.root}>
       <AppBarContainer keyPress={keyPress} />
       <DrawerContainer />
-      <Route
-        path="/main"
-        render={() => <MainContainer src={src} infos={infos} />}
-      />
+      <MainContainer src={src} infos={infos} />
     </div>
   );
 }
