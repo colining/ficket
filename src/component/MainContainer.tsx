@@ -9,6 +9,7 @@ import WebViewContainer from './WebViewContainer';
 const useStyles = makeStyles({
   content: {
     flexGrow: 1,
+    overflowY: 'auto',
   },
 });
 
