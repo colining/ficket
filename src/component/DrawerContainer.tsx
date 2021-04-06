@@ -9,6 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import MovieIcon from '@material-ui/icons/Movie';
 import React from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -40,7 +41,7 @@ export default function DrawerContainer() {
     >
       <Toolbar />
       <div className={classes.drawerContainer}>
-        <ListItem button key="online-video">
+        <ListItem button key="online-video" component={Link} to="/">
           <ListItemIcon>
             <MovieIcon />
           </ListItemIcon>
