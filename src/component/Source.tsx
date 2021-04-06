@@ -23,13 +23,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Source() {
   const classes = useStyles();
-  const { register, handleSubmit, watch } = useForm();
+  const { register, handleSubmit } = useForm();
   const onSubmit = (data: any) => {
     console.log('data', data);
     save(data);
   };
-
-  console.log(watch('example'));
 
   return (
     <form

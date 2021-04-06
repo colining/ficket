@@ -84,7 +84,7 @@ export default function VideoGridList(props: any) {
     console.log('props', props);
     return infos.map((videoInfo: VideoInfo) => {
       return (
-        // todo 'style={{}}' can't delete it's seems because the css order
+        // todo 'style={{}}' can't be delete it's seems because the css order
         <div className={classes.item} key={videoInfo.href} style={{}}>
           <Card className={classes.root}>
             <CardActionArea onClick={() => handleClick(videoInfo)}>

@@ -17,7 +17,6 @@ const useStyles = makeStyles({
 
 export default function Ficket(props: any) {
   const classes = useStyles();
-  const [src] = useState('https://e.duboku.fun/vodplay/1953-1-15.html');
   const [infos, setInfos] = useState(new Array<VideoInfo>());
 
   const keyPress = async (e: any) => {
@@ -27,7 +26,6 @@ export default function Ficket(props: any) {
     const searchKey = e.target.value;
     // todo  这里之后要写成异步请求
     const source = read('results.json')[0];
-    console.log('source', source);
     const videoInfos = await getVideoInfo(
       searchKey,
       source.homePageUrl,
@@ -46,7 +44,7 @@ export default function Ficket(props: any) {
     <div className={classes.root}>
       <AppBarContainer keyPress={keyPress} />
       <DrawerContainer />
-      <MainContainer src={src} infos={infos} />
+      <MainContainer infos={infos} />
     </div>
   );
 }

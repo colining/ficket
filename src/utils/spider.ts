@@ -17,10 +17,7 @@ export default async function getVideoInfo(
   titleRule: string,
   videoRegex: string
 ) {
-  console.log('searchUrlPrefix', searchUrlPrefix);
-  console.log('searchKey', searchKey);
   const searchUrl = encodeURI(searchUrlPrefix.concat(searchKey));
-  console.log(searchUrl);
   return axios
     .get(searchUrl)
     .catch((error: any) => console.log(error))

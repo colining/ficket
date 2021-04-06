@@ -22,7 +22,6 @@ export default function MainContainer(props: any) {
   const handleCurrentInfoChange = (info: any) => {
     console.log('------------current info is', info);
     setCurrentInfo(info);
-    console.log('视频链接为', info.href);
   };
 
   return (

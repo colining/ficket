@@ -9,7 +9,6 @@ export default function WebViewContainer(props: any) {
   const { info } = props;
   const handleLoad = () => {
     webView.current.openDevTools();
-    console.log(webView.current);
     console.log(info);
     // it's seems can inject the js function
     webView.current.executeJavaScript(removeAllUnusedNode);
