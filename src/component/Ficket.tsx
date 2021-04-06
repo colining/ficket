@@ -5,6 +5,7 @@ import DrawerContainer from './DrawerContainer';
 import AppBarContainer from './AppBarContainer';
 import getVideoInfo from '../utils/spider';
 import VideoInfo from '../utils/VideoInfo';
+import { read } from '../utils/JsonUtils';
 
 const useStyles = makeStyles({
   root: {
@@ -24,13 +25,17 @@ export default function Ficket(props: any) {
       return;
     }
     const searchKey = e.target.value;
+    // todo  这里之后要写成异步请求
+    const source = read('results.json')[0];
+    console.log('source', source);
     const videoInfos = await getVideoInfo(
       searchKey,
-      'https://www.duboku.tv/',
-      'https://www.duboku.tv/vodsearch/-------------.html?wd=',
-      'a.btn.btn-sm.btn-warm',
-      'div.thumb > a',
-      'div.detail > h4 > a'
+      source.homePageUrl,
+      source.searchUrlPrefix,
+      source.videoUrlRegex,
+      source.imgUrlRegex,
+      source.titleRegex,
+      source.videoRegex
     );
     console.log('videoInfos', videoInfos);
     setInfos(videoInfos);

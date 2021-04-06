@@ -15,12 +15,14 @@ const useStyles = makeStyles({
 });
 
 export default function MainContainer(props: any) {
-  const [src, setSrc] = useState('');
+  const [currentInfo, setCurrentInfo] = useState({});
   const classes = useStyles();
   const { infos } = props;
 
-  const handleSrcChange = (url: string) => {
-    setSrc(url);
+  const handleCurrentInfoChange = (info: any) => {
+    console.log('------------current info is', info);
+    setCurrentInfo(info);
+    console.log('视频链接为', info.href);
   };
 
   return (
@@ -33,7 +35,7 @@ export default function MainContainer(props: any) {
           render={(routeProps) => (
             <VideoGridList
               infos={infos}
-              setSrc={handleSrcChange}
+              setCurrentInfo={handleCurrentInfoChange}
               /* eslint-disable-next-line react/jsx-props-no-spreading */
               {...routeProps}
             />
@@ -42,7 +44,7 @@ export default function MainContainer(props: any) {
 
         <Route
           path="/main/webview"
-          render={() => <WebViewContainer src={src} />}
+          render={() => <WebViewContainer info={currentInfo} />}
         />
 
         <Route path="/main/source" render={() => <Source />} />

@@ -1,30 +1,37 @@
-const myMap = new Map();
+// eslint-disable-next-line import/prefer-default-export
+export const removeAllUnusedNode = `function clear_html(regex) {
+const keep = document.querySelector(regex);
 
-const script = `
-const body = document.querySelector('body.active');
-const { children } = body;
-for (let i = 0; i < children.length; ) {
-  if (
-    children[i].tagName != 'SCRIPT' &&
-    children[i].className !== 'container'
-  ) {
-    console.log(i);
-    body.removeChild(children[i]);
-  } else {
-    i++;
+const keep_parent = keep.parentNode;
+
+const body = document.querySelector('body');
+
+function remove_unused_child_unless(keep_parent, a) {
+[...keep_parent.children].forEach((child) => {
+  if (child.isSameNode(a)) {
+    console.log('相同');
+    return;
   }
+  if (child.tagName === 'SCRIPT') {
+    console.log('脚本');
+    return;
+  }
+  if (child.tagName === 'STYLE') {
+    console.log('脚本');
+    return;
+  }
+  console.log('不同，删除节点', child);
+  keep_parent.removeChild(child);
+});
 }
-const video = document.querySelector(
-  'body > div.container > div > div.col-lg-wide-75.col-md-wide-7.col-xs-1.padding-0 > div:nth-child(1) > div > div > div.myui-player__item.clearfix'
-);
-const container = document.querySelector('body > div.container');
-container.innerHTML = '';
 
-container.append(video);
-`;
+function remove_all_unused_node(keep_parent, keep) {
+if (body.isSameNode(keep)) {
+  return;
+}
+remove_unused_child_unless(keep_parent, keep);
+remove_all_unused_node(keep_parent.parentNode, keep_parent);
+}
 
-const prefix = 'https://e.duboku.fun/';
-
-myMap.set(prefix, script);
-
-export default myMap;
+remove_all_unused_node(keep_parent, keep);
+}`;

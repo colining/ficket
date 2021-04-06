@@ -42,13 +42,13 @@ export default function VideoGridList(props: any) {
 
   const container = useRef(AutoResponsive);
 
-  const { infos, setSrc } = props;
+  const { infos, setCurrentInfo } = props;
 
   const classes = useStyles();
 
   const handleClick = (info: VideoInfo) => {
-    console.log('transform the url to webVIew when click', info);
-    setSrc(info.href);
+    console.log('current info is ', info);
+    setCurrentInfo(info);
     props.history.push('/main/webview');
   };
 

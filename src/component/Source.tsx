@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import TextField from '@material-ui/core/TextField';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Button, Divider } from '@material-ui/core';
+import save from '../utils/JsonUtils';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -25,7 +26,7 @@ export default function Source() {
   const { register, handleSubmit, watch } = useForm();
   const onSubmit = (data: any) => {
     console.log('data', data);
-    // todo need save data to json file
+    save(data);
   };
 
   console.log(watch('example'));
@@ -48,7 +49,7 @@ export default function Source() {
           inputRef={register}
         />
         <TextField
-          name="searchUrl"
+          name="searchUrlPrefix"
           required
           id="outlined-helperText"
           label="搜索前缀"
@@ -87,6 +88,16 @@ export default function Source() {
           label="标题链接正则"
           defaultValue=""
           helperText="ex:div.detail > h4 > a"
+          variant="outlined"
+          inputRef={register}
+        />
+        <TextField
+          name="videoRegex"
+          required
+          id="outlined-helperText"
+          label="视频窗口正则"
+          defaultValue=""
+          helperText="ex:div.myui-player__item.clearfix > div"
           variant="outlined"
           inputRef={register}
         />

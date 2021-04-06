@@ -1,19 +1,19 @@
 import WebView from 'react-electron-web-view';
 import React, { useRef, useState } from 'react';
-import myMap from '../utils/utils';
+import { removeAllUnusedNode } from '../utils/utils';
 
 export default function WebViewContainer(props: any) {
   const webView = useRef(WebView);
   const [showWebView, setShowWebView] = useState(false);
 
-  const { src } = props;
-
+  const { info } = props;
   const handleLoad = () => {
-    console.log(22222);
+    webView.current.openDevTools();
     console.log(webView.current);
-    console.log(myMap.get('https://e.duboku.fun/'));
-    console.log(src);
-    webView.current.executeJavaScript(myMap.get('https://e.duboku.fun/'));
+    console.log(info);
+    // it's seems can inject the js function
+    webView.current.executeJavaScript(removeAllUnusedNode);
+    webView.current.executeJavaScript(`clear_html('${info.videoRegex}')`);
     setShowWebView(true);
   };
 
@@ -24,7 +24,7 @@ export default function WebViewContainer(props: any) {
         height: '100%',
         visibility: showWebView ? 'visible' : 'hidden',
       }}
-      src={src}
+      src={info.href}
       onDidFinishLoad={handleLoad}
       devtools
       plugins
