@@ -16,6 +16,9 @@ export default function WebViewContainer(props: any) {
     setShowWebView(true);
   };
 
+  const handleFullScreen = () => {
+    console.log('抓取全屏事件');
+  };
   return (
     <WebView
       ref={webView}
@@ -25,6 +28,7 @@ export default function WebViewContainer(props: any) {
       }}
       src={info.href}
       onDidFinishLoad={handleLoad}
+      onEnterHtmlFullScreen={handleFullScreen}
       devtools
       plugins
     />
