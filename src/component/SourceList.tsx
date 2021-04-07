@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function SourceEdit() {
+export default function SourceList() {
   const [sources, setSources] = useState(() => read());
 
   useEffect(() => {

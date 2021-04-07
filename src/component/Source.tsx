@@ -5,7 +5,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Button, Divider } from '@material-ui/core';
 import { Route, Switch } from 'react-router-dom';
 import save from '../utils/JsonUtils';
-import SourceEdit from './SourceEdit';
+import SourceList from './SourceList';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -118,7 +118,7 @@ export default function Source() {
           </form>
         </Route>
         <Route path="/main/source/list">
-          <SourceEdit />
+          <SourceList />
         </Route>
       </Switch>
     </div>
