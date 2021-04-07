@@ -28,7 +28,7 @@ export default function Ficket(props: any) {
     const source = read()[0];
     const videoInfos = await getVideoInfo(
       searchKey,
-      source.homePageUrl,
+      source.homepageUrl,
       source.searchUrlPrefix,
       source.videoUrlRegex,
       source.imgUrlRegex,

@@ -2,15 +2,15 @@ import axios from 'axios';
 import cheerio from 'cheerio';
 import VideoInfo from './VideoInfo';
 
-function processImgUrl(img: string | undefined, homePageUrl: string) {
+function processImgUrl(img: string | undefined, homepageUrl: string) {
   if (img === undefined) return '';
   if (img.startsWith('http')) return img;
-  return homePageUrl + img;
+  return homepageUrl + img;
 }
 
 export default async function getVideoInfo(
   searchKey: string,
-  homePageUrl: string,
+  homepageUrl: string,
   searchUrlPrefix: string,
   hrefRule: string,
   imgRule: string,
@@ -36,14 +36,14 @@ export default async function getVideoInfo(
         .map((x) => $(x).text());
       for (let i = 0; i < hrefs.length; i += 1) {
         console.log('--------需要調查');
-        console.log('--------需要調查', homePageUrl);
+        console.log('--------需要調查', homepageUrl);
         console.log('--------需要調查', hrefs[i]);
         console.log('--------需要調查', imgs[i]);
         console.log('--------需要調查');
         result.push(
           new VideoInfo(
-            homePageUrl + hrefs[i],
-            processImgUrl(imgs[i], homePageUrl),
+            homepageUrl + hrefs[i],
+            processImgUrl(imgs[i], homepageUrl),
             titles[i],
             videoRegex
           )

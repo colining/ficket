@@ -9,7 +9,7 @@ import {
   CardContent,
   Typography,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { read, update } from '../utils/JsonUtils';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -22,8 +22,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function SourceList() {
+export default function SourceList(props: any) {
   const [sources, setSources] = useState(() => read());
+  const { setCurrentSource } = props;
+
+  const history = useHistory();
 
   useEffect(() => {
     console.log('组件重新render');
@@ -39,26 +42,33 @@ export default function SourceList() {
     update(data);
   };
 
-  const renderRow = (props: ListChildComponentProps) => {
-    const { index } = props;
+  const handleEdit = (index: number) => {
+    setCurrentSource(sources[index]);
+    history.push('/main/source/edit');
+  };
+
+  const renderRow = (listChildComponentProps: ListChildComponentProps) => {
+    const { index } = listChildComponentProps;
     return (
       <Card className={classes.root} key={index}>
         <CardActionArea>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
-              独播库
+              独播库 {sources[index].titleRegex}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {sources[index].homePageUrl}
+              {sources[index].homepageUrl}
             </Typography>
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Link to="/main/source/edit">
-            <Button size="small" color="primary">
-              edit
-            </Button>
-          </Link>
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => handleEdit(index)}
+          >
+            edit
+          </Button>
           <Button
             size="small"
             color="primary"

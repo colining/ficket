@@ -7,8 +7,10 @@ export default function save(newData: any) {
   if (!fs.existsSync(path)) {
     fs.writeFileSync(path, JSON.stringify([]));
   }
-  const oldData = jsonfile.readFileSync(path);
-  jsonfile.writeFile(path, oldData.concat(newData), { spaces: 2 });
+  const oldData = jsonfile
+    .readFileSync(path)
+    .filter((item: any) => item.homepageUrl !== newData.homepageUrl);
+  jsonfile.writeFileSync(path, oldData.concat(newData), { spaces: 2 });
 }
 
 export function read() {
