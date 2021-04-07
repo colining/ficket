@@ -113,7 +113,7 @@ export default function AppBarContainer(props: any) {
           color="inherit"
           aria-label="edit source"
           component={Link}
-          to="/main/source"
+          to="/main/source/list"
         >
           <BuildIcon />
         </IconButton>

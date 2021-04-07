@@ -14,3 +14,8 @@ export default function save(newData: any) {
 export function read() {
   return jsonfile.readFileSync(path);
 }
+
+export function update(data: any) {
+  jsonfile.writeFileSync(path, data, { spaces: 2 });
+  console.log('write');
+}

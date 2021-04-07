@@ -25,7 +25,7 @@ export default function Ficket(props: any) {
     }
     const searchKey = e.target.value;
     // todo  这里之后要写成异步请求
-    const source = read()[1];
+    const source = read()[0];
     const videoInfos = await getVideoInfo(
       searchKey,
       source.homePageUrl,
