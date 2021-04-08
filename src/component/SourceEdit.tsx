@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
+import _ from 'lodash';
 import save from '../utils/JsonUtils';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -114,7 +115,7 @@ export default function SourceEdit(props: any) {
           color="primary"
           className={classes.button}
         >
-          更新
+          {_.isEmpty(currentSource) ? 'add' : 'update'}
         </Button>
       </div>
     </form>

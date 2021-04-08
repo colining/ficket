@@ -47,6 +47,11 @@ export default function SourceList(props: any) {
     history.push('/main/source/edit');
   };
 
+  function handleCreate() {
+    setCurrentSource({});
+    history.push('/main/source/edit');
+  }
+
   const renderRow = (listChildComponentProps: ListChildComponentProps) => {
     const { index } = listChildComponentProps;
     return (
@@ -54,7 +59,7 @@ export default function SourceList(props: any) {
         <CardActionArea>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
-              独播库 {sources[index].titleRegex}
+              独播库
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
               {sources[index].homepageUrl}
@@ -86,11 +91,14 @@ export default function SourceList(props: any) {
       <FixedSizeList
         height={500}
         width="100%"
-        itemSize={150}
+        itemSize={80}
         itemCount={sources.length}
       >
         {renderRow}
       </FixedSizeList>
+      <Button size="small" color="primary" onClick={() => handleCreate()}>
+        create new Source
+      </Button>
     </div>
   );
 }
