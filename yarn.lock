@@ -1811,6 +1811,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-virtualized-auto-sizer@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npm.taobao.org/@types/react-virtualized-auto-sizer/download/@types/react-virtualized-auto-sizer-1.0.0.tgz#fc32f30a8dab527b5816f3a757e1e1d040c8f272"
+  integrity sha1-/DLzCo2rUntYFvOnV+Hh0EDI8nI=
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-window@^1.8.2":
   version "1.8.2"
   resolved "https://registry.npm.taobao.org/@types/react-window/download/@types/react-window-1.8.2.tgz#a5a6b2762ce73ffaab7911ee1397cf645f2459fe"
@@ -9818,6 +9825,11 @@ react-transition-group@^4.4.0:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
+
+react-virtualized-auto-sizer@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.npm.taobao.org/react-virtualized-auto-sizer/download/react-virtualized-auto-sizer-1.0.5.tgz#9eeeb8302022de56fbd7a860b08513120ce36509"
+  integrity sha1-nu64MCAi3lb716hgsIUTEgzjZQk=
 
 react-window@^1.8.6:
   version "1.8.6"

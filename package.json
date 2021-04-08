@@ -186,6 +186,7 @@
     "@types/react-dom": "^16.9.9",
     "@types/react-router-dom": "^5.1.6",
     "@types/react-test-renderer": "^16.9.3",
+    "@types/react-virtualized-auto-sizer": "^1.0.0",
     "@types/react-window": "^1.8.2",
     "@types/webpack-env": "^1.15.2",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
@@ -264,6 +265,7 @@
     "react-electron-web-view": "^2.0.1",
     "react-hook-form": "^6.15.5",
     "react-router-dom": "^5.2.0",
+    "react-virtualized-auto-sizer": "^1.0.5",
     "react-window": "^1.8.6",
     "regenerator-runtime": "^0.13.5",
     "source-map-support": "^0.5.19"

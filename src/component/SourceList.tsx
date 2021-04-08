@@ -19,6 +19,10 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '100%',
       backgroundColor: theme.palette.background.paper,
     },
+    createButton: {
+      margin: theme.spacing(1, 10, 1, 1),
+      float: 'right',
+    },
   })
 );
 
@@ -55,8 +59,8 @@ export default function SourceList(props: any) {
   const renderRow = (listChildComponentProps: ListChildComponentProps) => {
     const { index } = listChildComponentProps;
     return (
-      <Card className={classes.root} key={index}>
-        <CardActionArea>
+      <Card key={index}>
+        <CardActionArea onClick={() => handleEdit(index)}>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
               独播库
@@ -70,6 +74,7 @@ export default function SourceList(props: any) {
           <Button
             size="small"
             color="primary"
+            variant="contained"
             onClick={() => handleEdit(index)}
           >
             edit
@@ -77,6 +82,7 @@ export default function SourceList(props: any) {
           <Button
             size="small"
             color="primary"
+            variant="contained"
             onClick={() => handleDelete(index)}
           >
             delete
@@ -91,12 +97,18 @@ export default function SourceList(props: any) {
       <FixedSizeList
         height={500}
         width="100%"
-        itemSize={80}
+        itemSize={100}
         itemCount={sources.length}
       >
         {renderRow}
       </FixedSizeList>
-      <Button size="small" color="primary" onClick={() => handleCreate()}>
+      <Button
+        size="small"
+        color="primary"
+        variant="contained"
+        onClick={() => handleCreate()}
+        className={classes.createButton}
+      >
         create new Source
       </Button>
     </div>
