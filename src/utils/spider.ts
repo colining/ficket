@@ -1,6 +1,7 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 import VideoInfo from './VideoInfo';
+import { read } from './JsonUtils';
 
 function processImgUrl(img: string | undefined, homepageUrl: string) {
   if (img === undefined) return '';
@@ -8,7 +9,7 @@ function processImgUrl(img: string | undefined, homepageUrl: string) {
   return homepageUrl + img;
 }
 
-export default async function getVideoInfo(
+export async function getVideoInfoBySource(
   searchKey: string,
   homepageUrl: string,
   searchUrlPrefix: string,
@@ -51,4 +52,23 @@ export default async function getVideoInfo(
       }
       return result;
     });
+}
+
+export default async function getVideoInfo(searchKey: string) {
+  const sources = read();
+  const results = [];
+  for (let i = 0; i < sources.length; i += 1) {
+    results.push(
+      getVideoInfoBySource(
+        searchKey,
+        sources[i].homepageUrl,
+        sources[i].searchUrlPrefix,
+        sources[i].videoUrlRegex,
+        sources[i].imgUrlRegex,
+        sources[i].titleRegex,
+        sources[i].videoRegex
+      )
+    );
+  }
+  return Promise.all(results);
 }

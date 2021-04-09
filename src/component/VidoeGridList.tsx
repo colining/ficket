@@ -1,13 +1,15 @@
 import AutoResponsive from 'autoresponsive-react';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React from 'react';
 import {
   Card,
   CardActionArea,
   CardContent,
   CardMedia,
+  Divider,
   Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { useResizeDetector } from 'react-resize-detector';
 import VideoInfo from '../utils/VideoInfo';
 
 const useStyles = makeStyles({
@@ -33,14 +35,10 @@ const useStyles = makeStyles({
     fontWeight: 'bold',
     textShadow: '1px 1px 0px #ab9a3c',
     userSelect: 'none',
-    height: 'auto',
-    width: 'auto',
   },
 });
 export default function VideoGridList(props: any) {
-  const [containerWidth, setContainerWidth] = useState(null);
-
-  const container = useRef(AutoResponsive);
+  const { width, ref } = useResizeDetector();
 
   const { infos, setCurrentInfo } = props;
 
@@ -52,41 +50,16 @@ export default function VideoGridList(props: any) {
     props.history.push('/main/webview');
   };
 
-  const handleResize = useCallback(() => {
-    console.log('rezise');
-    if (container.current && container.current.offsetWidth) {
-      try {
-        setContainerWidth(container.current.offsetWidth);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-  }, [handleResize]);
-
-  const getAutoResponsiveProps = () => {
-    return {
-      horizontalDirection: 'left',
-      verticalDirection: 'top',
-      itemMargin: 10,
-      containerWidth,
-      itemClassName: 'item',
-      containerHeight: null,
-      transitionDuration: '.8',
-      transitionTimingFunction: 'linear',
-    };
-  };
-
-  const renderItems = () => {
+  const renderItems = (info: any) => {
     console.log('props', props);
-    return infos.map((videoInfo: VideoInfo) => {
+    return info.map((videoInfo: VideoInfo) => {
       return (
-        // todo 'style={{}}' can't be delete it's seems because the css order
-        <div key={videoInfo.href} style={{}}>
-          <Card className={classes.root}>
+        <div
+          key={videoInfo.href}
+          className={classes.item}
+          style={{ width: 200, height: 300 }}
+        >
+          <Card>
             <CardActionArea onClick={() => handleClick(videoInfo)}>
               <CardMedia
                 component="img"
@@ -105,10 +78,22 @@ export default function VideoGridList(props: any) {
       );
     });
   };
-  return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    <AutoResponsive ref={container} {...getAutoResponsiveProps()}>
-      {renderItems()}
-    </AutoResponsive>
-  );
+
+  return infos.map((info: any) => {
+    return (
+      <div ref={ref} key={info}>
+        <h4>以下结果来自：</h4>
+        <AutoResponsive
+          containerWidth={width}
+          itemClassName="item"
+          transitionDuration=".5"
+          transitionTimingFunction="easeIn"
+          itemMargin={15}
+        >
+          {renderItems(info)}
+        </AutoResponsive>
+        <Divider />
+      </div>
+    );
+  });
 }
