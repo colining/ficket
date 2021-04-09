@@ -26,7 +26,7 @@ export default function WebViewContainer(props: any) {
         height: '100%',
         visibility: showWebView ? 'visible' : 'hidden',
       }}
-      src={info.href}
+      src={info.videoUrl}
       onDidFinishLoad={handleLoad}
       onEnterHtmlFullScreen={handleFullScreen}
       devtools
