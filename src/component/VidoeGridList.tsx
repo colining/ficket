@@ -82,7 +82,7 @@ export default function VideoGridList(props: any) {
   return infos.map((info: any) => {
     return (
       <div ref={ref} key={info}>
-        <h4>以下结果来自：</h4>
+        <h4>以下结果来自：{info[0].videoSource}</h4>
         <AutoResponsive
           containerWidth={width}
           itemClassName="item"

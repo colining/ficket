@@ -36,13 +36,9 @@ export async function getVideoInfoBySource(
         .get()
         .map((x) => $(x).text());
       for (let i = 0; i < hrefs.length; i += 1) {
-        console.log('--------需要調查');
-        console.log('--------需要調查', homepageUrl);
-        console.log('--------需要調查', hrefs[i]);
-        console.log('--------需要調查', imgs[i]);
-        console.log('--------需要調查');
         result.push(
           new VideoInfo(
+            homepageUrl,
             homepageUrl + hrefs[i],
             processImgUrl(imgs[i], homepageUrl),
             titles[i],
