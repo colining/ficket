@@ -55,7 +55,7 @@ export default function VideoGridList(props: any) {
     return info.map((videoInfo: VideoInfo) => {
       return (
         <div
-          key={videoInfo.href}
+          key={videoInfo.videoUrl}
           className={classes.item}
           style={{ width: 200, height: 300 }}
         >

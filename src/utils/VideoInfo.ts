@@ -1,5 +1,5 @@
 export default class VideoInfo {
-  href: string;
+  videoUrl: string;
 
   imgUrl: string;
 
@@ -7,8 +7,13 @@ export default class VideoInfo {
 
   videoRegex: string;
 
-  constructor(href: string, imgUrl: string, title: string, videoRegex: string) {
-    this.href = href;
+  constructor(
+    videoUrl: string,
+    imgUrl: string,
+    title: string,
+    videoRegex: string
+  ) {
+    this.videoUrl = videoUrl;
     this.imgUrl = imgUrl;
     this.title = title;
     this.videoRegex = videoRegex;
