@@ -50,6 +50,7 @@ export default function VideoDetail(props: any) {
 
   useEffect(() => {
     async function getList() {
+      setPlaylist([]);
       const list = await getPlaylist(
         info.videoDetail,
         info.videoSource,
@@ -84,7 +85,7 @@ export default function VideoDetail(props: any) {
         style={{ width: 400, height: 600 }}
       >
         <Card>
-          <CardActionArea>
+          <CardActionArea onClick={() => handleClick(info.videoUrl)}>
             <CardMedia
               component="img"
               image={info.imgUrl}
