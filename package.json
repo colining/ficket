@@ -263,6 +263,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-electron-web-view": "^2.0.1",
+    "react-full-screen": "^1.0.2",
     "react-hook-form": "^6.15.5",
     "react-resize-detector": "^6.6.4",
     "react-router-dom": "^5.2.0",

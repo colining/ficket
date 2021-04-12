@@ -1,11 +1,23 @@
 import WebView from 'react-electron-web-view';
 import React, { useEffect, useRef, useState } from 'react';
+import { FullScreen, useFullScreenHandle } from 'react-full-screen';
+import { makeStyles } from '@material-ui/core/styles';
 import { removeAllUnusedNode } from '../utils/utils';
+
+const useStyles = makeStyles({
+  root: {
+    width: '100%',
+    height: '100%',
+  },
+});
 
 export default function WebViewContainer(props: any) {
   const webView = useRef(WebView);
   const [showWebView, setShowWebView] = useState(false);
   const { info } = props;
+  const handle = useFullScreenHandle();
+
+  const classes = useStyles();
 
   useEffect(() => {
     console.log('WebViewContainer');
@@ -20,21 +32,21 @@ export default function WebViewContainer(props: any) {
     setShowWebView(true);
   };
 
-  const handleFullScreen = () => {
-    console.log('抓取全屏事件');
-  };
   return (
-    <WebView
-      ref={webView}
-      style={{
-        height: '100%',
-        visibility: showWebView ? 'visible' : 'hidden',
-      }}
-      src={info.videoUrl}
-      onDidFinishLoad={handleLoad}
-      onEnterHtmlFullScreen={handleFullScreen}
-      devtools
-      plugins
-    />
+    <FullScreen handle={handle} className={classes.root}>
+      <WebView
+        ref={webView}
+        style={{
+          height: '100%',
+          visibility: showWebView ? 'visible' : 'hidden',
+        }}
+        src={info.videoUrl}
+        onDidFinishLoad={handleLoad}
+        onEnterHtmlFullScreen={handle.enter}
+        onLeaveHtmlFullScreen={handle.exit}
+        devtools
+        plugins
+      />
+    </FullScreen>
   );
 }
