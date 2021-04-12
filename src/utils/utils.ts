@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/prefer-default-export
-export const removeAllUnusedNode = `function clear_html(regex) {
-const keep = document.querySelector(regex);
+export const removeAllUnusedNode = `function clear_html(videoRegex) {
+const keep = document.querySelector(videoRegex);
 
 const keep_parent = keep.parentNode;
 

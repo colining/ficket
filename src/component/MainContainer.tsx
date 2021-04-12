@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
 import { Divider } from '@material-ui/core';
@@ -6,6 +6,7 @@ import { Route, Switch } from 'react-router-dom';
 import VideoGridList from './VidoeGridList';
 import WebViewContainer from './WebViewContainer';
 import Source from './Source';
+import VideoDetail from './VideoDetail';
 
 const useStyles = makeStyles({
   content: {
@@ -15,14 +16,12 @@ const useStyles = makeStyles({
 });
 
 export default function MainContainer(props: any) {
-  const [currentInfo, setCurrentInfo] = useState({});
+  const { currentInfo, setCurrentInfo } = props;
+
   const classes = useStyles();
   const { infos } = props;
-
-  const handleCurrentInfoChange = (info: any) => {
-    console.log('------------current info is', info);
-    setCurrentInfo(info);
-  };
+  const { setPlaylist } = props;
+  const { playlist } = props;
 
   return (
     <main className={classes.content}>
@@ -34,16 +33,29 @@ export default function MainContainer(props: any) {
           render={(routeProps) => (
             <VideoGridList
               infos={infos}
-              setCurrentInfo={handleCurrentInfoChange}
+              setCurrentInfo={setCurrentInfo}
               /* eslint-disable-next-line react/jsx-props-no-spreading */
               {...routeProps}
+            />
+          )}
+        />
+        <Route
+          path="/main/videoDetail"
+          render={() => (
+            <VideoDetail
+              info={currentInfo}
+              setCurrentInfo={setCurrentInfo}
+              setPlaylist={setPlaylist}
+              playlist={playlist}
             />
           )}
         />
 
         <Route
           path="/main/webview"
-          render={() => <WebViewContainer info={currentInfo} />}
+          render={() => (
+            <WebViewContainer info={currentInfo} setPlaylist={setPlaylist} />
+          )}
         />
 
         <Route path="/main/source" render={() => <Source />} />

@@ -9,7 +9,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import MovieIcon from '@material-ui/icons/Movie';
 import React from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
+import _ from 'lodash';
 
 const drawerWidth = 240;
 
@@ -28,9 +29,30 @@ const useStyles = makeStyles(() =>
   })
 );
 
-export default function DrawerContainer() {
+export default function DrawerContainer(props: any) {
   const classes = useStyles();
+  const { currentInfo, changeCurrentInfo, playlist } = props;
 
+  const handleChangeEpisode = (href: string) => {
+    const changedInfo = _.clone(currentInfo);
+    changedInfo.videoUrl = href;
+    changeCurrentInfo(changedInfo);
+  };
+
+  const renderPlaylist = () => {
+    return playlist.map((i: any) => {
+      return (
+        <ListItem
+          button
+          key={i.title}
+          onClick={() => handleChangeEpisode(i.href)}
+        >
+          <ListItemIcon />
+          <ListItemText primary={i.title} />
+        </ListItem>
+      );
+    });
+  };
   return (
     <Drawer
       className={classes.drawer}
@@ -48,6 +70,9 @@ export default function DrawerContainer() {
           <ListItemText primary="在线视频" />
         </ListItem>
         <Divider />
+        <Switch>
+          <Route path="/main/webview">{renderPlaylist}</Route>
+        </Switch>
       </div>
     </Drawer>
   );

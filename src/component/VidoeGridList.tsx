@@ -47,7 +47,7 @@ export default function VideoGridList(props: any) {
   const handleClick = (info: VideoInfo) => {
     console.log('current info is ', info);
     setCurrentInfo(info);
-    props.history.push('/main/webview');
+    props.history.push('/main/videoDetail');
   };
 
   const renderItems = (info: any) => {
@@ -80,6 +80,9 @@ export default function VideoGridList(props: any) {
   };
 
   return infos.map((info: any) => {
+    if (info.length === 0) {
+      return <div />;
+    }
     return (
       <div ref={ref} key={info}>
         <h4>以下结果来自：{info[0].videoSource}</h4>

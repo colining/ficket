@@ -68,3 +68,28 @@ export default async function getVideoInfo(searchKey: string) {
   }
   return Promise.all(results);
 }
+
+const playlistItemRegex = '#playlist1 a.btn.btn-default';
+export async function getPlaylist(videoUrl: string, homepageUrl: string) {
+  return axios
+    .get(videoUrl)
+    .catch((error: any) => console.log(error))
+    .then((response: any) => {
+      const result = [];
+      const html = response.data;
+      const $ = cheerio.load(html);
+      const hrefs = $(playlistItemRegex)
+        .get()
+        .map((x) => $(x).attr('href'));
+      const titles = $(playlistItemRegex)
+        .get()
+        .map((x) => $(x).text());
+      for (let i = 0; i < hrefs.length; i += 1) {
+        result.push({
+          title: titles[i],
+          href: processImgUrl(hrefs[i], homepageUrl),
+        });
+      }
+      return result;
+    });
+}

@@ -1,13 +1,17 @@
 import WebView from 'react-electron-web-view';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { removeAllUnusedNode } from '../utils/utils';
 
 export default function WebViewContainer(props: any) {
   const webView = useRef(WebView);
   const [showWebView, setShowWebView] = useState(false);
-
   const { info } = props;
-  const handleLoad = () => {
+
+  useEffect(() => {
+    console.log('WebViewContainer');
+    console.log('current info is ', info);
+  });
+  const handleLoad = async () => {
     webView.current.openDevTools();
     console.log(info);
     // it's seems can inject the js function

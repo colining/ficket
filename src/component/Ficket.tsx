@@ -17,6 +17,12 @@ const useStyles = makeStyles({
 export default function Ficket(props: any) {
   const classes = useStyles();
   const [infos, setInfos] = useState(new Array<Array<VideoInfo>>());
+  const [playlist, setPlaylist] = useState([]);
+  const [currentInfo, setCurrentInfo] = useState({});
+
+  const handleCurrentInfoChange = (info: any) => {
+    setCurrentInfo(info);
+  };
 
   const keyPress = async (e: any) => {
     if (e.keyCode !== 13) {
@@ -33,8 +39,18 @@ export default function Ficket(props: any) {
   return (
     <div className={classes.root}>
       <AppBarContainer keyPress={keyPress} />
-      <DrawerContainer />
-      <MainContainer infos={infos} />
+      <DrawerContainer
+        playlist={playlist}
+        currentInfo={currentInfo}
+        changeCurrentInfo={handleCurrentInfoChange}
+      />
+      <MainContainer
+        infos={infos}
+        setPlaylist={setPlaylist}
+        playlist={playlist}
+        currentInfo={currentInfo}
+        setCurrentInfo={handleCurrentInfoChange}
+      />
     </div>
   );
 }
