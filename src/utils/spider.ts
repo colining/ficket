@@ -13,9 +13,11 @@ export async function getVideoInfoBySource(
   searchKey: string,
   homepageUrl: string,
   searchUrlPrefix: string,
+  detailHrefRule: string,
   hrefRule: string,
   imgRule: string,
   titleRule: string,
+  videoPlaylistRegex: string,
   videoRegex: string
 ) {
   const searchUrl = encodeURI(searchUrlPrefix.concat(searchKey));
@@ -29,6 +31,9 @@ export async function getVideoInfoBySource(
       const hrefs = $(hrefRule)
         .get()
         .map((x) => $(x).attr('href'));
+      const detailHrefs = $(detailHrefRule)
+        .get()
+        .map((x) => $(x).attr('href'));
       const imgs = $(imgRule)
         .get()
         .map((x) => $(x).attr('data-original'));
@@ -39,9 +44,11 @@ export async function getVideoInfoBySource(
         result.push(
           new VideoInfo(
             homepageUrl,
+            homepageUrl + detailHrefs[i],
             homepageUrl + hrefs[i],
             processImgUrl(imgs[i], homepageUrl),
             titles[i],
+            videoPlaylistRegex,
             videoRegex
           )
         );
@@ -59,9 +66,11 @@ export default async function getVideoInfo(searchKey: string) {
         searchKey,
         sources[i].homepageUrl,
         sources[i].searchUrlPrefix,
+        sources[i].videoDetailUrlRegex,
         sources[i].videoUrlRegex,
         sources[i].imgUrlRegex,
         sources[i].titleRegex,
+        sources[i].playlistItemRegex,
         sources[i].videoRegex
       )
     );
@@ -69,8 +78,11 @@ export default async function getVideoInfo(searchKey: string) {
   return Promise.all(results);
 }
 
-const playlistItemRegex = '#playlist1 a.btn.btn-default';
-export async function getPlaylist(videoUrl: string, homepageUrl: string) {
+export async function getPlaylist(
+  videoUrl: string,
+  homepageUrl: string,
+  playlistItemRegex: string
+) {
   return axios
     .get(videoUrl)
     .catch((error: any) => console.log(error))

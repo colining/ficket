@@ -68,6 +68,26 @@ export default function SourceEdit(props: any) {
       <Divider />
       <div>
         <TextField
+          name="videoDetailUrlRegex"
+          required
+          id="outlined-helperText"
+          label="视频详情页链接正则"
+          defaultValue={currentSource.videoDetailUrlRegex}
+          helperText="ex:div.detail > h4.title > a"
+          variant="outlined"
+          inputRef={register}
+        />
+        <TextField
+          name="playlistItemRegex"
+          required
+          id="outlined-helperText"
+          label="视频选集正则"
+          defaultValue={currentSource.playlistItemRegex}
+          helperText="ex:#playlist1 a.btn.btn-default"
+          variant="outlined"
+          inputRef={register}
+        />
+        <TextField
           name="videoUrlRegex"
           required
           id="outlined-helperText"

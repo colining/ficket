@@ -50,7 +50,11 @@ export default function VideoDetail(props: any) {
 
   useEffect(() => {
     async function getList() {
-      const list = await getPlaylist(info.videoUrl, info.videoSource);
+      const list = await getPlaylist(
+        info.videoDetail,
+        info.videoSource,
+        info.videoPlaylistRegex
+      );
       setPlaylist(list);
     }
     getList();
