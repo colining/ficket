@@ -77,6 +77,7 @@ const createWindow = async () => {
       webviewTag: true,
     },
   });
+  mainWindow.setMenuBarVisibility(false);
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);
 
