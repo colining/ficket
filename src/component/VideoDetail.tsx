@@ -35,6 +35,9 @@ const useStyles = makeStyles({
     display: 'inline-block',
     margin: '5px 5px',
   },
+  button: {
+    width: '120px',
+  },
 });
 
 export default function VideoDetail(props: any) {
@@ -72,7 +75,13 @@ export default function VideoDetail(props: any) {
     return playlist.map((i: any) => {
       return (
         <li className={classes.li} key={i.title}>
-          <Button onClick={() => handleClick(i.href)}>{i.title}</Button>
+          <Button
+            className={classes.button}
+            variant="contained"
+            onClick={() => handleClick(i.href)}
+          >
+            {i.title}
+          </Button>
         </li>
       );
     });
