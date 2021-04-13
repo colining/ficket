@@ -1,5 +1,6 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
+import parse from 'json-templates';
 import VideoInfo from './VideoInfo';
 import { read } from './JsonUtils';
 
@@ -20,7 +21,7 @@ export async function getVideoInfoBySource(
   videoPlaylistRegex: string,
   videoRegex: string
 ) {
-  const searchUrl = encodeURI(searchUrlPrefix.concat(searchKey));
+  const searchUrl = encodeURI(parse(searchUrlPrefix)({ searchKey }));
   return axios
     .get(searchUrl)
     .catch((error: any) => console.log(error))

@@ -60,7 +60,7 @@ export default function SourceEdit(props: any) {
           id="outlined-helperText"
           label="搜索前缀"
           defaultValue={currentSource.searchUrlPrefix}
-          helperText="ex:https://www.duboku.tv/vodsearch/-------------.html?wd="
+          helperText="ex:https://www.duboku.tv/vodsearch/-------------.html?wd={{searchKey}}"
           variant="outlined"
           inputRef={register}
         />
