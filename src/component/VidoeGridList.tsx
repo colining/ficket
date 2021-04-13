@@ -50,8 +50,7 @@ export default function VideoGridList(props: any) {
     props.history.push('/main/videoDetail');
   };
 
-  const renderItems = (info: any) => {
-    console.log('props', props);
+  const renderItem = (info: any) => {
     return info.map((videoInfo: VideoInfo) => {
       return (
         <div
@@ -79,24 +78,33 @@ export default function VideoGridList(props: any) {
     });
   };
 
-  return infos.map((info: any) => {
-    if (info.length === 0) {
-      return <div />;
+  function renderVideoInfo() {
+    if (infos.length === 0) {
+      return (
+        <div>
+          <h4>木有搜索结果</h4>
+          <h4>请添加源，或者换个关键词</h4>
+        </div>
+      );
     }
-    return (
-      <div ref={ref} key={info}>
-        <h4>以下结果来自：{info[0].videoSource}</h4>
-        <AutoResponsive
-          containerWidth={width}
-          itemClassName="item"
-          transitionDuration=".5"
-          transitionTimingFunction="easeIn"
-          itemMargin={15}
-        >
-          {renderItems(info)}
-        </AutoResponsive>
-        <Divider />
-      </div>
-    );
-  });
+    return infos.map((info: any) => {
+      return (
+        <div ref={ref} key={info}>
+          <h4>以下结果来自：{info[0].videoSource}</h4>
+          <AutoResponsive
+            containerWidth={width}
+            itemClassName="item"
+            transitionDuration=".5"
+            transitionTimingFunction="easeIn"
+            itemMargin={15}
+          >
+            {renderItem(info)}
+          </AutoResponsive>
+          <Divider />
+        </div>
+      );
+    });
+  }
+
+  return renderVideoInfo();
 }
