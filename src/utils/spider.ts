@@ -1,13 +1,22 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 import parse from 'json-templates';
+import _ from 'lodash';
 import VideoInfo from './VideoInfo';
 import { read } from './JsonUtils';
 
-function processImgUrl(img: string | undefined, homepageUrl: string) {
+function getImgUrl(img: string | undefined, homepageUrl: string) {
   if (img === undefined) return '';
   if (img.startsWith('http')) return img;
   return homepageUrl + img;
+}
+
+function getVideoDetailUrl(
+  haveDetail: boolean,
+  homepageUrl: string,
+  detailHref: string | undefined
+) {
+  return haveDetail ? homepageUrl + detailHref : '';
 }
 
 export async function getVideoInfoBySource(
@@ -26,6 +35,7 @@ export async function getVideoInfoBySource(
     .get(searchUrl)
     .catch((error: any) => console.log(error))
     .then((response: any) => {
+      const haveDetail = !_.isEmpty(detailHrefRule);
       const result = [];
       const html = response.data;
       const $ = cheerio.load(html);
@@ -45,9 +55,9 @@ export async function getVideoInfoBySource(
         result.push(
           new VideoInfo(
             homepageUrl,
-            homepageUrl + detailHrefs[i],
+            getVideoDetailUrl(haveDetail, homepageUrl, detailHrefs[i]),
             homepageUrl + hrefs[i],
-            processImgUrl(imgs[i], homepageUrl),
+            getImgUrl(imgs[i], homepageUrl),
             titles[i],
             videoPlaylistRegex,
             videoRegex
@@ -100,7 +110,7 @@ export async function getPlaylist(
       for (let i = 0; i < hrefs.length; i += 1) {
         result.push({
           title: titles[i],
-          href: processImgUrl(hrefs[i], homepageUrl),
+          href: getImgUrl(hrefs[i], homepageUrl),
         });
       }
       return result;

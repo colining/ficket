@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useResizeDetector } from 'react-resize-detector';
+import _ from 'lodash';
 import VideoInfo from '../utils/VideoInfo';
 
 const useStyles = makeStyles({
@@ -47,7 +48,12 @@ export default function VideoGridList(props: any) {
   const handleClick = (info: VideoInfo) => {
     console.log('current info is ', info);
     setCurrentInfo(info);
-    props.history.push('/main/videoDetail');
+    // todo just a temp solution
+    if (_.isEmpty(info.videoDetail)) {
+      props.history.push('/main/webview');
+    } else {
+      props.history.push('/main/videoDetail');
+    }
   };
 
   const renderItem = (info: any) => {

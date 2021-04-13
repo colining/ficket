@@ -53,9 +53,7 @@ export default function MainContainer(props: any) {
 
         <Route
           path="/main/webview"
-          render={() => (
-            <WebViewContainer info={currentInfo} setPlaylist={setPlaylist} />
-          )}
+          render={() => <WebViewContainer info={currentInfo} />}
         />
 
         <Route path="/main/source" render={() => <Source />} />
