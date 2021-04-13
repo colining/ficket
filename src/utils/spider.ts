@@ -37,7 +37,7 @@ export async function getVideoInfoBySource(
         .map((x) => $(x).attr('href'));
       const imgs = $(imgRule)
         .get()
-        .map((x) => $(x).attr('data-original'));
+        .map((x) => $(x).attr('src') || $(x).attr('data-original'));
       const titles = $(titleRule)
         .get()
         .map((x) => $(x).text());
