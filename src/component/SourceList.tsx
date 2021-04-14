@@ -10,6 +10,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import _ from 'lodash';
 import { read, update } from '../utils/JsonUtils';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -27,14 +28,14 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function SourceList(props: any) {
-  const [sources, setSources] = useState(() => read());
+  const [sources, setSources] = useState(read());
   const { setCurrentSource } = props;
 
   const history = useHistory();
 
   useEffect(() => {
-    console.log('组件重新render');
-  });
+    setSources(read());
+  }, []);
 
   const classes = useStyles();
 
@@ -92,8 +93,16 @@ export default function SourceList(props: any) {
     );
   };
 
+  const renderSourceRemind = () => {
+    if (_.isEmpty(sources)) {
+      return <h4>没有发现可用的源，请扫描二维码添加源</h4>;
+    }
+    return null;
+  };
+
   return (
     <div className={classes.root}>
+      {renderSourceRemind()}
       <FixedSizeList
         height={500}
         width="100%"

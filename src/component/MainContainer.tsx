@@ -7,6 +7,7 @@ import VideoGridList from './VidoeGridList';
 import WebViewContainer from './WebViewContainer';
 import Source from './Source';
 import VideoDetail from './VideoDetail';
+import HomePage from './HomePage';
 
 const useStyles = makeStyles({
   content: {
@@ -58,7 +59,7 @@ export default function MainContainer(props: any) {
 
         <Route path="/main/source" render={() => <Source />} />
 
-        <Route path="/" render={() => <h1>首页还在施工中</h1>} />
+        <Route path="/" render={() => <HomePage />} />
       </Switch>
     </main>
   );
