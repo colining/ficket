@@ -3,7 +3,7 @@ import cheerio from 'cheerio';
 import parse from 'json-templates';
 import _ from 'lodash';
 import VideoInfo from './VideoInfo';
-import { read } from './JsonUtils';
+import { importData, read } from './JsonUtils';
 
 function getImgUrl(img: string | undefined, homepageUrl: string) {
   if (img === undefined) return '';
@@ -115,4 +115,8 @@ export async function getPlaylist(
       }
       return result;
     });
+}
+
+export async function updateSourcesFromUrl(url: string) {
+  await axios.get(url).then((response: any) => importData(response.data));
 }

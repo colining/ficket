@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '100%',
       backgroundColor: theme.palette.background.paper,
     },
-    createButton: {
+    button: {
       margin: theme.spacing(1, 10, 1, 1),
       float: 'right',
     },
@@ -55,6 +55,9 @@ export default function SourceList(props: any) {
   function handleCreate() {
     setCurrentSource({});
     history.push('/main/source/edit');
+  }
+  function handleImport() {
+    history.push('/main/source/import');
   }
 
   const renderRow = (listChildComponentProps: ListChildComponentProps) => {
@@ -115,8 +118,17 @@ export default function SourceList(props: any) {
         size="small"
         color="primary"
         variant="contained"
+        onClick={() => handleImport()}
+        className={classes.button}
+      >
+        import Sources from url
+      </Button>
+      <Button
+        size="small"
+        color="primary"
+        variant="contained"
         onClick={() => handleCreate()}
-        className={classes.createButton}
+        className={classes.button}
       >
         create new Source
       </Button>

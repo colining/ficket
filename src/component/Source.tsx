@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import SourceList from './SourceList';
 import SourceEdit from './SourceEdit';
+import SourceImport from './SourceImport';
 
 export default function Source() {
   const [currentSource, setCurrentSource] = useState({});
@@ -17,6 +18,7 @@ export default function Source() {
           path="/main/source/edit"
           render={() => <SourceEdit currentSource={currentSource} />}
         />
+        <Route path="/main/source/import" render={() => <SourceImport />} />
         <Route path="/main/source/list">
           <SourceList setCurrentSource={handleCurrentSourceChange} />
         </Route>
