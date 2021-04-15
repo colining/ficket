@@ -27,17 +27,20 @@ const useStyles = makeStyles({
     margin: 'auto',
     bottom: 0,
   },
-  item: {
-    cursor: 'default',
-    color: '#514713',
-    fontSize: '80px',
-    lineHeight: '100px',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    textShadow: '1px 1px 0px #ab9a3c',
-    userSelect: 'none',
-  },
 });
+const style = {
+  width: 200,
+  height: 300,
+  cursor: 'default',
+  color: '#514713',
+  fontSize: '80px',
+  lineHeight: '100px',
+  textAlign: 'center',
+  fontWeight: 'bold',
+  textShadow: '1px 1px 0px #ab9a3c',
+  userSelect: 'none',
+};
+
 export default function VideoGridList(props: any) {
   const { width, ref } = useResizeDetector();
 
@@ -59,11 +62,10 @@ export default function VideoGridList(props: any) {
   const renderItem = (info: any) => {
     return info.map((videoInfo: VideoInfo) => {
       return (
-        <div
-          key={videoInfo.videoUrl}
-          className={classes.item}
-          style={{ width: 200, height: 300 }}
-        >
+        // It' must be a style here otherwise there is a bug in production
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        <div key={videoInfo.videoUrl} className="item" style={style}>
           <Card>
             <CardActionArea onClick={() => handleClick(videoInfo)}>
               <CardMedia
