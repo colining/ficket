@@ -20,9 +20,9 @@ export default function WebViewContainer(props: any) {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log('WebViewContainer');
-    console.log('current info is ', info);
-  });
+    setShowWebView(false);
+  }, [info]);
+
   const handleLoad = async () => {
     webView.current.openDevTools();
     console.log(info);
