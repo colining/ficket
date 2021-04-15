@@ -1,8 +1,8 @@
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
-import { Divider } from '@material-ui/core';
-import { Route, Switch } from 'react-router-dom';
+import { Button, ButtonGroup, Divider } from '@material-ui/core';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import VideoGridList from './VidoeGridList';
 import WebViewContainer from './WebViewContainer';
 import Source from './Source';
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
 
 export default function MainContainer(props: any) {
   const { currentInfo, setCurrentInfo } = props;
-
+  const history = useHistory();
   const classes = useStyles();
   const { infos } = props;
   const { setPlaylist } = props;
@@ -27,6 +27,14 @@ export default function MainContainer(props: any) {
   return (
     <main className={classes.content}>
       <Toolbar />
+      <ButtonGroup
+        color="primary"
+        aria-label="outlined primary button group"
+        fullWidth
+      >
+        <Button onClick={() => history.goBack()}>后退</Button>
+        <Button onClick={() => history.goForward()}>前进</Button>
+      </ButtonGroup>
       <Divider />
       <Switch>
         <Route
