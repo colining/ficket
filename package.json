@@ -30,8 +30,8 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Ficket",
+    "appId": "org.colining.Ficket",
     "files": [
       "dist/",
       "node_modules/",
@@ -82,7 +82,12 @@
       "output": "release"
     },
     "extraResources": [
-      "./assets/**"
+      "./assets/**",
+      {
+        "from": "source.json",
+        "to": "source.json",
+        "filter": ["**/*"]
+      }
     ],
     "publish": {
       "provider": "github",
