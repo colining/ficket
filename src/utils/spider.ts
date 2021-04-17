@@ -19,7 +19,7 @@ function getVideoDetailUrl(
   return haveDetail ? homepageUrl + detailHref : '';
 }
 
-export async function getVideoInfoBySource(
+export function getVideoInfoBySource(
   searchKey: string,
   homepageUrl: string,
   searchUrlPrefix: string,
@@ -68,7 +68,7 @@ export async function getVideoInfoBySource(
     });
 }
 
-export default async function getVideoInfo(searchKey: string) {
+export default function getVideoInfo(searchKey: string) {
   const sources = read();
   const results = [];
   for (let i = 0; i < sources.length; i += 1) {
