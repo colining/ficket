@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     button: {
       margin: theme.spacing(1, 10, 1, 1),
-      float: 'right',
+      float: 'left',
     },
     media: {
       height: 200,
@@ -83,7 +83,7 @@ export default function SourceList(props: any) {
           <Button
             size="small"
             color="primary"
-            variant="contained"
+            variant="outlined"
             onClick={() => handleEdit(index)}
           >
             edit
@@ -91,7 +91,7 @@ export default function SourceList(props: any) {
           <Button
             size="small"
             color="primary"
-            variant="contained"
+            variant="outlined"
             onClick={() => handleDelete(index)}
           >
             delete
@@ -104,14 +104,6 @@ export default function SourceList(props: any) {
   return (
     <div className={classes.root}>
       <SourceReminder sources={sources} />
-      <FixedSizeList
-        height={500}
-        width="100%"
-        itemSize={100}
-        itemCount={sources.length}
-      >
-        {renderRow}
-      </FixedSizeList>
       <Button
         size="small"
         color="primary"
@@ -130,6 +122,14 @@ export default function SourceList(props: any) {
       >
         create new Source
       </Button>
+      <FixedSizeList
+        height={500}
+        width="100%"
+        itemSize={100}
+        itemCount={sources.length}
+      >
+        {renderRow}
+      </FixedSizeList>
     </div>
   );
 }
