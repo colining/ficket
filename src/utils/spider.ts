@@ -4,6 +4,7 @@ import parse from 'json-templates';
 import _ from 'lodash';
 import VideoInfo from './VideoInfo';
 import { importData, read } from './JsonUtils';
+import { withHttp } from './utils';
 
 function getImgUrl(img: string | undefined, homepageUrl: string) {
   if (img === undefined) return '';
@@ -118,5 +119,8 @@ export async function getPlaylist(
 }
 
 export async function updateSourcesFromUrl(url: string) {
-  await axios.get(url).then((response: any) => importData(response.data));
+  await axios
+    .get(withHttp(url))
+    .then((response: any) => importData(response.data))
+    .catch((error: any) => console.log('There is an error', error));
 }

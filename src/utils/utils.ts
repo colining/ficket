@@ -35,3 +35,7 @@ remove_all_unused_node(keep_parent.parentNode, keep_parent);
 
 remove_all_unused_node(keep_parent, keep);
 }`;
+
+export const withHttp = (url: string) => {
+  return url.startsWith('http') ? url : `http://${url}`;
+};
