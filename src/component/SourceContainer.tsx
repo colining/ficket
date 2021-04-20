@@ -4,7 +4,7 @@ import SourceList from './SourceList';
 import SourceEdit from './SourceEdit';
 import SourceImport from './SourceImport';
 
-export default function Source() {
+export default function SourceContainer() {
   const [currentSource, setCurrentSource] = useState({});
 
   const handleCurrentSourceChange = (source: any) => {

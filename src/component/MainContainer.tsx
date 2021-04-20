@@ -5,7 +5,7 @@ import { Button, ButtonGroup, Divider } from '@material-ui/core';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import VideoGridList from './VidoeGridList';
 import WebViewContainer from './WebViewContainer';
-import Source from './Source';
+import SourceContainer from './SourceContainer';
 import VideoDetail from './VideoDetail';
 import HomePage from './HomePage';
 
@@ -65,7 +65,7 @@ export default function MainContainer(props: any) {
           render={() => <WebViewContainer info={currentInfo} />}
         />
 
-        <Route path="/main/source" render={() => <Source />} />
+        <Route path="/main/source" render={() => <SourceContainer />} />
 
         <Route path="/" render={() => <HomePage />} />
       </Switch>
