@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { updateSourcesFromUrl } from '../utils/spider';
 
@@ -18,15 +19,27 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(1, 10, 1, 1),
       float: 'right',
     },
+    hidden: {
+      display: 'none',
+    },
   })
 );
 
 export default function SourceImport() {
   const classes = useStyles();
   const { register, handleSubmit } = useForm();
+  const [displayMessage, setDisplayMessage] = useState(false);
+  const history = useHistory();
 
   const onSubmit = async (data: any) => {
-    await updateSourcesFromUrl(data.sourcesUrl);
+    setDisplayMessage(false);
+    try {
+      await updateSourcesFromUrl(data.sourcesUrl);
+      history.push('/main/source/list');
+    } catch (e) {
+      setDisplayMessage(true);
+      console.log(e);
+    }
   };
 
   return (
@@ -56,6 +69,9 @@ export default function SourceImport() {
           </Button>
         </div>
       </form>
+      <div className={displayMessage ? '' : classes.hidden}>
+        <h4>看起来有些问题，你最好重新来一次</h4>
+      </div>
     </div>
   );
 }

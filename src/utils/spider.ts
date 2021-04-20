@@ -121,6 +121,5 @@ export async function getPlaylist(
 export async function updateSourcesFromUrl(url: string) {
   await axios
     .get(withHttp(url))
-    .then((response: any) => importData(response.data))
-    .catch((error: any) => console.log('There is an error', error));
+    .then((response: any) => importData(response.data));
 }
