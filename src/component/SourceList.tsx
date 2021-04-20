@@ -10,8 +10,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import _ from 'lodash';
 import { read, update } from '../utils/JsonUtils';
+import SourceReminder from './SourceReminder';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,6 +23,11 @@ const useStyles = makeStyles((theme: Theme) =>
     button: {
       margin: theme.spacing(1, 10, 1, 1),
       float: 'right',
+    },
+    media: {
+      height: 200,
+      width: 200,
+      margin: 'auto',
     },
   })
 );
@@ -96,16 +101,9 @@ export default function SourceList(props: any) {
     );
   };
 
-  const renderSourceRemind = () => {
-    if (_.isEmpty(sources)) {
-      return <h4>没有发现可用的源，请扫描二维码添加源</h4>;
-    }
-    return null;
-  };
-
   return (
     <div className={classes.root}>
-      {renderSourceRemind()}
+      <SourceReminder sources={sources} />
       <FixedSizeList
         height={500}
         width="100%"
