@@ -30,6 +30,7 @@ export default function Ficket(props: any) {
     if (e.keyCode !== 13) {
       return;
     }
+    setInfos([]);
     setOpen(true);
     const searchKey = e.target.value;
     const videoInfos = await getVideoInfo(searchKey);
