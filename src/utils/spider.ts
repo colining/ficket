@@ -32,44 +32,41 @@ export function getVideoInfoBySource(
   videoRegex: string
 ) {
   const searchUrl = encodeURI(parse(searchUrlPrefix)({ searchKey }));
-  return axios
-    .get(searchUrl)
-    .catch((error: any) => console.log(error))
-    .then((response: any) => {
-      const haveDetail = !_.isEmpty(detailHrefRule);
-      const result = [];
-      const html = response.data;
-      const $ = cheerio.load(html);
-      const hrefs = $(hrefRule)
-        .get()
-        .map((x) => $(x).attr('href'));
-      const detailHrefs = $(detailHrefRule)
-        .get()
-        .map((x) => $(x).attr('href'));
-      const imgs = $(imgRule)
-        .get()
-        .map((x) => $(x).attr('src') || $(x).attr('data-original'));
-      const titles = $(titleRule)
-        .get()
-        .map((x) => $(x).text());
-      for (let i = 0; i < hrefs.length; i += 1) {
-        result.push(
-          new VideoInfo(
-            homepageUrl,
-            getVideoDetailUrl(haveDetail, homepageUrl, detailHrefs[i]),
-            homepageUrl + hrefs[i],
-            getImgUrl(imgs[i], homepageUrl),
-            titles[i],
-            videoPlaylistRegex,
-            videoRegex
-          )
-        );
-      }
-      return result;
-    });
+  return axios.get(searchUrl).then((response: any) => {
+    const haveDetail = !_.isEmpty(detailHrefRule);
+    const result = [];
+    const html = response.data;
+    const $ = cheerio.load(html);
+    const hrefs = $(hrefRule)
+      .get()
+      .map((x) => $(x).attr('href'));
+    const detailHrefs = $(detailHrefRule)
+      .get()
+      .map((x) => $(x).attr('href'));
+    const imgs = $(imgRule)
+      .get()
+      .map((x) => $(x).attr('src') || $(x).attr('data-original'));
+    const titles = $(titleRule)
+      .get()
+      .map((x) => $(x).text());
+    for (let i = 0; i < hrefs.length; i += 1) {
+      result.push(
+        new VideoInfo(
+          homepageUrl,
+          getVideoDetailUrl(haveDetail, homepageUrl, detailHrefs[i]),
+          homepageUrl + hrefs[i],
+          getImgUrl(imgs[i], homepageUrl),
+          titles[i],
+          videoPlaylistRegex,
+          videoRegex
+        )
+      );
+    }
+    return result;
+  });
 }
 
-export default function getVideoInfo(searchKey: string) {
+export default async function getVideoInfo(searchKey: string) {
   const sources = read();
   const results = [];
   for (let i = 0; i < sources.length; i += 1) {
@@ -87,7 +84,9 @@ export default function getVideoInfo(searchKey: string) {
       )
     );
   }
-  return Promise.all(results);
+
+  const videoInfo = await Promise.allSettled(results);
+  return videoInfo.filter((v) => v.status === 'fulfilled').map((v) => v.value);
 }
 
 export async function getPlaylist(

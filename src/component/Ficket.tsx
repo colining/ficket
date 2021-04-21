@@ -29,7 +29,6 @@ export default function Ficket(props: any) {
       return;
     }
     const searchKey = e.target.value;
-    // todo  这里之后要写成异步请求
     const videoInfos = await getVideoInfo(searchKey);
     console.log('videoInfos', videoInfos);
     setInfos(videoInfos);
