@@ -97,8 +97,8 @@ export default function VideoGridList(props: any) {
     }
     return infos.map((info: any) => {
       return (
-        <div ref={ref} key={info}>
-          <h4>以下结果来自：{info[0].videoSource}</h4>
+        <div ref={ref} key={info.videoSource}>
+          <h4>以下结果来自：{info.videoSource}</h4>
           <AutoResponsive
             containerWidth={width}
             itemClassName="item"
@@ -106,7 +106,7 @@ export default function VideoGridList(props: any) {
             transitionTimingFunction="easeIn"
             itemMargin={15}
           >
-            {renderItem(info)}
+            {renderItem(info.result)}
           </AutoResponsive>
           <Divider />
         </div>

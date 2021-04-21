@@ -5,6 +5,7 @@ import _ from 'lodash';
 import VideoInfo from './VideoInfo';
 import { importData, read } from './JsonUtils';
 import { withHttp } from './utils';
+import Source from './Source';
 
 function getImgUrl(img: string | undefined, homepageUrl: string) {
   if (img === undefined) return '';
@@ -70,7 +71,7 @@ export function getVideoInfoBySource(
 }
 
 export default async function getVideoInfo(searchKey: string) {
-  const sources = read();
+  const sources: Source[] = read();
   const results = [];
   for (let i = 0; i < sources.length; i += 1) {
     results.push(
@@ -88,8 +89,18 @@ export default async function getVideoInfo(searchKey: string) {
     );
   }
 
-  const videoInfo = await Promise.allSettled(results);
-  return videoInfo.filter((v) => v.status === 'fulfilled').map((v) => v.value);
+  const videoInfos = await Promise.allSettled(results);
+
+  return _.zipWith(sources, videoInfos, (source, videoInfo) => {
+    let result: VideoInfo[] = [];
+    if (videoInfo.status === 'fulfilled') {
+      result = videoInfo.value;
+    }
+    return {
+      videoSource: source.homepageUrl,
+      result,
+    };
+  });
 }
 
 export async function getPlaylist(

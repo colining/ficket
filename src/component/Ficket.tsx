@@ -4,7 +4,6 @@ import MainContainer from './MainContainer';
 import DrawerContainer from './DrawerContainer';
 import AppBarContainer from './AppBarContainer';
 import getVideoInfo from '../utils/spider';
-import VideoInfo from '../utils/VideoInfo';
 import BackdropContainer from './BackdropContainer';
 
 const useStyles = makeStyles({
@@ -17,7 +16,7 @@ const useStyles = makeStyles({
 
 export default function Ficket(props: any) {
   const classes = useStyles();
-  const [infos, setInfos] = useState(new Array<Array<VideoInfo>>());
+  const [infos, setInfos] = useState(new Array<any>());
   const [playlist, setPlaylist] = useState([]);
   const [currentInfo, setCurrentInfo] = useState({});
   const [open, setOpen] = useState(false);
@@ -30,7 +29,6 @@ export default function Ficket(props: any) {
     if (e.keyCode !== 13) {
       return;
     }
-    setInfos([]);
     setOpen(true);
     const searchKey = e.target.value;
     const videoInfos = await getVideoInfo(searchKey);
