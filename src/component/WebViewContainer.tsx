@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { makeStyles } from '@material-ui/core/styles';
 import { removeAllUnusedNode } from '../utils/utils';
+import BackdropContainer from './BackdropContainer';
 
 const useStyles = makeStyles({
   root: {
@@ -14,12 +15,15 @@ const useStyles = makeStyles({
 export default function WebViewContainer(props: any) {
   const webView = useRef(WebView);
   const [showWebView, setShowWebView] = useState(false);
+  const [open, setOpen] = useState(true);
   const { info } = props;
+
   const handle = useFullScreenHandle();
 
   const classes = useStyles();
 
   useEffect(() => {
+    setOpen(true);
     setShowWebView(false);
   }, [info]);
 
@@ -29,9 +33,9 @@ export default function WebViewContainer(props: any) {
     // it's seems can inject the js function
     webView.current.executeJavaScript(removeAllUnusedNode);
     webView.current.executeJavaScript(`clear_html('${info.videoRegex}')`);
+    setOpen(false);
     setShowWebView(true);
   };
-
   return (
     <FullScreen handle={handle} className={classes.root}>
       <WebView
@@ -46,6 +50,13 @@ export default function WebViewContainer(props: any) {
         onLeaveHtmlFullScreen={handle.exit}
         devtools
         plugins
+      />
+      <BackdropContainer
+        open={open}
+        onClick={() => {
+          setOpen(false);
+        }}
+        message="loading...."
       />
     </FullScreen>
   );

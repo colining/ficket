@@ -5,6 +5,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { updateSourcesFromUrl } from '../utils/spider';
+import BackdropContainer from './BackdropContainer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,9 +30,11 @@ export default function SourceImport() {
   const classes = useStyles();
   const { register, handleSubmit } = useForm();
   const [displayMessage, setDisplayMessage] = useState(false);
+  const [open, setOpen] = useState(false);
   const history = useHistory();
 
   const onSubmit = async (data: any) => {
+    setOpen(true);
     setDisplayMessage(false);
     try {
       await updateSourcesFromUrl(data.sourcesUrl);
@@ -40,6 +43,7 @@ export default function SourceImport() {
       setDisplayMessage(true);
       console.log(e);
     }
+    setOpen(false);
   };
 
   return (
@@ -72,6 +76,13 @@ export default function SourceImport() {
       <div className={displayMessage ? '' : classes.hidden}>
         <h4>看起来有些问题，你最好重新来一次</h4>
       </div>
+      <BackdropContainer
+        open={open}
+        onClick={() => {
+          setOpen(false);
+        }}
+        message="importing...."
+      />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import DrawerContainer from './DrawerContainer';
 import AppBarContainer from './AppBarContainer';
 import getVideoInfo from '../utils/spider';
 import VideoInfo from '../utils/VideoInfo';
+import BackdropContainer from './BackdropContainer';
 
 const useStyles = makeStyles({
   root: {
@@ -19,6 +20,7 @@ export default function Ficket(props: any) {
   const [infos, setInfos] = useState(new Array<Array<VideoInfo>>());
   const [playlist, setPlaylist] = useState([]);
   const [currentInfo, setCurrentInfo] = useState({});
+  const [open, setOpen] = useState(false);
 
   const handleCurrentInfoChange = (info: any) => {
     setCurrentInfo(info);
@@ -28,10 +30,12 @@ export default function Ficket(props: any) {
     if (e.keyCode !== 13) {
       return;
     }
+    setOpen(true);
     const searchKey = e.target.value;
     const videoInfos = await getVideoInfo(searchKey);
     console.log('videoInfos', videoInfos);
     setInfos(videoInfos);
+    setOpen(false);
     props.history.push('/main/searchResult');
   };
 
@@ -49,6 +53,13 @@ export default function Ficket(props: any) {
         playlist={playlist}
         currentInfo={currentInfo}
         setCurrentInfo={handleCurrentInfoChange}
+      />
+      <BackdropContainer
+        open={open}
+        onClick={() => {
+          setOpen(false);
+        }}
+        message="search...."
       />
     </div>
   );
