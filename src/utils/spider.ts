@@ -62,6 +62,9 @@ export function getVideoInfoBySource(
         )
       );
     }
+    if (_.isEmpty(result)) {
+      throw new Error('result is empty perhaps regex wrong');
+    }
     return result;
   });
 }
