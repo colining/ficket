@@ -16,6 +16,7 @@ export default function WebViewContainer(props: any) {
   const webView = useRef(WebView);
   const [showWebView, setShowWebView] = useState(false);
   const [open, setOpen] = useState(true);
+  const [muted, setMuted] = useState(true);
   const { info } = props;
 
   const handle = useFullScreenHandle();
@@ -25,6 +26,7 @@ export default function WebViewContainer(props: any) {
   useEffect(() => {
     setOpen(true);
     setShowWebView(false);
+    setMuted(true);
   }, [info]);
 
   const handleLoad = async () => {
@@ -35,10 +37,12 @@ export default function WebViewContainer(props: any) {
     webView.current.executeJavaScript(`clear_html('${info.videoRegex}')`);
     setOpen(false);
     setShowWebView(true);
+    setMuted(false);
   };
   return (
     <FullScreen handle={handle} className={classes.root}>
       <WebView
+        muted={muted}
         ref={webView}
         style={{
           height: '100%',
