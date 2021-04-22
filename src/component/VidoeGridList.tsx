@@ -27,6 +27,10 @@ const useStyles = makeStyles({
     margin: 'auto',
     bottom: 0,
   },
+  errorImage: {
+    height: 300,
+    width: 200,
+  },
 });
 const style = {
   width: 200,
@@ -66,13 +70,14 @@ export default function VideoGridList(props: any) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         <div key={videoInfo.videoUrl} className="item" style={style}>
-          <Card>
+          <Card className={classes.root} variant="outlined">
             <CardActionArea onClick={() => handleClick(videoInfo)}>
               <CardMedia
+                className={videoInfo.imgUrl ? '' : classes.errorImage}
                 component="img"
                 image={videoInfo.imgUrl}
                 title="here is title"
-                alt="Contemplative Reptile"
+                alt="图片加载失败"
               />
               <CardContent className={classes.cardTitle}>
                 <Typography gutterBottom variant="h5" component="h2">

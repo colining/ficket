@@ -51,7 +51,6 @@ export function getVideoInfoBySource(
   }
 
   return res.then((response: any) => {
-    console.log(response);
     const haveDetail = !_.isEmpty(detailHrefRule);
     const result = [];
     const html = response.data;
