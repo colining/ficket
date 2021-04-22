@@ -64,7 +64,14 @@ export function getVideoInfoBySource(
       .map((x) => $(x).attr('href'));
     const imgs = $(imgRule)
       .get()
-      .map((x) => $(x).attr('src') || $(x).attr('data-original'));
+      .map(
+        (x) =>
+          $(x).attr('src') ||
+          $(x).attr('data-original') ||
+          $(x)
+            .attr('style')
+            ?.match(/\((.*?)\)/)![1]
+      );
     const titles = $(titleRule)
       .get()
       .map((x) => $(x).text());
