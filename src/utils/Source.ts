@@ -1,4 +1,8 @@
 export default class Source {
+  method: string;
+
+  formData: string;
+
   videoRegex: string;
 
   homepageUrl: string;
@@ -16,6 +20,8 @@ export default class Source {
   titleRegex: string;
 
   constructor(
+    method: string,
+    formData: string,
     videoRegex: string,
     homepageUrl: string,
     searchUrlPrefix: string,
@@ -25,6 +31,8 @@ export default class Source {
     imgUrlRegex: string,
     titleRegex: string
   ) {
+    this.method = method;
+    this.formData = formData;
     this.videoRegex = videoRegex;
     this.homepageUrl = homepageUrl;
     this.searchUrlPrefix = searchUrlPrefix;

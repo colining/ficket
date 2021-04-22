@@ -39,3 +39,9 @@ remove_all_unused_node(keep_parent, keep);
 export const withHttp = (url: string) => {
   return url.startsWith('http') ? url : `http://${url}`;
 };
+
+export const getFormData = (object: any) =>
+  Object.keys(object).reduce((formData, key) => {
+    formData.append(key, object[key]);
+    return formData;
+  }, new FormData());

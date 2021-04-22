@@ -1,7 +1,13 @@
 import TextField from '@material-ui/core/TextField';
-import { Button, Divider } from '@material-ui/core';
-import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import {
+  Button,
+  Divider,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+} from '@material-ui/core';
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
@@ -25,26 +31,44 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function SourceEdit(props: any) {
   const classes = useStyles();
   const { currentSource } = props;
-  const { register, handleSubmit } = useForm();
+  const { register, watch, handleSubmit, control } = useForm({
+    defaultValues: { method: currentSource.method || 'get' },
+  });
   const history = useHistory();
-
+  const watchMethod = watch('method');
   const onSubmit = (data: any) => {
     console.log('data', data);
     save(data);
     history.push('/main/source/list');
   };
-  useEffect(() => {
-    console.log('render');
-    console.log(currentSource);
-  });
   return (
     <div>
-      <h4>暂时不支持post请求进行搜索，原因无他，楼主比较懒</h4>
       <form
         className={classes.root}
         autoComplete="off"
         onSubmit={handleSubmit(onSubmit)}
       >
+        <section>
+          <h4>搜索时的请求类型</h4>
+          <Controller
+            as={
+              <RadioGroup aria-label="gender" row>
+                <FormControlLabel
+                  value="get"
+                  control={<Radio color="primary" />}
+                  label="Get"
+                />
+                <FormControlLabel
+                  value="post"
+                  control={<Radio color="primary" />}
+                  label="Post"
+                />
+              </RadioGroup>
+            }
+            name="method"
+            control={control}
+          />
+        </section>
         <div>
           <TextField
             name="homepageUrl"
@@ -66,6 +90,20 @@ export default function SourceEdit(props: any) {
             variant="outlined"
             inputRef={register}
           />
+          {watchMethod === 'post' && (
+            <TextField
+              name="formData"
+              id="outlined-multiline-static"
+              label="form data"
+              required
+              multiline
+              rows={4}
+              helperText=""
+              defaultValue={currentSource.formData}
+              variant="outlined"
+              inputRef={register}
+            />
+          )}
         </div>
         <Divider />
         <div>

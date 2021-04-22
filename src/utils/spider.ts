@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axios, { Method } from 'axios';
 import cheerio from 'cheerio';
 import parse from 'json-templates';
 import _ from 'lodash';
 import VideoInfo from './VideoInfo';
 import { importData, read } from './JsonUtils';
-import { withHttp } from './utils';
+import { getFormData, withHttp } from './utils';
 import Source from './Source';
 
 function getImgUrl(img: string | undefined, homepageUrl: string) {
@@ -23,6 +23,8 @@ function getVideoDetailUrl(
 
 export function getVideoInfoBySource(
   searchKey: string,
+  method: string,
+  formData: string,
   homepageUrl: string,
   searchUrlPrefix: string,
   detailHrefRule: string,
@@ -32,8 +34,24 @@ export function getVideoInfoBySource(
   videoPlaylistRegex: string,
   videoRegex: string
 ) {
-  const searchUrl = encodeURI(parse(searchUrlPrefix)({ searchKey }));
-  return axios.get(searchUrl).then((response: any) => {
+  let res;
+  if (method === 'get') {
+    const searchUrl = encodeURI(parse(searchUrlPrefix)({ searchKey }));
+    res = axios({
+      method: method as Method,
+      url: searchUrl,
+    });
+  } else {
+    const data = JSON.parse(parse(formData)({ searchKey }));
+    res = axios({
+      method: method as Method,
+      url: searchUrlPrefix,
+      data: getFormData(data),
+    });
+  }
+
+  return res.then((response: any) => {
+    console.log(response);
     const haveDetail = !_.isEmpty(detailHrefRule);
     const result = [];
     const html = response.data;
@@ -77,6 +95,8 @@ export default async function getVideoInfo(searchKey: string) {
     results.push(
       getVideoInfoBySource(
         searchKey,
+        sources[i].method,
+        sources[i].formData,
         sources[i].homepageUrl,
         sources[i].searchUrlPrefix,
         sources[i].videoDetailUrlRegex,
