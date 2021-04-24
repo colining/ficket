@@ -71,6 +71,16 @@ export default function SourceEdit(props: any) {
         </section>
         <div>
           <TextField
+            name="name"
+            required
+            id="outlined-helperText"
+            label="网站名称"
+            defaultValue={currentSource.name}
+            helperText="ex:独播库"
+            variant="outlined"
+            inputRef={register}
+          />
+          <TextField
             name="homepageUrl"
             required
             id="outlined-helperText"

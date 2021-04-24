@@ -72,7 +72,7 @@ export default function SourceList(props: any) {
         <CardActionArea onClick={() => handleEdit(index)}>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
-              独播库
+              {sources[index].name}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
               {sources[index].homepageUrl}
