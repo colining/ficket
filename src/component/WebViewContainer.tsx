@@ -2,13 +2,21 @@ import WebView from 'react-electron-web-view';
 import React, { useEffect, useRef, useState } from 'react';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { makeStyles } from '@material-ui/core/styles';
+import { Fab } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import { removeAllUnusedNode } from '../utils/utils';
 import BackdropContainer from './BackdropContainer';
+import saveFavorite from '../utils/FavoriteUtils';
 
 const useStyles = makeStyles({
   root: {
     width: '100%',
     height: '100%',
+  },
+  fab: {
+    position: 'absolute',
+    right: '1%',
+    top: '120px',
   },
 });
 
@@ -30,7 +38,6 @@ export default function WebViewContainer(props: any) {
   }, [info]);
 
   const handleLoad = async () => {
-    webView.current.openDevTools();
     console.log(info);
     // it's seems can inject the js function
     webView.current.executeJavaScript(removeAllUnusedNode);
@@ -39,30 +46,45 @@ export default function WebViewContainer(props: any) {
     setShowWebView(true);
     setMuted(false);
   };
+
+  const addFavorite = () => {
+    saveFavorite(info);
+  };
+
   return (
-    <FullScreen handle={handle} className={classes.root}>
-      <WebView
-        muted={muted}
-        ref={webView}
-        style={{
-          height: '100%',
-          visibility: showWebView ? 'visible' : 'hidden',
-        }}
-        src={info.videoUrl}
-        onDidFinishLoad={handleLoad}
-        onMediaPaused={handle.exit}
-        onEnterHtmlFullScreen={handle.enter}
-        onLeaveHtmlFullScreen={handle.exit}
-        devtools
-        plugins
-      />
-      <BackdropContainer
-        open={open}
-        onClick={() => {
-          setOpen(false);
-        }}
-        message="loading...."
-      />
-    </FullScreen>
+    <div className={classes.root}>
+      <FullScreen handle={handle} className={classes.root}>
+        <WebView
+          muted={muted}
+          ref={webView}
+          style={{
+            height: '100%',
+            visibility: showWebView ? 'visible' : 'hidden',
+          }}
+          src={info.videoUrl}
+          onDidFinishLoad={handleLoad}
+          onMediaPaused={handle.exit}
+          onEnterHtmlFullScreen={handle.enter}
+          onLeaveHtmlFullScreen={handle.exit}
+          devtools
+          plugins
+        />
+        <BackdropContainer
+          open={open}
+          onClick={() => {
+            setOpen(false);
+          }}
+          message="loading...."
+        />
+      </FullScreen>
+      <Fab
+        color="primary"
+        aria-label="add"
+        className={classes.fab}
+        onClick={addFavorite}
+      >
+        <AddIcon />
+      </Fab>
+    </div>
   );
 }

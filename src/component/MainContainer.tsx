@@ -67,7 +67,15 @@ export default function MainContainer(props: any) {
 
         <Route path="/main/source" render={() => <SourceContainer />} />
 
-        <Route path="/" render={() => <HomePage />} />
+        <Route
+          path="/"
+          render={() => (
+            <HomePage
+              setCurrentInfo={setCurrentInfo}
+              setPlaylist={setPlaylist}
+            />
+          )}
+        />
       </Switch>
     </main>
   );
