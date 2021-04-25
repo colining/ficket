@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, MouseEvent } from 'react';
 import {
+  ButtonGroup,
   Card,
   CardActionArea,
   CardContent,
   CardMedia,
+  IconButton,
   Typography,
 } from '@material-ui/core';
 import AutoResponsive from 'autoresponsive-react';
 import { useResizeDetector } from 'react-resize-detector';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ShareIcon from '@material-ui/icons/Share';
 import { read } from '../utils/JsonUtils';
 import SourceReminder from './SourceReminder';
-import { readFavorites } from '../utils/FavoriteUtils';
+import { deleteFavourite, readFavorites } from '../utils/FavoriteUtils';
 import VideoInfo from '../utils/VideoInfo';
 import { getPlaylist } from '../utils/spider';
 
@@ -21,7 +25,12 @@ const useStyles = makeStyles({
     minWidth: 200,
     minHeight: 300,
   },
+  actionArea: {
+    width: 200,
+    height: 300,
+  },
   cardTitle: {
+    padding: '8px 0px 0px 8px',
     zIndex: 2,
     position: 'absolute',
     background: 'cornsilk',
@@ -33,6 +42,9 @@ const useStyles = makeStyles({
   errorImage: {
     height: 300,
     width: 200,
+  },
+  button: {
+    float: 'right',
   },
 });
 const style = {
@@ -74,6 +86,12 @@ export default function HomePage(props: any) {
     history.push('/main/webview');
   };
 
+  function handleDelete(e: MouseEvent, info: any) {
+    deleteFavourite(info);
+    setFavourites(readFavorites());
+    e.stopPropagation();
+  }
+
   const renderItem = (favourites: any) => {
     return favourites.map((videoInfo: VideoInfo) => {
       return (
@@ -82,7 +100,10 @@ export default function HomePage(props: any) {
         // @ts-ignore
         <div key={videoInfo.videoUrl} className="item" style={style}>
           <Card className={classes.root} variant="outlined">
-            <CardActionArea onClick={() => handleClick(videoInfo)}>
+            <CardActionArea
+              onClick={() => handleClick(videoInfo)}
+              className={classes.actionArea}
+            >
               <CardMedia
                 className={videoInfo.imgUrl ? '' : classes.errorImage}
                 component="img"
@@ -91,9 +112,25 @@ export default function HomePage(props: any) {
                 alt="图片加载失败"
               />
               <CardContent className={classes.cardTitle}>
-                <Typography gutterBottom variant="h5" component="h2">
+                <Typography align="left" variant="h6" component="h1">
                   {videoInfo.title}
                 </Typography>
+                <ButtonGroup
+                  className={classes.button}
+                  orientation="horizontal"
+                  color="primary"
+                  aria-label="vertical outlined primary button group"
+                >
+                  <IconButton aria-label="share">
+                    <ShareIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="add to favorites"
+                    onClick={(e: MouseEvent) => handleDelete(e, videoInfo)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </ButtonGroup>
               </CardContent>
             </CardActionArea>
           </Card>
@@ -107,7 +144,7 @@ export default function HomePage(props: any) {
       return (
         <div>
           <h4>还没有收藏任何视频</h4>
-          <h4>快去收藏写视频吧</h4>
+          <h4>快去收藏些视频吧</h4>
         </div>
       );
     }

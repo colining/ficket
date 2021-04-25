@@ -17,3 +17,10 @@ export default function saveFavorite(newData: any) {
 export function readFavorites() {
   return jsonfile.readFileSync(sourcePath);
 }
+
+export function deleteFavourite(info: any) {
+  const data = jsonfile
+    .readFileSync(sourcePath)
+    .filter((item: any) => item.videoDetail !== info.videoDetail);
+  jsonfile.writeFileSync(sourcePath, data, { spaces: 2 });
+}
