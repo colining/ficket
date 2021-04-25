@@ -18,7 +18,6 @@ import { read } from '../utils/JsonUtils';
 import SourceReminder from './SourceReminder';
 import { deleteFavourite, readFavorites } from '../utils/FavoriteUtils';
 import VideoInfo from '../utils/VideoInfo';
-import { getPlaylist } from '../utils/spider';
 
 const useStyles = makeStyles({
   root: {
@@ -64,8 +63,7 @@ export default function HomePage(props: any) {
   const [sources, setSources] = useState(read());
   const [favorites, setFavourites] = useState(readFavorites());
   const { width, ref } = useResizeDetector();
-  const { setCurrentInfo } = props;
-  const { setPlaylist } = props;
+  const { setCurrentInfo, setPlaylist } = props;
 
   const history = useHistory();
   const classes = useStyles();
@@ -77,12 +75,7 @@ export default function HomePage(props: any) {
 
   const handleClick = async (info: VideoInfo) => {
     setCurrentInfo(info);
-    const list = await getPlaylist(
-      info.videoDetail,
-      info.videoSource,
-      info.videoPlaylistRegex
-    );
-    setPlaylist(list);
+    setPlaylist([]);
     history.push('/main/webview');
   };
 

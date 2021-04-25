@@ -4,9 +4,11 @@ import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { makeStyles } from '@material-ui/core/styles';
 import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import _ from 'lodash';
 import { removeAllUnusedNode } from '../utils/utils';
 import BackdropContainer from './BackdropContainer';
 import saveFavorite from '../utils/FavoriteUtils';
+import { getPlaylist } from '../utils/spider';
 
 const useStyles = makeStyles({
   root: {
@@ -25,7 +27,7 @@ export default function WebViewContainer(props: any) {
   const [showWebView, setShowWebView] = useState(false);
   const [open, setOpen] = useState(true);
   const [muted, setMuted] = useState(true);
-  const { info } = props;
+  const { info, playlist, setPlaylist } = props;
 
   const handle = useFullScreenHandle();
 
@@ -35,6 +37,21 @@ export default function WebViewContainer(props: any) {
     setOpen(true);
     setShowWebView(false);
     setMuted(true);
+  }, [info]);
+
+  useEffect(() => {
+    async function getList() {
+      setPlaylist([]);
+      const list = await getPlaylist(
+        info.videoDetail,
+        info.videoSource,
+        info.videoPlaylistRegex
+      );
+      setPlaylist(list);
+    }
+    if (_.isEmpty(playlist)) {
+      getList();
+    }
   }, [info]);
 
   const handleLoad = async () => {
