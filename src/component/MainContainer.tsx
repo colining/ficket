@@ -14,6 +14,16 @@ const useStyles = makeStyles({
     flexGrow: 1,
     overflowY: 'auto',
   },
+  buttonGroup: {
+    position: 'absolute',
+    zIndex: 1001,
+  },
+  container: {
+    marginTop: '50px',
+    padding: '16px',
+    width: '100%',
+    height: '100%',
+  },
 });
 
 export default function MainContainer(props: any) {
@@ -28,6 +38,7 @@ export default function MainContainer(props: any) {
     <main className={classes.content}>
       <Toolbar />
       <ButtonGroup
+        className={classes.buttonGroup}
         color="primary"
         aria-label="outlined primary button group"
         fullWidth
@@ -36,53 +47,55 @@ export default function MainContainer(props: any) {
         <Button onClick={() => history.goForward()}>前进</Button>
       </ButtonGroup>
       <Divider />
-      <Switch>
-        <Route
-          path="/main/searchResult"
-          render={(routeProps) => (
-            <VideoGridList
-              infos={infos}
-              setCurrentInfo={setCurrentInfo}
-              /* eslint-disable-next-line react/jsx-props-no-spreading */
-              {...routeProps}
-            />
-          )}
-        />
-        <Route
-          path="/main/videoDetail"
-          render={() => (
-            <VideoDetail
-              info={currentInfo}
-              setCurrentInfo={setCurrentInfo}
-              setPlaylist={setPlaylist}
-              playlist={playlist}
-            />
-          )}
-        />
+      <div className={classes.container}>
+        <Switch>
+          <Route
+            path="/main/searchResult"
+            render={(routeProps) => (
+              <VideoGridList
+                infos={infos}
+                setCurrentInfo={setCurrentInfo}
+                /* eslint-disable-next-line react/jsx-props-no-spreading */
+                {...routeProps}
+              />
+            )}
+          />
+          <Route
+            path="/main/videoDetail"
+            render={() => (
+              <VideoDetail
+                info={currentInfo}
+                setCurrentInfo={setCurrentInfo}
+                setPlaylist={setPlaylist}
+                playlist={playlist}
+              />
+            )}
+          />
 
-        <Route
-          path="/main/webview"
-          render={() => (
-            <WebViewContainer
-              info={currentInfo}
-              setPlaylist={setPlaylist}
-              playlist={playlist}
-            />
-          )}
-        />
+          <Route
+            path="/main/webview"
+            render={() => (
+              <WebViewContainer
+                info={currentInfo}
+                setPlaylist={setPlaylist}
+                playlist={playlist}
+              />
+            )}
+          />
 
-        <Route path="/main/source" render={() => <SourceContainer />} />
+          <Route path="/main/source" render={() => <SourceContainer />} />
 
-        <Route
-          path="/"
-          render={() => (
-            <HomePage
-              setCurrentInfo={setCurrentInfo}
-              setPlaylist={setPlaylist}
-            />
-          )}
-        />
-      </Switch>
+          <Route
+            path="/"
+            render={() => (
+              <HomePage
+                setCurrentInfo={setCurrentInfo}
+                setPlaylist={setPlaylist}
+              />
+            )}
+          />
+        </Switch>
+      </div>
     </main>
   );
 }
