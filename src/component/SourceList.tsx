@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Button,
@@ -7,6 +6,7 @@ import {
   CardActionArea,
   CardActions,
   CardContent,
+  List,
   Typography,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     button: {
       margin: theme.spacing(1, 10, 1, 1),
-      float: 'left',
     },
     media: {
       height: 200,
@@ -65,17 +64,16 @@ export default function SourceList(props: any) {
     history.push('/main/source/import');
   }
 
-  const renderRow = (listChildComponentProps: ListChildComponentProps) => {
-    const { index } = listChildComponentProps;
-    return (
-      <Card key={index}>
+  const renderRow = () => {
+    return sources.map((source: any, index: number) => (
+      <Card key={source.name}>
         <CardActionArea onClick={() => handleEdit(index)}>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
-              {sources[index].name}
+              {source.name}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {sources[index].homepageUrl}
+              {source.homepageUrl}
             </Typography>
           </CardContent>
         </CardActionArea>
@@ -98,38 +96,37 @@ export default function SourceList(props: any) {
           </Button>
         </CardActions>
       </Card>
-    );
+    ));
   };
 
   return (
     <div className={classes.root}>
       <SourceReminder sources={sources} />
-      <Button
-        size="small"
-        color="primary"
-        variant="contained"
-        onClick={() => handleImport()}
-        className={classes.button}
-      >
-        import Sources from url
-      </Button>
-      <Button
-        size="small"
-        color="primary"
-        variant="contained"
-        onClick={() => handleCreate()}
-        className={classes.button}
-      >
-        create new Source
-      </Button>
-      <FixedSizeList
-        height={500}
-        width="100%"
-        itemSize={100}
-        itemCount={sources.length}
-      >
-        {renderRow}
-      </FixedSizeList>
+      <div>
+        <Button
+          size="small"
+          color="primary"
+          variant="contained"
+          onClick={() => handleImport()}
+          className={classes.button}
+        >
+          import Sources from url
+        </Button>
+        <Button
+          size="small"
+          color="primary"
+          variant="contained"
+          onClick={() => handleCreate()}
+          className={classes.button}
+        >
+          create new Source
+        </Button>
+      </div>
+      <div>
+        <List component="nav" aria-label="secondary mailbox folders">
+          {renderRow()}
+        </List>
+      </div>
     </div>
   );
 }
