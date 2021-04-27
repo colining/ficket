@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -10,6 +10,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { getPlaylist } from '../utils/spider';
+import BackdropContainer from './BackdropContainer';
 
 const useStyles = makeStyles({
   cardTitle: {
@@ -51,6 +52,8 @@ export default function VideoDetail(props: any) {
 
   const { setCurrentInfo } = props;
 
+  const [open, setOpen] = useState(true);
+
   useEffect(() => {
     async function getList() {
       setPlaylist([]);
@@ -61,7 +64,9 @@ export default function VideoDetail(props: any) {
       );
       setPlaylist(list);
     }
-    getList();
+    getList()
+      .then(() => setOpen(false))
+      .catch((e) => console.log(e));
   }, []);
 
   const handleClick = (href: string) => {
@@ -112,6 +117,13 @@ export default function VideoDetail(props: any) {
       <div>
         <ul>{renderPlaylist()}</ul>
       </div>
+      <BackdropContainer
+        open={open}
+        onClick={() => {
+          setOpen(false);
+        }}
+        message="获取选集中"
+      />
     </div>
   );
 }
