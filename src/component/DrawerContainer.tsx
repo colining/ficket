@@ -65,7 +65,7 @@ export default function DrawerContainer(props: any) {
       <div className={classes.drawerContainer}>
         <ListItem button key="online-video" component={Link} to="/">
           <ListItemIcon>
-            <MovieIcon />
+            <MovieIcon color="primary" />
           </ListItemIcon>
           <ListItemText primary="在线视频" />
         </ListItem>

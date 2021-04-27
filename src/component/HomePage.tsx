@@ -118,7 +118,7 @@ export default function HomePage(props: any) {
                     <ShareIcon />
                   </IconButton>
                   <IconButton
-                    aria-label="add to favorites"
+                    aria-label="delete"
                     onClick={(e: MouseEvent) => handleDelete(e, videoInfo)}
                   >
                     <DeleteIcon />
