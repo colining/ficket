@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Button,
+  ButtonGroup,
   Card,
   CardActionArea,
   CardActions,
@@ -18,15 +19,20 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       width: '100%',
       height: '100%',
-      backgroundColor: theme.palette.background.paper,
+      overflowY: 'auto',
     },
-    button: {
-      margin: theme.spacing(1, 10, 1, 1),
+    buttonGroup: {
+      position: 'fixed',
+      top: theme.spacing(16),
+      zIndex: 1001,
     },
     media: {
       height: 200,
       width: 200,
       margin: 'auto',
+    },
+    sources: {
+      marginTop: theme.spacing(1),
     },
   })
 );
@@ -102,27 +108,16 @@ export default function SourceList(props: any) {
   return (
     <div className={classes.root}>
       <SourceReminder sources={sources} />
-      <div>
-        <Button
-          size="small"
-          color="primary"
-          variant="contained"
-          onClick={() => handleImport()}
-          className={classes.button}
-        >
-          import Sources from url
-        </Button>
-        <Button
-          size="small"
-          color="primary"
-          variant="contained"
-          onClick={() => handleCreate()}
-          className={classes.button}
-        >
-          create new Source
-        </Button>
-      </div>
-      <div>
+      <ButtonGroup
+        className={classes.buttonGroup}
+        variant="contained"
+        color="primary"
+        aria-label="contained primary button group"
+      >
+        <Button onClick={() => handleImport()}>通过网址导入</Button>
+        <Button onClick={() => handleCreate()}>创建新源</Button>
+      </ButtonGroup>
+      <div className={classes.sources}>
         <List component="nav" aria-label="secondary mailbox folders">
           {renderRow()}
         </List>
