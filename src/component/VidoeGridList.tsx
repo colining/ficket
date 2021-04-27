@@ -19,6 +19,10 @@ const useStyles = makeStyles({
     minWidth: 200,
     minHeight: 300,
   },
+  cardActionArea: {
+    width: '200px',
+    height: '300px',
+  },
   cardTitle: {
     zIndex: 2,
     position: 'absolute',
@@ -72,7 +76,10 @@ export default function VideoGridList(props: any) {
         // @ts-ignore
         <div key={videoInfo.videoUrl} className="item" style={style}>
           <Card className={classes.root} variant="outlined">
-            <CardActionArea onClick={() => handleClick(videoInfo)}>
+            <CardActionArea
+              className={classes.cardActionArea}
+              onClick={() => handleClick(videoInfo)}
+            >
               <CardMedia
                 className={videoInfo.imgUrl ? '' : classes.errorImage}
                 component="img"
