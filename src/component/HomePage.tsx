@@ -20,6 +20,9 @@ import { deleteFavourite, readFavorites } from '../utils/FavoriteUtils';
 import VideoInfo from '../utils/VideoInfo';
 
 const useStyles = makeStyles({
+  favourites: {
+    marginTop: '16px',
+  },
   root: {
     minWidth: 200,
     minHeight: 300,
@@ -158,9 +161,11 @@ export default function HomePage(props: any) {
 
   return (
     <div>
-      <h4>我的收藏</h4>
       <SourceReminder sources={sources} />
-      {renderFavorites()}
+      <div className={classes.favourites}>
+        <Typography>我的收藏</Typography>
+        {renderFavorites()}
+      </div>
     </div>
   );
 }

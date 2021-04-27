@@ -1,4 +1,4 @@
-import { Card, CardMedia } from '@material-ui/core';
+import { Card, CardMedia, Divider } from '@material-ui/core';
 import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import _ from 'lodash';
@@ -36,6 +36,7 @@ export default function SourceReminder(props: any) {
               title="Contemplative Reptile"
             />
           </Card>
+          <Divider />
         </div>
       );
     }
