@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
+import path from 'path';
 import { getPlaylist } from '../utils/spider';
 import BackdropContainer from './BackdropContainer';
 
@@ -105,6 +106,14 @@ export default function VideoDetail(props: any) {
               image={info.imgUrl}
               title="here is title"
               alt="Contemplative Reptile"
+              onError={(e: any) => {
+                e.target.onerror = null;
+                e.target.src = path.join(
+                  path.dirname(__dirname),
+                  'assets',
+                  'error.png'
+                );
+              }}
             />
             <CardContent className={classes.cardTitle}>
               <Typography gutterBottom variant="h5" component="h2">
