@@ -11,6 +11,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { useResizeDetector } from 'react-resize-detector';
 import _ from 'lodash';
+import path from 'path';
 import VideoInfo from '../utils/VideoInfo';
 
 const useStyles = makeStyles({
@@ -78,6 +79,14 @@ export default function VideoGridList(props: any) {
                 image={videoInfo.imgUrl}
                 title="here is title"
                 alt="图片加载失败"
+                onError={(e: any) => {
+                  e.target.onerror = null;
+                  e.target.src = path.join(
+                    path.dirname(__dirname),
+                    'assets',
+                    'error.png'
+                  );
+                }}
               />
               <CardContent className={classes.cardTitle}>
                 <Typography gutterBottom variant="h5" component="h2">
