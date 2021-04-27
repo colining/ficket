@@ -37,13 +37,14 @@ export function getVideoInfoBySource(
   let res;
   if (method === 'get') {
     const searchUrl = encodeURI(parse(searchUrlPrefix)({ searchKey }));
-    res = axios.get(searchUrl);
+    res = axios.get(searchUrl, { timeout: 10000 });
   } else {
     const data = JSON.parse(parse(formData)({ searchKey }));
     res = axios({
       method: method as Method,
       url: searchUrlPrefix,
       data: getFormData(data),
+      timeout: 10000,
     });
   }
 
