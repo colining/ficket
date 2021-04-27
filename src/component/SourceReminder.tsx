@@ -2,6 +2,7 @@ import { Card, CardMedia } from '@material-ui/core';
 import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import _ from 'lodash';
+import path from 'path';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,7 +32,7 @@ export default function SourceReminder(props: any) {
             <CardMedia
               className={classes.media}
               component="img"
-              image="./img/qrcode.png"
+              image={path.join(path.dirname(__dirname), 'assets', 'qrcode.png')}
               title="Contemplative Reptile"
             />
           </Card>
