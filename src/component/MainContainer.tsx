@@ -12,15 +12,10 @@ import HomePage from './HomePage';
 const useStyles = makeStyles({
   content: {
     flexGrow: 1,
-    overflowY: 'auto',
-  },
-  buttonGroup: {
-    position: 'absolute',
-    zIndex: 1001,
   },
   container: {
-    marginTop: '50px',
-    padding: '16px',
+    overflowY: 'auto',
+    padding: '0px 0px 120px 16px;',
     width: '100%',
     height: '100%',
   },
@@ -38,7 +33,6 @@ export default function MainContainer(props: any) {
     <main className={classes.content}>
       <Toolbar />
       <ButtonGroup
-        className={classes.buttonGroup}
         variant="contained"
         aria-label="outlined primary button group"
         fullWidth
