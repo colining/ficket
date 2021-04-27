@@ -39,7 +39,7 @@ export default function MainContainer(props: any) {
       <Toolbar />
       <ButtonGroup
         className={classes.buttonGroup}
-        color="primary"
+        variant="contained"
         aria-label="outlined primary button group"
         fullWidth
       >
