@@ -6,16 +6,16 @@ import {
   MuiThemeProvider,
 } from '@material-ui/core';
 import { HashRouter, Route } from 'react-router-dom';
-import { lightBlue, amber } from '@material-ui/core/colors';
+import { amber, cyan } from '@material-ui/core/colors';
 import Ficket from './component/Ficket';
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: lightBlue[700],
+      main: cyan[700],
     },
     secondary: {
-      main: amber[700],
+      main: amber[600],
     },
   },
 });
