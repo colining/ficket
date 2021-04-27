@@ -107,7 +107,6 @@ export default function SourceList(props: any) {
 
   return (
     <div className={classes.root}>
-      <SourceReminder sources={sources} />
       <ButtonGroup
         className={classes.buttonGroup}
         variant="contained"
@@ -122,6 +121,7 @@ export default function SourceList(props: any) {
           {renderRow()}
         </List>
       </div>
+      <SourceReminder sources={sources} />
     </div>
   );
 }
