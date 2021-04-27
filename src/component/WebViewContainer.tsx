@@ -2,8 +2,7 @@ import WebView from 'react-electron-web-view';
 import React, { useEffect, useRef, useState } from 'react';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { makeStyles } from '@material-ui/core/styles';
-import { Fab } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import { Fab, Snackbar } from '@material-ui/core';
 import _ from 'lodash';
 import { removeAllUnusedNode } from '../utils/utils';
 import BackdropContainer from './BackdropContainer';
@@ -28,7 +27,7 @@ export default function WebViewContainer(props: any) {
   const [open, setOpen] = useState(true);
   const [muted, setMuted] = useState(true);
   const { info, playlist, setPlaylist } = props;
-
+  const [openSnack, setOpenSnack] = useState(false);
   const handle = useFullScreenHandle();
 
   const classes = useStyles();
@@ -66,8 +65,12 @@ export default function WebViewContainer(props: any) {
 
   const addFavorite = () => {
     saveFavorite(info);
+    setOpenSnack(true);
   };
 
+  const handleClose = () => {
+    setOpenSnack(false);
+  };
   return (
     <div className={classes.root}>
       <FullScreen handle={handle} className={classes.root}>
@@ -100,8 +103,14 @@ export default function WebViewContainer(props: any) {
         className={classes.fab}
         onClick={addFavorite}
       >
-        <AddIcon />
+        收藏
       </Fab>
+      <Snackbar
+        open={openSnack}
+        onClose={handleClose}
+        autoHideDuration={2000}
+        message="已收藏，你可以回到主页浏览自己的收藏"
+      />
     </div>
   );
 }
