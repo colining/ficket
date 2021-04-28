@@ -72,7 +72,7 @@ export default function VideoDetail(props: any) {
 
   const handleClick = (href: string) => {
     const changedInfo = info;
-    changedInfo.videoUrl = href;
+    changedInfo.videoUrl = href === info.videoDetail ? playlist[0].href : href;
     setCurrentInfo(changedInfo);
     history.push('/main/webview');
   };
