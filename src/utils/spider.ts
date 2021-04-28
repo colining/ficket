@@ -63,8 +63,8 @@ export function getVideoInfoBySource(
       .get()
       .map(
         (x) =>
-          $(x).attr('src') ||
           $(x).attr('data-original') ||
+          $(x).attr('src') ||
           $(x)
             .attr('style')
             ?.match(/\((.*?)\)/)![1]
