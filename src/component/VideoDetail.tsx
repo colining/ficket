@@ -14,6 +14,9 @@ import { getPlaylist } from '../utils/spider';
 import BackdropContainer from './BackdropContainer';
 
 const useStyles = makeStyles({
+  detail: {
+    margin: '16px',
+  },
   cardTitle: {
     zIndex: 2,
     position: 'absolute',
@@ -55,16 +58,17 @@ export default function VideoDetail(props: any) {
 
   const [open, setOpen] = useState(true);
 
+  async function getList() {
+    setPlaylist([]);
+    const list = await getPlaylist(
+      info.videoDetail,
+      info.videoSource,
+      info.videoPlaylistRegex
+    );
+    setPlaylist(list);
+  }
+
   useEffect(() => {
-    async function getList() {
-      setPlaylist([]);
-      const list = await getPlaylist(
-        info.videoDetail,
-        info.videoSource,
-        info.videoPlaylistRegex
-      );
-      setPlaylist(list);
-    }
     getList()
       .then(() => setOpen(false))
       .catch((e) => console.log(e));
@@ -93,7 +97,7 @@ export default function VideoDetail(props: any) {
     });
   };
   return (
-    <div>
+    <div className={classes.detail}>
       <div
         key={info.videoUrl}
         className={classes.item}
