@@ -34,6 +34,9 @@ export default function DrawerContainer(props: any) {
   const { currentInfo, changeCurrentInfo, playlists } = props;
 
   const handleChangeEpisode = (href: string) => {
+    if (currentInfo.videoUrl === href) {
+      return;
+    }
     const changedInfo = _.clone(currentInfo);
     changedInfo.videoUrl = href;
     changeCurrentInfo(changedInfo);
