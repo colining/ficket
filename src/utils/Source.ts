@@ -13,6 +13,8 @@ export default class Source {
 
   videoDetailUrlRegex: string;
 
+  playlistContainerRegex: string;
+
   playlistItemRegex: string;
 
   videoUrlRegex: string;
@@ -29,6 +31,7 @@ export default class Source {
     homepageUrl: string,
     searchUrlPrefix: string,
     videoDetailUrlRegex: string,
+    playlistContainerRegex: string,
     playlistItemRegex: string,
     videoUrlRegex: string,
     imgUrlRegex: string,
@@ -41,6 +44,7 @@ export default class Source {
     this.homepageUrl = homepageUrl;
     this.searchUrlPrefix = searchUrlPrefix;
     this.videoDetailUrlRegex = videoDetailUrlRegex;
+    this.playlistContainerRegex = playlistContainerRegex;
     this.playlistItemRegex = playlistItemRegex;
     this.videoUrlRegex = videoUrlRegex;
     this.imgUrlRegex = imgUrlRegex;

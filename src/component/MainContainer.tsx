@@ -26,8 +26,7 @@ export default function MainContainer(props: any) {
   const history = useHistory();
   const classes = useStyles();
   const { infos } = props;
-  const { setPlaylist } = props;
-  const { playlist } = props;
+  const { playlists, setPlaylists } = props;
 
   return (
     <main className={classes.content}>
@@ -60,8 +59,8 @@ export default function MainContainer(props: any) {
               <VideoDetail
                 info={currentInfo}
                 setCurrentInfo={setCurrentInfo}
-                setPlaylist={setPlaylist}
-                playlist={playlist}
+                setPlaylists={setPlaylists}
+                playlists={playlists}
               />
             )}
           />
@@ -71,8 +70,8 @@ export default function MainContainer(props: any) {
             render={() => (
               <WebViewContainer
                 info={currentInfo}
-                setPlaylist={setPlaylist}
-                playlist={playlist}
+                setPlaylists={setPlaylists}
+                playlists={playlists}
               />
             )}
           />
@@ -84,7 +83,7 @@ export default function MainContainer(props: any) {
             render={() => (
               <HomePage
                 setCurrentInfo={setCurrentInfo}
-                setPlaylist={setPlaylist}
+                setPlaylists={setPlaylists}
               />
             )}
           />

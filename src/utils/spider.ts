@@ -31,6 +31,7 @@ export function getVideoInfoBySource(
   hrefRule: string,
   imgRule: string,
   titleRule: string,
+  videoPlaylistContainerRegex: string,
   videoPlaylistRegex: string,
   videoRegex: string
 ) {
@@ -80,6 +81,7 @@ export function getVideoInfoBySource(
           homepageUrl + hrefs[i],
           getImgUrl(imgs[i], homepageUrl),
           titles[i],
+          videoPlaylistContainerRegex,
           videoPlaylistRegex,
           videoRegex
         )
@@ -107,6 +109,7 @@ export default async function getVideoInfo(searchKey: string) {
         sources[i].videoUrlRegex,
         sources[i].imgUrlRegex,
         sources[i].titleRegex,
+        sources[i].playlistContainerRegex,
         sources[i].playlistItemRegex,
         sources[i].videoRegex
       )
@@ -130,28 +133,30 @@ export default async function getVideoInfo(searchKey: string) {
 export async function getPlaylist(
   videoUrl: string,
   homepageUrl: string,
+  playlistContainerRegex: string,
   playlistItemRegex: string
 ) {
   return axios
     .get(videoUrl)
     .catch((error: any) => console.log(error))
     .then((response: any) => {
-      const result = [];
       const html = response.data;
       const $ = cheerio.load(html);
-      const hrefs = $(playlistItemRegex)
+      const playlists = new Array<any>();
+      $(playlistContainerRegex)
         .get()
-        .map((x) => $(x).attr('href'));
-      const titles = $(playlistItemRegex)
-        .get()
-        .map((x) => $(x).text());
-      for (let i = 0; i < hrefs.length; i += 1) {
-        result.push({
-          title: titles[i],
-          href: getImgUrl(hrefs[i], homepageUrl),
+        .forEach((x) => {
+          const array = new Array<any>();
+          $(playlistItemRegex, $(x))
+            .get()
+            .forEach((y) => {
+              const title = $(y).text();
+              const href = $(y).attr('href');
+              array.push({ title, href: getImgUrl(href, homepageUrl) });
+            });
+          playlists.push(array);
         });
-      }
-      return result;
+      return playlists;
     });
 }
 

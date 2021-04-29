@@ -26,7 +26,7 @@ export default function WebViewContainer(props: any) {
   const [showWebView, setShowWebView] = useState(false);
   const [open, setOpen] = useState(true);
   const [muted, setMuted] = useState(true);
-  const { info, playlist, setPlaylist } = props;
+  const { info, playlists, setPlaylists } = props;
   const [openSnack, setOpenSnack] = useState(false);
   const handle = useFullScreenHandle();
 
@@ -40,15 +40,17 @@ export default function WebViewContainer(props: any) {
 
   useEffect(() => {
     async function getList() {
-      setPlaylist([]);
+      setPlaylists([]);
       const list = await getPlaylist(
         info.videoDetail,
         info.videoSource,
+        info.videoPlaylistContainerRegex,
         info.videoPlaylistRegex
       );
-      setPlaylist(list);
+      setPlaylists(list);
     }
-    if (_.isEmpty(playlist)) {
+    if (_.isEmpty(playlists)) {
+      console.log('jump from homepage');
       getList();
     }
   }, [info]);

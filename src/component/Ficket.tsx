@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 export default function Ficket(props: any) {
   const classes = useStyles();
   const [infos, setInfos] = useState(new Array<any>());
-  const [playlist, setPlaylist] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
   const [currentInfo, setCurrentInfo] = useState({});
   const [open, setOpen] = useState(false);
 
@@ -42,14 +42,14 @@ export default function Ficket(props: any) {
     <div className={classes.root}>
       <AppBarContainer keyPress={keyPress} />
       <DrawerContainer
-        playlist={playlist}
+        playlists={playlists}
         currentInfo={currentInfo}
         changeCurrentInfo={handleCurrentInfoChange}
       />
       <MainContainer
         infos={infos}
-        setPlaylist={setPlaylist}
-        playlist={playlist}
+        setPlaylists={setPlaylists}
+        playlists={playlists}
         currentInfo={currentInfo}
         setCurrentInfo={handleCurrentInfoChange}
       />

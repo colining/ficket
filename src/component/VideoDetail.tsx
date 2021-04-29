@@ -10,6 +10,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import path from 'path';
+import _ from 'lodash';
 import { getPlaylist } from '../utils/spider';
 import BackdropContainer from './BackdropContainer';
 
@@ -46,7 +47,7 @@ const useStyles = makeStyles({
 });
 
 export default function VideoDetail(props: any) {
-  const { playlist, setPlaylist } = props;
+  const { playlists, setPlaylists } = props;
 
   const { info } = props;
 
@@ -59,13 +60,15 @@ export default function VideoDetail(props: any) {
   const [open, setOpen] = useState(true);
 
   async function getList() {
-    setPlaylist([]);
+    setPlaylists([]);
     const list = await getPlaylist(
       info.videoDetail,
       info.videoSource,
+      info.videoPlaylistContainerRegex,
       info.videoPlaylistRegex
     );
-    setPlaylist(list);
+    console.log(list);
+    setPlaylists(list);
   }
 
   useEffect(() => {
@@ -74,25 +77,39 @@ export default function VideoDetail(props: any) {
       .catch((e) => console.log(e));
   }, []);
 
-  const handleClick = (href: string) => {
+  const handleClick = (href: string, index: number) => {
     const changedInfo = info;
-    changedInfo.videoUrl = href === info.videoDetail ? playlist[0].href : href;
+    changedInfo.videoUrl =
+      href === info.videoDetail ? playlists[0][0].href : href;
     setCurrentInfo(changedInfo);
+    const list = _.clone(playlists);
+    list.activeIndex = index;
+    setPlaylists(list);
     history.push('/main/webview');
   };
 
-  const renderPlaylist = () => {
+  const renderPlaylistItem = (playlist: any, index: number) => {
     return playlist.map((i: any) => {
       return (
-        <li className={classes.li} key={i.title}>
+        <li className={classes.li} key={i.href}>
           <Button
             className={classes.button}
             variant="contained"
-            onClick={() => handleClick(i.href)}
+            onClick={() => handleClick(i.href, index)}
           >
             {i.title}
           </Button>
         </li>
+      );
+    });
+  };
+  const renderPlaylists = () => {
+    return playlists.map((playlist: any, index: number) => {
+      return (
+        <div key={playlist[0].href}>
+          <h4>源: {index + 1}</h4>
+          {renderPlaylistItem(playlist, index)}
+        </div>
       );
     });
   };
@@ -104,7 +121,7 @@ export default function VideoDetail(props: any) {
         style={{ width: 400, height: 600 }}
       >
         <Card>
-          <CardActionArea onClick={() => handleClick(info.videoUrl)}>
+          <CardActionArea onClick={() => handleClick(info.videoUrl, 0)}>
             <CardMedia
               component="img"
               image={info.imgUrl}
@@ -128,7 +145,7 @@ export default function VideoDetail(props: any) {
         </Card>
       </div>
       <div>
-        <ul>{renderPlaylist()}</ul>
+        <ul>{renderPlaylists()}</ul>
       </div>
       <BackdropContainer
         open={open}

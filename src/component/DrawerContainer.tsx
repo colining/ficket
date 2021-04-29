@@ -31,7 +31,7 @@ const useStyles = makeStyles(() =>
 
 export default function DrawerContainer(props: any) {
   const classes = useStyles();
-  const { currentInfo, changeCurrentInfo, playlist } = props;
+  const { currentInfo, changeCurrentInfo, playlists } = props;
 
   const handleChangeEpisode = (href: string) => {
     const changedInfo = _.clone(currentInfo);
@@ -40,7 +40,10 @@ export default function DrawerContainer(props: any) {
   };
 
   const renderPlaylist = () => {
-    return playlist.map((i: any) => {
+    if (_.isEmpty(playlists)) {
+      return '';
+    }
+    return playlists[playlists.activeIndex || 0].map((i: any) => {
       return (
         <ListItem
           button

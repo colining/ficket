@@ -66,7 +66,7 @@ export default function HomePage(props: any) {
   const [sources, setSources] = useState(read());
   const [favorites, setFavourites] = useState(readFavorites());
   const { width, ref } = useResizeDetector();
-  const { setCurrentInfo, setPlaylist } = props;
+  const { setCurrentInfo, setPlaylists } = props;
 
   const history = useHistory();
   const classes = useStyles();
@@ -78,7 +78,7 @@ export default function HomePage(props: any) {
 
   const handleClick = async (info: VideoInfo) => {
     setCurrentInfo(info);
-    setPlaylist([]);
+    setPlaylists([]);
     history.push('/main/webview');
   };
 

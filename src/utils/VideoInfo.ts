@@ -9,6 +9,8 @@ export default class VideoInfo {
 
   title: string;
 
+  videoPlaylistContainerRegex: string;
+
   videoPlaylistRegex: string;
 
   videoRegex: string;
@@ -19,6 +21,7 @@ export default class VideoInfo {
     videoUrl: string,
     imgUrl: string,
     title: string,
+    videoPlaylistContainerRegex: string,
     videoPlaylistRegex: string,
     videoRegex: string
   ) {
@@ -27,6 +30,7 @@ export default class VideoInfo {
     this.videoUrl = videoUrl;
     this.imgUrl = imgUrl;
     this.title = title;
+    this.videoPlaylistContainerRegex = videoPlaylistContainerRegex;
     this.videoPlaylistRegex = videoPlaylistRegex;
     this.videoRegex = videoRegex;
   }
