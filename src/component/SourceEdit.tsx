@@ -128,6 +128,16 @@ export default function SourceEdit(props: any) {
             inputRef={register}
           />
           <TextField
+            name="playlistContainerRegex"
+            required
+            id="outlined-helperText"
+            label="视频选集容器正则"
+            defaultValue={currentSource.playlistContainerRegex}
+            helperText="ex:body"
+            variant="outlined"
+            inputRef={register}
+          />
+          <TextField
             name="playlistItemRegex"
             required
             id="outlined-helperText"
