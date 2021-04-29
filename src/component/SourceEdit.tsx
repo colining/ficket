@@ -5,6 +5,7 @@ import {
   FormControlLabel,
   Radio,
   RadioGroup,
+  Typography,
 } from '@material-ui/core';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -16,12 +17,22 @@ import save from '../utils/JsonUtils';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      margin: theme.spacing(1, 1),
+      margin: theme.spacing(5, 0),
       '& .MuiTextField-root': {
-        margin: theme.spacing(1),
-        width: '25ch',
+        margin: theme.spacing(2),
+        width: '60ch',
+      },
+      '& .MuiTypography-root': {
+        margin: theme.spacing(2, 0),
       },
     },
+    container: {
+      margin: theme.spacing(2),
+    },
+    radioGroup: {
+      margin: theme.spacing(2),
+    },
+
     button: {
       margin: theme.spacing(1, 10, 1, 1),
       float: 'right',
@@ -48,11 +59,15 @@ export default function SourceEdit(props: any) {
         autoComplete="off"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <section>
-          <h4>搜索时的请求类型</h4>
+        <div className={classes.container}>
+          <Typography>搜索时的请求类型</Typography>
           <Controller
             as={
-              <RadioGroup aria-label="gender" row>
+              <RadioGroup
+                className={classes.radioGroup}
+                aria-label="gender"
+                row
+              >
                 <FormControlLabel
                   value="get"
                   control={<Radio color="primary" />}
@@ -68,8 +83,9 @@ export default function SourceEdit(props: any) {
             name="method"
             control={control}
           />
-        </section>
-        <div>
+        </div>
+        <div className={classes.container}>
+          <Typography>网站基本信息</Typography>
           <TextField
             name="name"
             required
@@ -83,6 +99,7 @@ export default function SourceEdit(props: any) {
           <TextField
             name="homepageUrl"
             required
+            multiline
             id="outlined-helperText"
             label="主页链接"
             defaultValue={currentSource.homepageUrl}
@@ -90,9 +107,14 @@ export default function SourceEdit(props: any) {
             variant="outlined"
             inputRef={register}
           />
+        </div>
+        <Divider />
+        <div className={classes.container}>
+          <Typography>搜索请求</Typography>
           <TextField
             name="searchUrlPrefix"
             required
+            multiline
             id="outlined-helperText"
             label="搜索前缀"
             defaultValue={currentSource.searchUrlPrefix}
@@ -116,10 +138,12 @@ export default function SourceEdit(props: any) {
           )}
         </div>
         <Divider />
-        <div>
+        <div className={classes.container}>
+          <Typography>搜索结果</Typography>
           <TextField
             name="videoDetailUrlRegex"
             required
+            multiline
             id="outlined-helperText"
             label="视频详情页链接正则"
             defaultValue={currentSource.videoDetailUrlRegex}
@@ -128,28 +152,9 @@ export default function SourceEdit(props: any) {
             inputRef={register}
           />
           <TextField
-            name="playlistContainerRegex"
-            required
-            id="outlined-helperText"
-            label="视频选集容器正则"
-            defaultValue={currentSource.playlistContainerRegex}
-            helperText="ex:body"
-            variant="outlined"
-            inputRef={register}
-          />
-          <TextField
-            name="playlistItemRegex"
-            required
-            id="outlined-helperText"
-            label="视频选集正则"
-            defaultValue={currentSource.playlistItemRegex}
-            helperText="ex:#playlist1 a.btn.btn-default"
-            variant="outlined"
-            inputRef={register}
-          />
-          <TextField
             name="videoUrlRegex"
             required
+            multiline
             id="outlined-helperText"
             label="视频链接正则"
             defaultValue={currentSource.videoUrlRegex}
@@ -160,6 +165,7 @@ export default function SourceEdit(props: any) {
           <TextField
             name="imgUrlRegex"
             required
+            multiline
             id="outlined-helperText"
             label="图片链接正则"
             defaultValue={currentSource.imgUrlRegex}
@@ -170,6 +176,7 @@ export default function SourceEdit(props: any) {
           <TextField
             name="titleRegex"
             required
+            multiline
             id="outlined-helperText"
             label="标题链接正则"
             defaultValue={currentSource.titleRegex}
@@ -177,9 +184,41 @@ export default function SourceEdit(props: any) {
             variant="outlined"
             inputRef={register}
           />
+        </div>
+        <Divider />
+        <div className={classes.container}>
+          <Typography>详情页/选集</Typography>
+          <TextField
+            name="playlistContainerRegex"
+            required
+            multiline
+            id="outlined-helperText"
+            label="视频选集容器正则"
+            defaultValue={currentSource.playlistContainerRegex}
+            helperText="ex:body"
+            variant="outlined"
+            inputRef={register}
+          />
+
+          <TextField
+            name="playlistItemRegex"
+            required
+            multiline
+            id="outlined-helperText"
+            label="视频选集正则"
+            defaultValue={currentSource.playlistItemRegex}
+            helperText="ex:#playlist1 a.btn.btn-default"
+            variant="outlined"
+            inputRef={register}
+          />
+        </div>
+        <Divider />
+        <div className={classes.container}>
+          <Typography>分离视频窗口</Typography>
           <TextField
             name="videoRegex"
             required
+            multiline
             id="outlined-helperText"
             label="视频窗口正则"
             defaultValue={currentSource.videoRegex}
