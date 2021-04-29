@@ -6,6 +6,7 @@ import {
   CardContent,
   CardMedia,
   IconButton,
+  Snackbar,
   Typography,
 } from '@material-ui/core';
 import AutoResponsive from 'autoresponsive-react';
@@ -14,6 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ShareIcon from '@material-ui/icons/Share';
+import { useClipboard } from 'use-clipboard-copy';
 import { read } from '../utils/JsonUtils';
 import SourceReminder from './SourceReminder';
 import { deleteFavourite, readFavorites } from '../utils/FavoriteUtils';
@@ -67,9 +69,11 @@ export default function HomePage(props: any) {
   const [favorites, setFavourites] = useState(readFavorites());
   const { width, ref } = useResizeDetector();
   const { setCurrentInfo, setPlaylists } = props;
+  const [openSnack, setOpenSnack] = useState(false);
 
   const history = useHistory();
   const classes = useStyles();
+  const clipboard = useClipboard();
 
   useEffect(() => {
     setSources(read());
@@ -82,11 +86,17 @@ export default function HomePage(props: any) {
     history.push('/main/webview');
   };
 
-  function handleDelete(e: MouseEvent, info: any) {
+  const handleDelete = (e: MouseEvent, info: any) => {
     deleteFavourite(info);
     setFavourites(readFavorites());
     e.stopPropagation();
-  }
+  };
+
+  const handleShare = (e: MouseEvent, videoInfo: any) => {
+    clipboard.copy(videoInfo.videoUrl);
+    setOpenSnack(true);
+    e.stopPropagation();
+  };
 
   const renderItem = (favourites: any) => {
     return favourites.map((videoInfo: VideoInfo) => {
@@ -117,7 +127,10 @@ export default function HomePage(props: any) {
                   color="primary"
                   aria-label="vertical outlined primary button group"
                 >
-                  <IconButton aria-label="share">
+                  <IconButton
+                    aria-label="share"
+                    onClick={(e: MouseEvent) => handleShare(e, videoInfo)}
+                  >
                     <ShareIcon />
                   </IconButton>
                   <IconButton
@@ -159,6 +172,10 @@ export default function HomePage(props: any) {
     );
   }
 
+  const handleClose = () => {
+    setOpenSnack(false);
+  };
+
   return (
     <div>
       <SourceReminder sources={sources} />
@@ -166,6 +183,12 @@ export default function HomePage(props: any) {
         <Typography>我的收藏</Typography>
         {renderFavorites()}
       </div>
+      <Snackbar
+        open={openSnack}
+        onClose={handleClose}
+        autoHideDuration={2000}
+        message="已复制到剪切板，快去分享一下吧"
+      />
     </div>
   );
 }
