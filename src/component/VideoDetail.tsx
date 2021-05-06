@@ -104,6 +104,9 @@ export default function VideoDetail(props: any) {
     });
   };
   const renderPlaylists = () => {
+    if (_.isEmpty(playlists[0])) {
+      return <div>获取选集失败，请使用其他源</div>;
+    }
     return playlists.map((playlist: any, index: number) => {
       return (
         <div key={playlist[0].href}>
