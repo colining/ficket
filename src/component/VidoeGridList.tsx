@@ -29,6 +29,7 @@ const useStyles = makeStyles({
     background: 'cornsilk',
     opacity: 0.8,
     width: '100%',
+    maxHeight: '20ch',
     margin: 'auto',
     bottom: 0,
   },
