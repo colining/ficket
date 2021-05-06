@@ -85,7 +85,6 @@ export default function WebViewContainer(props: any) {
           }}
           src={info.videoUrl}
           onDidFinishLoad={handleLoad}
-          onMediaPaused={handle.exit}
           onEnterHtmlFullScreen={handle.enter}
           onLeaveHtmlFullScreen={handle.exit}
           devtools
