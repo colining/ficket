@@ -11,7 +11,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell, session } from 'electron';
+import { app, BrowserWindow, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -37,19 +37,6 @@ if (
 ) {
   require('electron-debug')();
 }
-
-// const installExtensions = async () => {
-//   const installer = require('electron-devtools-installer');
-//   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-//   const extensions = ['REACT_DEVELOPER_TOOLS'];
-//
-//   return installer
-//     .default(
-//       extensions.map((name) => installer[name]),
-//       forceDownload
-//     )
-//     .catch(console.log);
-// };
 
 const createWindow = async () => {
   if (
@@ -125,19 +112,7 @@ app.on('window-all-closed', () => {
   }
 });
 
-const reactDevToolsPath =
-  'C:\\Users\\colin\\AppData\\Roaming\\Electron\\extensions\\fmkadmapgofadopljbjfkapdkoienihi';
-
-app
-  .whenReady()
-  .then(async () => {
-    await session.defaultSession.loadExtension(reactDevToolsPath, {
-      allowFileAccess: true,
-    });
-    return null;
-  })
-  .then(createWindow)
-  .catch(console.log);
+app.whenReady().then(createWindow).catch(console.log);
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
