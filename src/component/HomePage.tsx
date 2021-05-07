@@ -16,6 +16,7 @@ import { useHistory } from 'react-router-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ShareIcon from '@material-ui/icons/Share';
 import { useClipboard } from 'use-clipboard-copy';
+import path from 'path';
 import { read } from '../utils/JsonUtils';
 import SourceReminder from './SourceReminder';
 import { deleteFavourite, readFavorites } from '../utils/FavoriteUtils';
@@ -114,8 +115,15 @@ export default function HomePage(props: any) {
                 className={videoInfo.imgUrl ? '' : classes.errorImage}
                 component="img"
                 image={videoInfo.imgUrl}
-                title="here is title"
                 alt="图片加载失败"
+                onError={(e: any) => {
+                  e.target.onerror = null;
+                  e.target.src = path.join(
+                    path.dirname(__dirname),
+                    'assets',
+                    'error.png'
+                  );
+                }}
               />
               <CardContent className={classes.cardTitle}>
                 <Typography align="left" variant="h6" component="h1">

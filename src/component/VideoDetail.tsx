@@ -128,7 +128,6 @@ export default function VideoDetail(props: any) {
             <CardMedia
               component="img"
               image={info.imgUrl}
-              title="here is title"
               alt="Contemplative Reptile"
               onError={(e: any) => {
                 e.target.onerror = null;

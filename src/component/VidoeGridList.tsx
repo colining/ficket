@@ -85,7 +85,6 @@ export default function VideoGridList(props: any) {
                 className={videoInfo.imgUrl ? '' : classes.errorImage}
                 component="img"
                 image={videoInfo.imgUrl}
-                title="here is title"
                 alt="图片加载失败"
                 onError={(e: any) => {
                   e.target.onerror = null;
