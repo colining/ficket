@@ -77,25 +77,26 @@ export default function VideoDetail(props: any) {
       .catch((e) => console.log(e));
   }, []);
 
-  const handleClick = (href: string, index: number) => {
+  const handleClick = (href: string, index: number, episode: number) => {
     const changedInfo = info;
     changedInfo.videoUrl =
       href === info.videoDetail ? playlists[0][0].href : href;
     setCurrentInfo(changedInfo);
     const list = _.clone(playlists);
     list.activeIndex = index;
+    list.activeEpisode = episode;
     setPlaylists(list);
     history.push('/main/webview');
   };
 
   const renderPlaylistItem = (playlist: any, index: number) => {
-    return playlist.map((i: any) => {
+    return playlist.map((i: any, episode: number) => {
       return (
         <li className={classes.li} key={i.href}>
           <Button
             className={classes.button}
             variant="contained"
-            onClick={() => handleClick(i.href, index)}
+            onClick={() => handleClick(i.href, index, episode)}
           >
             {i.title}
           </Button>
@@ -124,7 +125,7 @@ export default function VideoDetail(props: any) {
         style={{ width: 400, height: 600 }}
       >
         <Card>
-          <CardActionArea onClick={() => handleClick(info.videoUrl, 0)}>
+          <CardActionArea onClick={() => handleClick(info.videoUrl, 0, 0)}>
             <CardMedia
               component="img"
               image={info.imgUrl}

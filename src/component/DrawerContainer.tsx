@@ -46,18 +46,23 @@ export default function DrawerContainer(props: any) {
     if (_.isEmpty(playlists)) {
       return '';
     }
-    return playlists[playlists.activeIndex || 0].map((i: any) => {
-      return (
-        <ListItem
-          button
-          key={i.title}
-          onClick={() => handleChangeEpisode(i.href)}
-        >
-          <ListItemIcon />
-          <ListItemText primary={i.title} />
-        </ListItem>
-      );
-    });
+    return playlists[playlists.activeIndex || 0].map(
+      (i: any, index: number) => {
+        return (
+          <ListItem
+            selected={
+              playlists.activeEpisode && playlists.activeEpisode === index
+            }
+            button
+            key={i.title}
+            onClick={() => handleChangeEpisode(i.href)}
+          >
+            <ListItemIcon />
+            <ListItemText primary={i.title} />
+          </ListItem>
+        );
+      }
+    );
   };
   return (
     <Drawer
