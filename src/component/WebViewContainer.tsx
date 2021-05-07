@@ -2,7 +2,7 @@ import WebView from 'react-electron-web-view';
 import React, { useEffect, useRef, useState } from 'react';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { makeStyles } from '@material-ui/core/styles';
-import { Fab, Snackbar } from '@material-ui/core';
+import { Fab, Snackbar, Typography } from '@material-ui/core';
 import _ from 'lodash';
 import { removeAllUnusedNode } from '../utils/utils';
 import BackdropContainer from './BackdropContainer';
@@ -75,6 +75,7 @@ export default function WebViewContainer(props: any) {
   };
   return (
     <div className={classes.root}>
+      <Typography>若加载时间过长，建议重新选择视频来源</Typography>
       <FullScreen handle={handle} className={classes.root}>
         <WebView
           muted={muted}
