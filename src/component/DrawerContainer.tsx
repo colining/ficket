@@ -9,6 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import MovieIcon from '@material-ui/icons/Movie';
 import React from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import HelpIcon from '@material-ui/icons/Help';
 import { Link, Route, Switch } from 'react-router-dom';
 import _ from 'lodash';
 
@@ -79,6 +80,12 @@ export default function DrawerContainer(props: any) {
             <MovieIcon color="primary" />
           </ListItemIcon>
           <ListItemText primary="在线视频" />
+        </ListItem>
+        <ListItem button key="about-me" component={Link} to="/main/about">
+          <ListItemIcon>
+            <HelpIcon color="primary" />
+          </ListItemIcon>
+          <ListItemText primary="联系我" />
         </ListItem>
         <Divider />
         <Switch>

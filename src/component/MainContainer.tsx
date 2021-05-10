@@ -8,6 +8,7 @@ import WebViewContainer from './WebViewContainer';
 import SourceContainer from './SourceContainer';
 import VideoDetail from './VideoDetail';
 import HomePage from './HomePage';
+import AboutMe from './AboutMe';
 
 const useStyles = makeStyles({
   content: {
@@ -77,7 +78,7 @@ export default function MainContainer(props: any) {
           />
 
           <Route path="/main/source" render={() => <SourceContainer />} />
-
+          <Route path="/main/about" component={AboutMe} />
           <Route
             path="/"
             render={() => (
