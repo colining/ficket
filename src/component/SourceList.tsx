@@ -90,7 +90,7 @@ export default function SourceList(props: any) {
             variant="outlined"
             onClick={() => handleEdit(index)}
           >
-            edit
+            编辑
           </Button>
           <Button
             size="small"
@@ -98,7 +98,7 @@ export default function SourceList(props: any) {
             variant="outlined"
             onClick={() => handleDelete(index)}
           >
-            delete
+            删除
           </Button>
         </CardActions>
       </Card>

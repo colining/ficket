@@ -234,7 +234,7 @@ export default function SourceEdit(props: any) {
             color="primary"
             className={classes.button}
           >
-            {_.isEmpty(currentSource) ? 'add' : 'update'}
+            {_.isEmpty(currentSource) ? '添加' : '更新'}
           </Button>
         </div>
       </form>
