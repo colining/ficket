@@ -19,7 +19,7 @@ export default function save(newData: any) {
 }
 
 export function read() {
-  return jsonfile.readFileSync(sourcePath);
+  return jsonfile.readFileSync(sourcePath).reverse();
 }
 
 export function update(data: any) {

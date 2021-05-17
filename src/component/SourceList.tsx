@@ -71,7 +71,7 @@ export default function SourceList(props: any) {
   }
 
   const renderRow = () => {
-    return sources.reverse().map((source: any, index: number) => (
+    return sources.map((source: any, index: number) => (
       <Card key={source.name}>
         <CardActionArea onClick={() => handleEdit(index)}>
           <CardContent>
