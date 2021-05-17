@@ -100,7 +100,7 @@ export default function HomePage(props: any) {
   };
 
   const renderItem = (favourites: any) => {
-    return favourites.reverse().map((videoInfo: VideoInfo) => {
+    return favourites.map((videoInfo: VideoInfo) => {
       return (
         // It' must be a style here otherwise there is a bug in production
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

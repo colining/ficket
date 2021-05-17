@@ -15,7 +15,7 @@ export default function saveFavorite(newData: any) {
 }
 
 export function readFavorites() {
-  return jsonfile.readFileSync(sourcePath);
+  return jsonfile.readFileSync(sourcePath).reverse();
 }
 
 export function deleteFavourite(info: any) {
