@@ -81,6 +81,7 @@ export default function VideoDetail(props: any) {
     const changedInfo = info;
     changedInfo.videoUrl =
       href === info.videoDetail ? playlists[0][0].href : href;
+    changedInfo.activeEpisode = episode;
     setCurrentInfo(changedInfo);
     const list = _.clone(playlists);
     list.activeIndex = index;

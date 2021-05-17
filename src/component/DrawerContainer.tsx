@@ -34,12 +34,13 @@ export default function DrawerContainer(props: any) {
   const classes = useStyles();
   const { currentInfo, changeCurrentInfo, playlists } = props;
 
-  const handleChangeEpisode = (href: string) => {
+  const handleChangeEpisode = (href: string, index: number) => {
     if (currentInfo.videoUrl === href) {
       return;
     }
     const changedInfo = _.clone(currentInfo);
     changedInfo.videoUrl = href;
+    changedInfo.activeEpisode = index;
     changeCurrentInfo(changedInfo);
   };
 
@@ -52,11 +53,13 @@ export default function DrawerContainer(props: any) {
         return (
           <ListItem
             selected={
-              playlists.activeEpisode && playlists.activeEpisode === index
+              (currentInfo.activeEpisode &&
+                currentInfo.activeEpisode === index) ||
+              (playlists.activeEpisode && playlists.activeEpisode === index)
             }
             button
             key={i.title}
-            onClick={() => handleChangeEpisode(i.href)}
+            onClick={() => handleChangeEpisode(i.href, index)}
           >
             <ListItemIcon />
             <ListItemText primary={i.title} />
