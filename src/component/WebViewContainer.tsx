@@ -55,6 +55,18 @@ export default function WebViewContainer(props: any) {
     }
   }, [info]);
 
+  const addFavorite = () => {
+    saveFavorite(info);
+    setOpenSnack(true);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      addFavorite();
+      console.log('saveFavorite');
+    }, 300000);
+  }, [info]);
+
   const handleLoad = async () => {
     console.log(info);
     // it's seems can inject the js function
@@ -63,11 +75,6 @@ export default function WebViewContainer(props: any) {
     setOpen(false);
     setShowWebView(true);
     setMuted(false);
-  };
-
-  const addFavorite = () => {
-    saveFavorite(info);
-    setOpenSnack(true);
   };
 
   const handleClose = () => {
