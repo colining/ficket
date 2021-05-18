@@ -61,10 +61,11 @@ export default function WebViewContainer(props: any) {
   };
 
   useEffect(() => {
-    setTimeout(() => {
+    const saveFavourite = setTimeout(() => {
       addFavorite();
       console.log('saveFavorite');
     }, 300000);
+    return () => clearTimeout(saveFavourite);
   }, [info]);
 
   const handleLoad = async () => {
