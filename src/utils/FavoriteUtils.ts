@@ -15,6 +15,9 @@ export default function saveFavorite(newData: any) {
 }
 
 export function readFavorites() {
+  if (!fs.existsSync(sourcePath)) {
+    fs.writeFileSync(sourcePath, JSON.stringify([]));
+  }
   return jsonfile.readFileSync(sourcePath).reverse();
 }
 
