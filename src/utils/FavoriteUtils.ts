@@ -2,7 +2,9 @@ import path from 'path';
 import fs from 'fs';
 import jsonfile from 'jsonfile';
 
-const sourcePath = path.join(path.dirname(__dirname), 'favorites.json');
+import { remote } from 'electron';
+
+const sourcePath = path.join(remote.app.getPath('userData'), 'favorites.json');
 
 export default function saveFavorite(newData: any) {
   if (!fs.existsSync(sourcePath)) {
