@@ -4,7 +4,7 @@ import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { makeStyles } from '@material-ui/core/styles';
 import { Fab, Snackbar, Typography } from '@material-ui/core';
 import _ from 'lodash';
-import { removeAllUnusedNode } from '../utils/utils';
+import path from 'path';
 import BackdropContainer from './BackdropContainer';
 import saveFavorite from '../utils/FavoriteUtils';
 import { getPlaylist } from '../utils/spider';
@@ -68,11 +68,9 @@ export default function WebViewContainer(props: any) {
     return () => clearTimeout(saveFavourite);
   }, [info]);
 
-  const handleLoad = async () => {
+  const handleDomReady = async () => {
     console.log(info);
-    // it's seems can inject the js function
-    webView.current.executeJavaScript(removeAllUnusedNode);
-    webView.current.executeJavaScript(`clear_html('${info.videoRegex}')`);
+    webView.current.send('videoRegex', info.videoRegex);
     setOpen(false);
     setShowWebView(true);
     setMuted(false);
@@ -86,6 +84,7 @@ export default function WebViewContainer(props: any) {
       <Typography>若加载时间过长，建议重新选择视频来源</Typography>
       <FullScreen handle={handle} className={classes.root}>
         <WebView
+          preload={path.join('./utils/preload.js')}
           muted={muted}
           ref={webView}
           style={{
@@ -93,9 +92,12 @@ export default function WebViewContainer(props: any) {
             visibility: showWebView ? 'visible' : 'hidden',
           }}
           src={info.videoUrl}
-          onDidFinishLoad={handleLoad}
+          onDomReady={handleDomReady}
           onEnterHtmlFullScreen={handle.enter}
           onLeaveHtmlFullScreen={handle.exit}
+          onIpcMessage={(event: any) => {
+            console.log(event.channel);
+          }}
           devtools
           plugins
         />
