@@ -89,13 +89,6 @@
         "filter": [
           "**/*"
         ]
-      },
-      {
-        "from": "favorites.json",
-        "to": "favorites.json",
-        "filter": [
-          "**/*"
-        ]
       }
     ],
     "publish": {
