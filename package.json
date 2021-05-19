@@ -89,6 +89,13 @@
         "filter": [
           "**/*"
         ]
+      },
+      {
+        "from": "preload.js",
+        "to": "preload.js",
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "publish": {

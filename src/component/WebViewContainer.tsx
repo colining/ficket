@@ -21,6 +21,8 @@ const useStyles = makeStyles({
   },
 });
 
+const preloadPath = path.join(path.dirname(__dirname), 'preload.js');
+
 export default function WebViewContainer(props: any) {
   const webView = useRef(WebView);
   const [showWebView, setShowWebView] = useState(false);
@@ -84,7 +86,7 @@ export default function WebViewContainer(props: any) {
       <Typography>若加载时间过长，建议重新选择视频来源</Typography>
       <FullScreen handle={handle} className={classes.root}>
         <WebView
-          preload={path.join('./utils/preload.js')}
+          preload={preloadPath}
           muted={muted}
           ref={webView}
           style={{
