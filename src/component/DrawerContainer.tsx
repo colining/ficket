@@ -44,6 +44,13 @@ export default function DrawerContainer(props: any) {
     changeCurrentInfo(changedInfo);
   };
 
+  const checkActive = (index: number) => {
+    if (currentInfo.activeEpisode) {
+      return currentInfo.activeEpisode === index;
+    }
+    if (playlists.activeEpisode) return playlists.activeEpisode === index;
+    return false;
+  };
   const renderPlaylist = () => {
     if (_.isEmpty(playlists)) {
       return '';
@@ -52,11 +59,7 @@ export default function DrawerContainer(props: any) {
       (i: any, index: number) => {
         return (
           <ListItem
-            selected={
-              (currentInfo.activeEpisode &&
-                currentInfo.activeEpisode === index) ||
-              (playlists.activeEpisode && playlists.activeEpisode === index)
-            }
+            selected={checkActive(index)}
             button
             key={i.title}
             onClick={() => handleChangeEpisode(i.href, index)}
