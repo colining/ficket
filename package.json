@@ -96,6 +96,13 @@
         "filter": [
           "**/*"
         ]
+      },
+      {
+        "from": "./src/steam_appid.txt",
+        "to": "../steam_appid.txt",
+        "filter": [
+          "../*"
+        ]
       }
     ],
     "publish": {
