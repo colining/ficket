@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.global.css';
 import {
   createMuiTheme,
@@ -7,7 +7,9 @@ import {
 } from '@material-ui/core';
 import { HashRouter, Route } from 'react-router-dom';
 import { amber, cyan } from '@material-ui/core/colors';
+import * as greenworks from 'greenworks';
 import Ficket from './component/Ficket';
+import getWorkShopItemsPath, { WorkshopContext } from './utils/SteamWorks';
 
 const theme = createMuiTheme({
   palette: {
@@ -19,8 +21,12 @@ const theme = createMuiTheme({
     },
   },
 });
-
 export default function App() {
+  useEffect(() => {
+    if (greenworks.init()) {
+      getWorkShopItemsPath(WorkshopContext);
+    }
+  });
   return (
     <div className="main-body">
       <CssBaseline />

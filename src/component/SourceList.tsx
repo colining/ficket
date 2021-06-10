@@ -13,6 +13,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import { read, update } from '../utils/JsonUtils';
 import SourceReminder from './SourceReminder';
+import { WorkshopContext } from '../utils/SteamWorks';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,13 +39,15 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function SourceList(props: any) {
-  const [sources, setSources] = useState(read());
+  const [sources, setSources] = useState(
+    WorkshopContext.workshopSource.concat(read())
+  );
   const { setCurrentSource } = props;
 
   const history = useHistory();
 
   useEffect(() => {
-    setSources(read());
+    WorkshopContext.workshopSource.concat(read());
   }, []);
 
   const classes = useStyles();
@@ -72,19 +75,20 @@ export default function SourceList(props: any) {
 
   const renderRow = () => {
     return sources.map((source: any, index: number) => (
-      <Card key={source.name}>
+      <Card key={source.name + source.workshopTag}>
         <CardActionArea onClick={() => handleEdit(index)}>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
               {source.name}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {source.homepageUrl}
+              {source.homepageUrl} {source.workshopTag ? '来自创意工坊' : ''}
             </Typography>
           </CardContent>
         </CardActionArea>
         <CardActions>
           <Button
+            disabled={source.workshopTag}
             size="small"
             color="primary"
             variant="outlined"
@@ -93,6 +97,7 @@ export default function SourceList(props: any) {
             编辑
           </Button>
           <Button
+            disabled={source.workshopTag}
             size="small"
             color="primary"
             variant="outlined"

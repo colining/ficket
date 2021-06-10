@@ -17,7 +17,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ShareIcon from '@material-ui/icons/Share';
 import { useClipboard } from 'use-clipboard-copy';
 import path from 'path';
-import testSteamAPI from '../utils/SteamWorks';
 import { read } from '../utils/JsonUtils';
 import SourceReminder from './SourceReminder';
 import { deleteFavourite, readFavorites } from '../utils/FavoriteUtils';
@@ -77,9 +76,6 @@ export default function HomePage(props: any) {
   const classes = useStyles();
   const clipboard = useClipboard();
 
-  useEffect(() => {
-    testSteamAPI();
-  });
   useEffect(() => {
     setSources(read());
     setFavourites(readFavorites());
