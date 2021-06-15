@@ -128,6 +128,7 @@ export default async function getVideoInfo(
     }
     return {
       videoSource: source.homepageUrl,
+      workshopTag: source.workshopTag,
       result,
     };
   });

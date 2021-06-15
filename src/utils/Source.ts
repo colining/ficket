@@ -23,6 +23,8 @@ export default class Source {
 
   titleRegex: string;
 
+  workshopTag = false;
+
   constructor(
     name: string,
     method: string,
@@ -35,7 +37,8 @@ export default class Source {
     playlistItemRegex: string,
     videoUrlRegex: string,
     imgUrlRegex: string,
-    titleRegex: string
+    titleRegex: string,
+    workshopTag: boolean
   ) {
     this.name = name;
     this.method = method;
@@ -49,5 +52,6 @@ export default class Source {
     this.videoUrlRegex = videoUrlRegex;
     this.imgUrlRegex = imgUrlRegex;
     this.titleRegex = titleRegex;
+    this.workshopTag = workshopTag;
   }
 }
