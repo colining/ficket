@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import MainContainer from './MainContainer';
 import DrawerContainer from './DrawerContainer';
 import AppBarContainer from './AppBarContainer';
 import getVideoInfo from '../utils/spider';
 import BackdropContainer from './BackdropContainer';
+import { WorkshopContext } from '../utils/SteamWorks';
 
 const useStyles = makeStyles({
   root: {
@@ -16,6 +17,7 @@ const useStyles = makeStyles({
 
 export default function Ficket(props: any) {
   const classes = useStyles();
+  const workshopContext = useContext(WorkshopContext);
   const [infos, setInfos] = useState(new Array<any>());
   const [playlists, setPlaylists] = useState([]);
   const [currentInfo, setCurrentInfo] = useState({});
@@ -31,7 +33,10 @@ export default function Ficket(props: any) {
     }
     setOpen(true);
     const searchKey = e.target.value;
-    const videoInfos = await getVideoInfo(searchKey);
+    const videoInfos = await getVideoInfo(
+      searchKey,
+      workshopContext.workshopSource
+    );
     console.log('videoInfos', videoInfos);
     setInfos(videoInfos);
     setOpen(false);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Button,
@@ -39,15 +39,15 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function SourceList(props: any) {
-  const [sources, setSources] = useState(
-    WorkshopContext.workshopSource.concat(read())
-  );
+  const [sources, setSources] = useState(read());
   const { setCurrentSource } = props;
+  const workshopContext = useContext(WorkshopContext);
 
   const history = useHistory();
 
   useEffect(() => {
-    WorkshopContext.workshopSource.concat(read());
+    console.log(workshopContext.workshopSource);
+    setSources(read());
   }, []);
 
   const classes = useStyles();
@@ -74,7 +74,41 @@ export default function SourceList(props: any) {
   }
 
   const renderRow = () => {
-    return sources.map((source: any, index: number) => (
+    const workshopSources = workshopContext.workshopSource.map(
+      (source: any) => (
+        <Card key={source.name + source.workshopTag}>
+          <CardActionArea>
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                {source.name}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {source.homepageUrl} 来自创意工坊
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+          <CardActions>
+            <Button
+              disabled={source.workshopTag}
+              size="small"
+              color="primary"
+              variant="outlined"
+            >
+              编辑
+            </Button>
+            <Button
+              disabled={source.workshopTag}
+              size="small"
+              color="primary"
+              variant="outlined"
+            >
+              删除
+            </Button>
+          </CardActions>
+        </Card>
+      )
+    );
+    const customSources = sources.map((source: any, index: number) => (
       <Card key={source.name + source.workshopTag}>
         <CardActionArea onClick={() => handleEdit(index)}>
           <CardContent>
@@ -108,6 +142,12 @@ export default function SourceList(props: any) {
         </CardActions>
       </Card>
     ));
+    return (
+      <div>
+        {workshopSources}
+        {customSources}
+      </div>
+    );
   };
 
   return (
@@ -126,7 +166,9 @@ export default function SourceList(props: any) {
           {renderRow()}
         </List>
       </div>
-      <SourceReminder sources={sources} />
+      <SourceReminder
+        sources={workshopContext.workshopSource.concat(sources)}
+      />
     </div>
   );
 }

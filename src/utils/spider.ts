@@ -6,7 +6,6 @@ import VideoInfo from './VideoInfo';
 import { importData, read } from './JsonUtils';
 import { getFormData, withHttp } from './utils';
 import Source from './Source';
-import { WorkshopContext } from './SteamWorks';
 
 function getImgUrl(img: string | undefined, homepageUrl: string) {
   if (img === undefined) return '';
@@ -95,8 +94,11 @@ export function getVideoInfoBySource(
   });
 }
 
-export default async function getVideoInfo(searchKey: string) {
-  const sources: Source[] = WorkshopContext.workshopSource.concat(read());
+export default async function getVideoInfo(
+  searchKey: string,
+  workshopSource: Array<any>
+) {
+  const sources: Source[] = workshopSource.concat(read());
   const results = [];
   for (let i = 0; i < sources.length; i += 1) {
     results.push(

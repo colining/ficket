@@ -1,4 +1,4 @@
-import React, { useEffect, useState, MouseEvent } from 'react';
+import React, { useEffect, useState, MouseEvent, useContext } from 'react';
 import {
   ButtonGroup,
   Card,
@@ -21,6 +21,7 @@ import { read } from '../utils/JsonUtils';
 import SourceReminder from './SourceReminder';
 import { deleteFavourite, readFavorites } from '../utils/FavoriteUtils';
 import VideoInfo from '../utils/VideoInfo';
+import { WorkshopContext } from '../utils/SteamWorks';
 
 const useStyles = makeStyles({
   favourites: {
@@ -67,6 +68,7 @@ const style = {
 
 export default function HomePage(props: any) {
   const [sources, setSources] = useState(read());
+  const workshopContext = useContext(WorkshopContext);
   const [favorites, setFavourites] = useState(readFavorites());
   const { width, ref } = useResizeDetector();
   const { setCurrentInfo, setPlaylists } = props;
@@ -186,7 +188,14 @@ export default function HomePage(props: any) {
 
   return (
     <div>
-      <SourceReminder sources={sources} />
+      {workshopContext.loadSuccess ? (
+        <SourceReminder
+          sources={workshopContext.workshopSource.concat(sources)}
+        />
+      ) : (
+        ''
+      )}
+
       <div className={classes.favourites}>
         <Typography>我的收藏</Typography>
         {renderFavorites()}

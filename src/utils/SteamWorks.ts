@@ -1,9 +1,13 @@
 import greenworks from 'greenworks';
 import * as jsonfile from 'jsonfile';
+import React from 'react';
 
-export const WorkshopContext = { workshopSource: [] };
+export const WorkshopContext = React.createContext({
+  workshopSource: [],
+  loadSuccess: false,
+});
 
-export default function getWorkShopItemsPath(context: any) {
+export default function getWorkShopItemsPathAndSetToState(setState: any) {
   greenworks.ugcGetUserItems(
     greenworks.UGCMatchingType.Items,
     greenworks.UserUGCListSortOrder.CreationOrderDesc,
@@ -18,7 +22,7 @@ export default function getWorkShopItemsPath(context: any) {
         source.workshopTag = true;
         return source;
       });
-      context.workshopSource = workshopSource;
+      setState({ workshopSource, loadSuccess: true });
     },
     (e: any) => {
       console.log(e);
