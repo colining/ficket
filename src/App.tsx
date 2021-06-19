@@ -35,7 +35,7 @@ export default function App() {
         setWorkshopSource(source)
       );
     }
-  }, [workshopSource]);
+  }, [workshopSource.loadSuccess]);
   return (
     <div className="main-body">
       <CssBaseline />
