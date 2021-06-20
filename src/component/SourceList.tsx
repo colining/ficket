@@ -7,10 +7,20 @@ import {
   CardActionArea,
   CardActions,
   CardContent,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
   List,
+  TextField,
   Typography,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import path from 'path';
+import fs from 'fs';
 import { read, update } from '../utils/JsonUtils';
 import SourceReminder from './SourceReminder';
 import { WorkshopContext } from '../utils/SteamWorks';
@@ -21,6 +31,13 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
       height: '100%',
       overflowY: 'auto',
+      '& .MuiTextField-root': {
+        margin: theme.spacing(2),
+        width: '60ch',
+      },
+      '& .MuiTypography-root': {
+        margin: theme.spacing(2, 0),
+      },
     },
     buttonGroup: {
       position: 'fixed',
@@ -35,12 +52,23 @@ const useStyles = makeStyles((theme: Theme) =>
     sources: {
       marginTop: theme.spacing(8),
     },
+    dialogForm: {
+      '& .MuiTextField-root': {
+        margin: theme.spacing(2),
+        width: '40ch',
+      },
+      '& .MuiTypography-root': {
+        margin: theme.spacing(2, 0),
+      },
+    },
   })
 );
 
 export default function SourceList(props: any) {
   const [sources, setSources] = useState(read());
+  const [dialogOpen, setDialogOpen] = useState(false);
   const { setCurrentSource } = props;
+  const [sourceForPublish, setSourceForPublish] = useState({});
   const workshopContext = useContext(WorkshopContext);
 
   const history = useHistory();
@@ -71,6 +99,10 @@ export default function SourceList(props: any) {
   }
   function handleImport() {
     history.push('/main/source/import');
+  }
+  function openDialog(index: number) {
+    setDialogOpen(true);
+    setSourceForPublish(sources[index]);
   }
 
   const renderRow = () => {
@@ -139,6 +171,15 @@ export default function SourceList(props: any) {
           >
             删除
           </Button>
+          <Button
+            disabled={source.workshopTag}
+            size="small"
+            color="primary"
+            variant="outlined"
+            onClick={() => openDialog(index)}
+          >
+            上传至创意工坊
+          </Button>
         </CardActions>
       </Card>
     ));
@@ -148,6 +189,20 @@ export default function SourceList(props: any) {
         {customSources}
       </div>
     );
+  };
+
+  const handleClose = () => {
+    setDialogOpen(false);
+  };
+
+  const { register, handleSubmit, setValue } = useForm();
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+    console.log(sourceForPublish);
+
+    const sourceFileName = path.join(path.dirname(__dirname), 'temp.json');
+    fs.writeFileSync(sourceFileName, JSON.stringify(sourceForPublish));
   };
 
   return (
@@ -169,6 +224,95 @@ export default function SourceList(props: any) {
       <SourceReminder
         sources={workshopContext.workshopSource.concat(sources)}
       />
+      <Dialog
+        fullWidth
+        maxWidth="md"
+        open={dialogOpen}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">上传至创意工坊</DialogTitle>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <DialogContent>
+            <DialogContentText>
+              上传至创意工坊，需要提供标题，图片，以及基本描述
+            </DialogContentText>
+            <div className={classes.dialogForm}>
+              <div>
+                <Typography>标题及描述</Typography>
+                <TextField
+                  name="title"
+                  autoFocus
+                  required
+                  margin="dense"
+                  id="name"
+                  label="标题"
+                  fullWidth
+                  variant="outlined"
+                  inputRef={register}
+                />
+                <TextField
+                  required
+                  name="detail"
+                  autoFocus
+                  multiline
+                  margin="dense"
+                  id="name"
+                  label="基本描述"
+                  variant="outlined"
+                  fullWidth
+                  inputRef={register}
+                />
+              </div>
+              <Divider />
+              <div>
+                <Typography>图片</Typography>
+                <TextField
+                  required
+                  autoFocus
+                  margin="dense"
+                  name="picturePath"
+                  id="name"
+                  variant="outlined"
+                  helperText="图片路径"
+                  fullWidth
+                  inputRef={register}
+                />
+
+                <Button
+                  variant="contained"
+                  component="label"
+                  style={{ marginTop: '16px' }}
+                >
+                  上传一张图片
+                  <input
+                    type="file"
+                    hidden
+                    onChange={(event) => {
+                      setValue('picturePath', event.target.value);
+                    }}
+                  />
+                </Button>
+              </div>
+              <div>
+                <Typography>预览</Typography>
+                <TextField
+                  style={{ width: '100%' }}
+                  id="outlined-multiline-flexible"
+                  label="源预览"
+                  multiline
+                  value={JSON.stringify(sourceForPublish, null, 4)}
+                />
+              </div>
+            </div>
+          </DialogContent>
+          <DialogActions>
+            <Button type="submit" color="primary">
+              上传
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
     </div>
   );
 }
