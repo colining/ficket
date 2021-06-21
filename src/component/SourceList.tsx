@@ -130,6 +130,15 @@ export default function SourceList(props: any) {
           </CardActionArea>
           <CardActions>
             <Button
+              disabled={!source.publishByMyself}
+              size="small"
+              color="primary"
+              variant="outlined"
+              onClick={() => handleEdit(index)}
+            >
+              编辑
+            </Button>
+            <Button
               onClick={() => handleUnsubscribe(index)}
               size="small"
               color="primary"
@@ -138,6 +147,7 @@ export default function SourceList(props: any) {
               取消订阅
             </Button>
             <Button
+              disabled={!source.publishByMyself}
               onClick={() => handleUpdate(index)}
               size="small"
               color="primary"

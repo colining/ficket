@@ -26,7 +26,7 @@ export default function getWorkShopItemsPathAndSetToState(setState: any) {
         source.publishedFileId = item.publishedFileId;
         source.steamIDOwner = item.steamIDOwner;
         if (steamID === item.steamIDOwner) {
-          source.publishByMyseld = true;
+          source.publishByMyself = true;
         }
         return source;
       });
