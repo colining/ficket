@@ -14,6 +14,7 @@ import {
   DialogTitle,
   Divider,
   List,
+  Snackbar,
   TextField,
   Typography,
 } from '@material-ui/core';
@@ -21,9 +22,11 @@ import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import path from 'path';
 import fs from 'fs';
+import * as greenworks from 'greenworks';
 import { read, update } from '../utils/JsonUtils';
 import SourceReminder from './SourceReminder';
 import { WorkshopContext } from '../utils/SteamWorks';
+import BackdropContainer from './BackdropContainer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -196,13 +199,34 @@ export default function SourceList(props: any) {
   };
 
   const { register, handleSubmit, setValue } = useForm();
-
+  const [open, setOpen] = useState(false);
+  const [openSnack, setOpenSnack] = useState(false);
   const onSubmit = (data: any) => {
-    console.log(data);
-    console.log(sourceForPublish);
-
-    const sourceFileName = path.join(path.dirname(__dirname), 'temp.json');
+    setOpen(true);
+    const date = (+new Date()).toString(36);
+    const sourceFileName = path.join(
+      path.dirname(__dirname),
+      `temp${date}.json`
+    );
     fs.writeFileSync(sourceFileName, JSON.stringify(sourceForPublish));
+    console.log(data.picturePath);
+    console.log(sourceFileName);
+    greenworks.ugcPublish(
+      sourceFileName,
+      data.title,
+      data.detail,
+      data.picturePath,
+      (success: any) => {
+        console.log(success);
+        setOpen(false);
+        setDialogOpen(false);
+      },
+      (error: any) => {
+        console.log(error);
+        setOpen(false);
+        setOpenSnack(true);
+      }
+    );
   };
 
   return (
@@ -274,7 +298,7 @@ export default function SourceList(props: any) {
                   name="picturePath"
                   id="name"
                   variant="outlined"
-                  helperText="图片路径"
+                  helperText="图片会上传到用户云，请保持图片名称唯一"
                   fullWidth
                   inputRef={register}
                 />
@@ -289,7 +313,10 @@ export default function SourceList(props: any) {
                     type="file"
                     hidden
                     onChange={(event) => {
-                      setValue('picturePath', event.target.value);
+                      setValue(
+                        'picturePath',
+                        event.target.files && event.target.files[0].path
+                      );
                     }}
                   />
                 </Button>
@@ -312,6 +339,19 @@ export default function SourceList(props: any) {
             </Button>
           </DialogActions>
         </form>
+        <BackdropContainer
+          open={open}
+          onClick={() => {
+            setOpen(false);
+          }}
+          message="上传中"
+        />
+        <Snackbar
+          open={openSnack}
+          onClose={() => setOpenSnack(false)}
+          autoHideDuration={2000}
+          message="上传失败，请检查图片是否唯一"
+        />
       </Dialog>
     </div>
   );
