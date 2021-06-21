@@ -6,6 +6,7 @@ import _ from 'lodash';
 export const WorkshopContext = React.createContext({
   workshopSource: [],
   loadSuccess: false,
+  setState: '',
 });
 
 export default function getWorkShopItemsPathAndSetToState(setState: any) {
@@ -18,9 +19,11 @@ export default function getWorkShopItemsPathAndSetToState(setState: any) {
         if (_.isEmpty(greenworks.ugcGetItemInstallInfo(item.publishedFileId))) {
           return null;
         }
-        return jsonfile.readFileSync(
+        const source = jsonfile.readFileSync(
           greenworks.ugcGetItemInstallInfo(item.publishedFileId).folder
         );
+        source.publishedFileId = item.publishedFileId;
+        return source;
       });
 
       if (!_.isNull(workshopSource)) {
@@ -32,12 +35,27 @@ export default function getWorkShopItemsPathAndSetToState(setState: any) {
           source.workshopTag = true;
           return source;
         });
-        setState({ workshopSource, loadSuccess: true });
+        setState({
+          workshopSource,
+          loadSuccess: true,
+          setState,
+        });
       }
     },
     (e: any) => {
       console.log(e);
       console.log('error');
+    }
+  );
+}
+export function unsubscribeByPublishedFileId(id: string) {
+  greenworks.ugcUnsubscribe(
+    id,
+    (success: any) => {
+      console.log(success);
+    },
+    (error: any) => {
+      console.log(error);
     }
   );
 }

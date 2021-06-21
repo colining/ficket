@@ -11,9 +11,13 @@ import {
   Typography,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import * as greenworks from 'greenworks';
 import { read, update } from '../utils/JsonUtils';
 import SourceReminder from './SourceReminder';
-import { WorkshopContext } from '../utils/SteamWorks';
+import getWorkShopItemsPathAndSetToState, {
+  unsubscribeByPublishedFileId,
+  WorkshopContext,
+} from '../utils/SteamWorks';
 import WorkshopDialog from './WorkshopDialog';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -91,6 +95,14 @@ export default function SourceList(props: any) {
   function handleImport() {
     history.push('/main/source/import');
   }
+  const handleRefresh = () => {
+    getWorkShopItemsPathAndSetToState(workshopContext.setState);
+  };
+  const handleUnsubscribe = (index: number) => {
+    const { publishedFileId } = workshopContext.workshopSource[index];
+    unsubscribeByPublishedFileId(publishedFileId);
+    handleRefresh();
+  };
   function openDialog(index: number) {
     setDialogOpen(true);
     setSourceForPublish(sources[index]);
@@ -98,7 +110,7 @@ export default function SourceList(props: any) {
 
   const renderRow = () => {
     const workshopSources = workshopContext.workshopSource.map(
-      (source: any) => (
+      (source: any, index: number) => (
         <Card key={source.name + source.workshopTag}>
           <CardActionArea>
             <CardContent>
@@ -112,20 +124,12 @@ export default function SourceList(props: any) {
           </CardActionArea>
           <CardActions>
             <Button
-              disabled={source.workshopTag}
+              onClick={() => handleUnsubscribe(index)}
               size="small"
               color="primary"
               variant="outlined"
             >
-              编辑
-            </Button>
-            <Button
-              disabled={source.workshopTag}
-              size="small"
-              color="primary"
-              variant="outlined"
-            >
-              删除
+              取消订阅
             </Button>
           </CardActions>
         </Card>
@@ -192,6 +196,7 @@ export default function SourceList(props: any) {
       >
         <Button onClick={() => handleImport()}>通过网址导入</Button>
         <Button onClick={() => handleCreate()}>创建新源</Button>
+        <Button onClick={() => handleRefresh()}>刷新源</Button>
       </ButtonGroup>
       <div className={classes.sources}>
         <List component="nav" aria-label="secondary mailbox folders">
