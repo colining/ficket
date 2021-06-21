@@ -10,6 +10,7 @@ export const WorkshopContext = React.createContext({
 });
 
 export default function getWorkShopItemsPathAndSetToState(setState: any) {
+  const steamID = greenworks.getSteamId().steamId;
   greenworks.ugcGetUserItems(
     greenworks.UGCMatchingType.Items,
     greenworks.UserUGCListSortOrder.CreationOrderDesc,
@@ -23,6 +24,10 @@ export default function getWorkShopItemsPathAndSetToState(setState: any) {
           greenworks.ugcGetItemInstallInfo(item.publishedFileId).folder
         );
         source.publishedFileId = item.publishedFileId;
+        source.steamIDOwner = item.steamIDOwner;
+        if (steamID === item.steamIDOwner) {
+          source.publishByMyseld = true;
+        }
         return source;
       });
 

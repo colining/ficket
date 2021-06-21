@@ -33,15 +33,16 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function WorkshopDialog(props: any) {
-  const { source, dialogOpen, setDialogOpen } = props;
+  const { source, dialogOpen, setDialogOpen, publishTag } = props;
+  const { register, handleSubmit, setValue } = useForm();
+  const [open, setOpen] = useState(false);
+  const [openSnack, setOpenSnack] = useState(false);
+  const [snackMessage, setSnackMessage] = useState('');
   const handleClose = () => {
     setDialogOpen(false);
   };
   const classes = useStyles();
 
-  const { register, handleSubmit, setValue } = useForm();
-  const [open, setOpen] = useState(false);
-  const [openSnack, setOpenSnack] = useState(false);
   const onSubmit = (data: any) => {
     setOpen(true);
     const date = (+new Date()).toString(36);
@@ -50,24 +51,53 @@ export default function WorkshopDialog(props: any) {
       `temp${date}.json`
     );
     fs.writeFileSync(sourceFileName, JSON.stringify(source));
-    console.log(data.picturePath);
-    console.log(sourceFileName);
-    greenworks.ugcPublish(
-      sourceFileName,
-      data.title,
-      data.detail,
-      data.picturePath,
-      (success: any) => {
-        console.log(success);
-        setOpen(false);
-        setDialogOpen(false);
-      },
-      (error: any) => {
-        console.log(error);
-        setOpen(false);
-        setOpenSnack(true);
-      }
-    );
+    if (publishTag) {
+      greenworks.ugcPublish(
+        sourceFileName,
+        data.title,
+        data.detail,
+        data.picturePath,
+        (success: any) => {
+          console.log('上传已成功', success);
+          setOpen(false);
+          setSnackMessage('上传成功，订阅并刷新后即可见');
+          setOpenSnack(true);
+          setDialogOpen(false);
+        },
+        (error: any) => {
+          console.log(error);
+          setOpen(false);
+          setSnackMessage('上传失败，请检查图片是否唯一或源不符合json格式');
+          setOpenSnack(true);
+        }
+      );
+    } else {
+      console.log(source);
+      console.log(sourceFileName);
+      greenworks.ugcPublishUpdate(
+        source.publishedFileId,
+        sourceFileName,
+        '',
+        '',
+        '',
+        (success: any) => {
+          console.log('上传已成功', success);
+          setOpen(false);
+          setDialogOpen(false);
+          setSnackMessage('更新成功，请刷新源');
+          setOpenSnack(true);
+        },
+        (error: any) => {
+          console.log(error);
+          setOpen(false);
+          setSnackMessage('请检查源编写是否符合json格式');
+          setOpenSnack(true);
+        },
+        (progress: any) => {
+          console.log(progress);
+        }
+      );
+    }
   };
 
   return (
@@ -83,29 +113,33 @@ export default function WorkshopDialog(props: any) {
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent>
             <DialogContentText>
-              上传至创意工坊，需要提供标题，图片，以及基本描述
+              {publishTag
+                ? '上传至创意工坊，需要提供标题，图片，以及基本描述'
+                : '标题，描述，图片请到您的创意工坊文件直接更新'}
             </DialogContentText>
             <div className={classes.dialogForm}>
               <div>
                 <Typography>标题及描述</Typography>
                 <TextField
+                  required={publishTag}
+                  disabled={!publishTag}
                   name="title"
                   autoFocus
-                  required
                   margin="dense"
-                  id="name"
+                  id="title"
                   label="标题"
                   fullWidth
                   variant="outlined"
                   inputRef={register}
                 />
                 <TextField
-                  required
+                  required={publishTag}
+                  disabled={!publishTag}
                   name="detail"
                   autoFocus
                   multiline
                   margin="dense"
-                  id="name"
+                  id="detail"
                   label="基本描述"
                   variant="outlined"
                   fullWidth
@@ -116,7 +150,8 @@ export default function WorkshopDialog(props: any) {
               <div>
                 <Typography>图片</Typography>
                 <TextField
-                  required
+                  required={publishTag}
+                  disabled={!publishTag}
                   autoFocus
                   margin="dense"
                   name="picturePath"
@@ -125,6 +160,7 @@ export default function WorkshopDialog(props: any) {
                   helperText="图片会上传到用户云，请保持图片名称唯一"
                   fullWidth
                   inputRef={register}
+                  style={{ width: '80ch' }}
                 />
 
                 <Button
@@ -164,13 +200,13 @@ export default function WorkshopDialog(props: any) {
           </DialogActions>
         </form>
         <BackdropContainer open={open} message="上传中" />
-        <Snackbar
-          open={openSnack}
-          onClose={() => setOpenSnack(false)}
-          autoHideDuration={2000}
-          message="上传失败，请检查图片是否唯一"
-        />
       </Dialog>
+      <Snackbar
+        open={openSnack}
+        onClose={() => setOpenSnack(false)}
+        autoHideDuration={2000}
+        message={snackMessage}
+      />
     </div>
   );
 }

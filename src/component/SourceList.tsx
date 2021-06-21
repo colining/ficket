@@ -11,7 +11,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import * as greenworks from 'greenworks';
 import { read, update } from '../utils/JsonUtils';
 import SourceReminder from './SourceReminder';
 import getWorkShopItemsPathAndSetToState, {
@@ -62,8 +61,9 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function SourceList(props: any) {
   const [sources, setSources] = useState(read());
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { setCurrentSource } = props;
+  const [publishTag, setPublishTag] = useState(true);
   const [sourceForPublish, setSourceForPublish] = useState({});
+  const { setCurrentSource } = props;
   const workshopContext = useContext(WorkshopContext);
 
   const history = useHistory();
@@ -103,7 +103,13 @@ export default function SourceList(props: any) {
     unsubscribeByPublishedFileId(publishedFileId);
     handleRefresh();
   };
+  const handleUpdate = (index: number) => {
+    setPublishTag(false);
+    setSourceForPublish(workshopContext.workshopSource[index]);
+    setDialogOpen(true);
+  };
   function openDialog(index: number) {
+    setPublishTag(true);
     setDialogOpen(true);
     setSourceForPublish(sources[index]);
   }
@@ -130,6 +136,14 @@ export default function SourceList(props: any) {
               variant="outlined"
             >
               取消订阅
+            </Button>
+            <Button
+              onClick={() => handleUpdate(index)}
+              size="small"
+              color="primary"
+              variant="outlined"
+            >
+              更新源
             </Button>
           </CardActions>
         </Card>
@@ -210,6 +224,7 @@ export default function SourceList(props: any) {
         source={sourceForPublish}
         dialogOpen={dialogOpen}
         setDialogOpen={setDialogOpen}
+        publishTag={publishTag}
       />
     </div>
   );
