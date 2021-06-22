@@ -154,7 +154,7 @@ export default function SourceList(props: any) {
     const workshopSources = workshopContext.workshopSource.map(
       (source: any, index: number) => (
         <Card key={source.name + source.workshopTag}>
-          <CardActionArea>
+          <CardActionArea onClick={() => console.log('click')}>
             <CardContent>
               <div>
                 <div className={classes.cardContentDescription}>
@@ -172,6 +172,7 @@ export default function SourceList(props: any) {
                 <div className={classes.cardContentCheckBox}>
                   <Switch
                     checked={workshopContext.workshopSource[index].activeTag}
+                    onClick={(e) => e.stopPropagation()}
                     onChange={() => handleSwitch(index)}
                     color="primary"
                     name="checkedB"
