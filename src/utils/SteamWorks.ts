@@ -2,14 +2,19 @@ import greenworks from 'greenworks';
 import * as jsonfile from 'jsonfile';
 import React from 'react';
 import _ from 'lodash';
+import path from 'path';
 
 export const WorkshopContext = React.createContext({
-  workshopSource: [],
+  workshopSource: new Array(0),
   loadSuccess: false,
   setState: '',
 });
-
+export const unActiveSourcePath = path.join(
+  path.dirname(__dirname),
+  'unActiveSource.json'
+);
 export default function getWorkShopItemsPathAndSetToState(setState: any) {
+  const unActiveSource = jsonfile.readFileSync(unActiveSourcePath);
   const steamID = greenworks.getSteamId().steamId;
   greenworks.ugcGetUserItems(
     greenworks.UGCMatchingType.Items,
@@ -30,15 +35,21 @@ export default function getWorkShopItemsPathAndSetToState(setState: any) {
         }
         return source;
       });
-
       if (!_.isNull(workshopSource)) {
         workshopSource = workshopSource.filter(
           (source: any) => !_.isNull(source)
         );
-
         workshopSource.map((source: any) => {
           source.workshopTag = true;
+          source.activeTag = true;
           return source;
+        });
+        unActiveSource.forEach((unActiveId: any) => {
+          workshopSource.forEach((source: any) => {
+            if (unActiveId === source.publishedFileId) {
+              source.activeTag = false;
+            }
+          });
         });
         setState({
           workshopSource,

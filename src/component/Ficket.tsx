@@ -35,7 +35,7 @@ export default function Ficket(props: any) {
     const searchKey = e.target.value;
     const videoInfos = await getVideoInfo(
       searchKey,
-      workshopContext.workshopSource
+      workshopContext.workshopSource.filter((source) => source.activeTag)
     );
     console.log('videoInfos', videoInfos);
     setInfos(videoInfos);

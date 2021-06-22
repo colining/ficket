@@ -8,12 +8,16 @@ import {
   CardActions,
   CardContent,
   List,
+  Switch,
   Typography,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import _ from 'lodash';
+import * as jsonfile from 'jsonfile';
 import { read, update } from '../utils/JsonUtils';
 import SourceReminder from './SourceReminder';
 import getWorkShopItemsPathAndSetToState, {
+  unActiveSourcePath,
   unsubscribeByPublishedFileId,
   WorkshopContext,
 } from '../utils/SteamWorks';
@@ -55,6 +59,13 @@ const useStyles = makeStyles((theme: Theme) =>
         margin: theme.spacing(2, 0),
       },
     },
+    cardContentDescription: {
+      float: 'left',
+    },
+    cardContentCheckBox: {
+      float: 'right',
+      marginRight: '5ch',
+    },
   })
 );
 
@@ -69,10 +80,22 @@ export default function SourceList(props: any) {
   const history = useHistory();
 
   useEffect(() => {
-    console.log(workshopContext.workshopSource);
+    console.log(
+      'workshopContext.workshopSource',
+      workshopContext.workshopSource
+    );
     setSources(read());
   }, []);
 
+  useEffect(() => {
+    const unActiveWorkshopSource = workshopContext.workshopSource
+      .filter(({ activeTag }) => !activeTag)
+      .map(({ publishedFileId }) => publishedFileId);
+
+    jsonfile.writeFileSync(unActiveSourcePath, unActiveWorkshopSource, {
+      spaces: 2,
+    });
+  });
   const classes = useStyles();
 
   // all state object is immutable
@@ -114,18 +137,48 @@ export default function SourceList(props: any) {
     setSourceForPublish(sources[index]);
   }
 
+  const setContext = (tempContext: any, setState: any) => {
+    setState(tempContext);
+  };
+  const handleSwitch = (index: any) => {
+    const temp = _.clone(workshopContext);
+    if (temp.workshopSource[index] != null) {
+      console.log(temp.workshopSource[index]);
+    }
+    temp.workshopSource[index].activeTag = !temp.workshopSource[index]
+      .activeTag;
+    setContext(temp, workshopContext.setState);
+  };
+
   const renderRow = () => {
     const workshopSources = workshopContext.workshopSource.map(
       (source: any, index: number) => (
         <Card key={source.name + source.workshopTag}>
           <CardActionArea>
             <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {source.name}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {source.homepageUrl} 来自创意工坊
-              </Typography>
+              <div>
+                <div className={classes.cardContentDescription}>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {source.name}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    {source.homepageUrl} 来自创意工坊
+                  </Typography>
+                </div>
+                <div className={classes.cardContentCheckBox}>
+                  <Switch
+                    checked={workshopContext.workshopSource[index].activeTag}
+                    onChange={() => handleSwitch(index)}
+                    color="primary"
+                    name="checkedB"
+                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                  />
+                </div>
+              </div>
             </CardContent>
           </CardActionArea>
           <CardActions>
@@ -161,14 +214,27 @@ export default function SourceList(props: any) {
     );
     const customSources = sources.map((source: any, index: number) => (
       <Card key={source.name + source.workshopTag}>
-        <CardActionArea onClick={() => handleEdit(index)}>
+        <CardActionArea>
           <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {source.name}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {source.homepageUrl} {source.workshopTag ? '来自创意工坊' : ''}
-            </Typography>
+            <div>
+              <div className={classes.cardContentDescription}>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {source.name}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {source.homepageUrl}{' '}
+                  {source.workshopTag ? '来自创意工坊' : ''}
+                </Typography>
+              </div>
+              <div className={classes.cardContentCheckBox}>
+                <Switch
+                  checked
+                  color="primary"
+                  name="checkedB"
+                  inputProps={{ 'aria-label': 'primary checkbox' }}
+                />
+              </div>
+            </div>
           </CardContent>
         </CardActionArea>
         <CardActions>

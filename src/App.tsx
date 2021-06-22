@@ -23,25 +23,25 @@ const theme = createMuiTheme({
     },
   },
 });
-
 export default function App() {
-  const [workshopSource, setWorkshopSource] = useState({
-    workshopSource: [],
+  const [workshopContext, setWorkshopContext] = useState({
+    workshopSource: new Array(0),
     loadSuccess: false,
+    setState: '',
   });
   useEffect(() => {
     if (greenworks.init()) {
       getWorkShopItemsPathAndSetToState((source: any) =>
-        setWorkshopSource(source)
+        setWorkshopContext(source)
       );
     }
-  }, [workshopSource.loadSuccess]);
+  }, [workshopContext.loadSuccess]);
   return (
     <div className="main-body">
       <CssBaseline />
       <HashRouter>
         <MuiThemeProvider theme={theme}>
-          <WorkshopContext.Provider value={workshopSource}>
+          <WorkshopContext.Provider value={workshopContext}>
             <Route path="/" component={Ficket} />
           </WorkshopContext.Provider>
         </MuiThemeProvider>
