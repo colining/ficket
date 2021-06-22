@@ -214,7 +214,7 @@ export default function SourceList(props: any) {
     );
     const customSources = sources.map((source: any, index: number) => (
       <Card key={source.name + source.workshopTag}>
-        <CardActionArea>
+        <CardActionArea onClick={() => handleEdit(index)}>
           <CardContent>
             <div>
               <div className={classes.cardContentDescription}>
@@ -225,14 +225,6 @@ export default function SourceList(props: any) {
                   {source.homepageUrl}{' '}
                   {source.workshopTag ? '来自创意工坊' : ''}
                 </Typography>
-              </div>
-              <div className={classes.cardContentCheckBox}>
-                <Switch
-                  checked
-                  color="primary"
-                  name="checkedB"
-                  inputProps={{ 'aria-label': 'primary checkbox' }}
-                />
               </div>
             </div>
           </CardContent>
