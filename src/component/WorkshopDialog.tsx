@@ -98,6 +98,9 @@ export default function WorkshopDialog(props: any) {
         }
       );
     }
+    fs.unlink(sourceFileName, (e) => {
+      console.log(e);
+    });
   };
 
   return (
