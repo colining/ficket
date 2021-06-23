@@ -20,6 +20,7 @@ import getWorkShopItemsPathAndSetToState, {
   unActiveSourcePath,
   unsubscribeByPublishedFileId,
   WorkshopContext,
+  workshopSourceLocalPath,
 } from '../utils/SteamWorks';
 import WorkshopDialog from './WorkshopDialog';
 
@@ -128,10 +129,11 @@ export default function SourceList(props: any) {
   };
   const handleUpdate = (index: number) => {
     setPublishTag(false);
-    setSourceForPublish(workshopContext.workshopSource[index]);
+    setSourceForPublish(workshopContext.workshopSource[index].changedSource);
     setDialogOpen(true);
   };
   function openDialog(index: number) {
+    console.log('sources[index]', sources[index]);
     setPublishTag(true);
     setDialogOpen(true);
     setSourceForPublish(sources[index]);
@@ -149,12 +151,28 @@ export default function SourceList(props: any) {
       .activeTag;
     setContext(temp, workshopContext.setState);
   };
+  const handleEditWorkShopSource = (index: number) => {
+    setCurrentSource(workshopContext.workshopSource[index]);
+    history.push('/main/source/edit');
+  };
+
+  const handleReset = (source: any) => {
+    const workshopSourceLocal = jsonfile.readFileSync(workshopSourceLocalPath);
+    const temp = workshopSourceLocal.filter(
+      (localSource: any) =>
+        localSource.publishedFileId !== source.publishedFileId
+    );
+    jsonfile.writeFileSync(workshopSourceLocalPath, temp, {
+      spaces: 2,
+    });
+    handleRefresh();
+  };
 
   const renderRow = () => {
     const workshopSources = workshopContext.workshopSource.map(
       (source: any, index: number) => (
         <Card key={source.name + source.workshopTag}>
-          <CardActionArea onClick={() => console.log('click')}>
+          <CardActionArea onClick={() => handleEditWorkShopSource(index)}>
             <CardContent>
               <div>
                 <div className={classes.cardContentDescription}>
@@ -166,7 +184,7 @@ export default function SourceList(props: any) {
                     color="textSecondary"
                     component="p"
                   >
-                    {source.homepageUrl} 来自创意工坊
+                    {source.homepageUrl} 来自创意工坊{' '}
                   </Typography>
                 </div>
                 <div className={classes.cardContentCheckBox}>
@@ -182,13 +200,13 @@ export default function SourceList(props: any) {
               </div>
             </CardContent>
           </CardActionArea>
-          <CardActions>
+          <CardActions style={{ float: 'left' }}>
             <Button
               disabled={!source.publishByMyself}
               size="small"
               color="primary"
               variant="outlined"
-              onClick={() => handleEdit(index)}
+              onClick={() => handleEditWorkShopSource(index)}
             >
               编辑
             </Button>
@@ -201,7 +219,7 @@ export default function SourceList(props: any) {
               取消订阅
             </Button>
             <Button
-              disabled={!source.publishByMyself}
+              disabled={!source.publishByMyself || !source.changedSource}
               onClick={() => handleUpdate(index)}
               size="small"
               color="primary"
@@ -209,6 +227,21 @@ export default function SourceList(props: any) {
             >
               更新源
             </Button>
+          </CardActions>
+          <CardActions style={{ float: 'right' }}>
+            {source && source.changedSource ? (
+              <Button
+                size="small"
+                color="primary"
+                variant="outlined"
+                onClick={() => handleReset(source)}
+                style={{ marginRight: '5ch' }}
+              >
+                重置为创意工坊版本
+              </Button>
+            ) : (
+              ''
+            )}
           </CardActions>
         </Card>
       )

@@ -12,6 +12,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
+import jsonfile from 'jsonfile';
+import path from 'path';
 import save from '../utils/JsonUtils';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -39,18 +41,60 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+const helperText: { [index: string]: any } = {
+  name: 'ex:独播库',
+  homepageUrl: 'ex:https://www.duboku.tv/',
+  searchUrlPrefix:
+    'ex:https://www.duboku.tv/vodsearch/-------------.html?wd={{searchKey}}',
+  videoDetailUrlRegex: 'ex:div.detail > h4.title > a',
+  videoUrlRegex: 'ex:a.btn.btn-sm.btn-warm',
+  imgUrlRegex: 'ex:div.thumb > a',
+  titleRegex: 'ex:div.detail > h4 > a',
+  playlistContainerRegex: 'ex:body',
+  playlistItemRegex: 'ex:#playlist1 a.btn.btn-default',
+  videoRegex: 'ex:div.myui-player__item.clearfix > div',
+};
 export default function SourceEdit(props: any) {
   const classes = useStyles();
   const { currentSource } = props;
   const { register, watch, handleSubmit, control } = useForm({
     defaultValues: { method: currentSource.method || 'get' },
   });
+  const sourcePath = path.join(
+    path.dirname(__dirname),
+    'workshopSourceLocal.json'
+  );
   const history = useHistory();
   const watchMethod = watch('method');
   const onSubmit = (data: any) => {
-    console.log('data', data);
-    save(data);
+    if (!currentSource.activeTag) {
+      save(data);
+    } else {
+      const changedSource = Object.assign(_.clone(currentSource), data);
+      delete changedSource.changedSource;
+      currentSource.changedSource = changedSource;
+      const oldData = jsonfile
+        .readFileSync(sourcePath)
+        .filter(
+          (item: any) => item.publishedFileId !== changedSource.publishedFileId
+        );
+      jsonfile.writeFileSync(sourcePath, oldData.concat(changedSource), {
+        spaces: 2,
+      });
+    }
     history.push('/main/source/list');
+  };
+  const getPropertyFromSource = (property: string) => {
+    if (currentSource.changedSource) {
+      return currentSource.changedSource[property];
+    }
+    return currentSource[property];
+  };
+  const getHelpTextFromSource = (property: string) => {
+    if (currentSource.workshopTag) {
+      return currentSource[property];
+    }
+    return helperText[property];
   };
   return (
     <div>
@@ -91,8 +135,8 @@ export default function SourceEdit(props: any) {
             required
             id="outlined-helperText"
             label="网站名称"
-            defaultValue={currentSource.name}
-            helperText="ex:独播库"
+            defaultValue={getPropertyFromSource('name')}
+            helperText={getHelpTextFromSource('name')}
             variant="outlined"
             inputRef={register}
           />
@@ -102,8 +146,8 @@ export default function SourceEdit(props: any) {
             multiline
             id="outlined-helperText"
             label="主页链接"
-            defaultValue={currentSource.homepageUrl}
-            helperText="ex:https://www.duboku.tv/"
+            defaultValue={getPropertyFromSource('homepageUrl')}
+            helperText={getHelpTextFromSource('homepageUrl')}
             variant="outlined"
             inputRef={register}
           />
@@ -117,8 +161,8 @@ export default function SourceEdit(props: any) {
             multiline
             id="outlined-helperText"
             label="搜索前缀"
-            defaultValue={currentSource.searchUrlPrefix}
-            helperText="ex:https://www.duboku.tv/vodsearch/-------------.html?wd={{searchKey}}"
+            defaultValue={getPropertyFromSource('searchUrlPrefix')}
+            helperText={getHelpTextFromSource('searchUrlPrefix')}
             variant="outlined"
             inputRef={register}
           />
@@ -131,7 +175,7 @@ export default function SourceEdit(props: any) {
               multiline
               rows={4}
               helperText=""
-              defaultValue={currentSource.formData}
+              defaultValue={getPropertyFromSource('formData')}
               variant="outlined"
               inputRef={register}
             />
@@ -146,8 +190,8 @@ export default function SourceEdit(props: any) {
             multiline
             id="outlined-helperText"
             label="视频详情页链接正则"
-            defaultValue={currentSource.videoDetailUrlRegex}
-            helperText="ex:div.detail > h4.title > a"
+            defaultValue={getPropertyFromSource('videoDetailUrlRegex')}
+            helperText={getHelpTextFromSource('videoDetailUrlRegex')}
             variant="outlined"
             inputRef={register}
           />
@@ -157,8 +201,8 @@ export default function SourceEdit(props: any) {
             multiline
             id="outlined-helperText"
             label="视频链接正则"
-            defaultValue={currentSource.videoUrlRegex}
-            helperText="ex:a.btn.btn-sm.btn-warm"
+            defaultValue={getPropertyFromSource('videoUrlRegex')}
+            helperText={getHelpTextFromSource('videoUrlRegex')}
             variant="outlined"
             inputRef={register}
           />
@@ -168,8 +212,8 @@ export default function SourceEdit(props: any) {
             multiline
             id="outlined-helperText"
             label="图片链接正则"
-            defaultValue={currentSource.imgUrlRegex}
-            helperText="ex:div.thumb > a"
+            defaultValue={getPropertyFromSource('imgUrlRegex')}
+            helperText={getHelpTextFromSource('imgUrlRegex')}
             variant="outlined"
             inputRef={register}
           />
@@ -179,8 +223,8 @@ export default function SourceEdit(props: any) {
             multiline
             id="outlined-helperText"
             label="标题链接正则"
-            defaultValue={currentSource.titleRegex}
-            helperText="ex:div.detail > h4 > a"
+            defaultValue={getPropertyFromSource('titleRegex')}
+            helperText={getHelpTextFromSource('titleRegex')}
             variant="outlined"
             inputRef={register}
           />
@@ -194,8 +238,8 @@ export default function SourceEdit(props: any) {
             multiline
             id="outlined-helperText"
             label="视频选集容器正则"
-            defaultValue={currentSource.playlistContainerRegex}
-            helperText="ex:body"
+            defaultValue={getPropertyFromSource('playlistContainerRegex')}
+            helperText={getHelpTextFromSource('playlistContainerRegex')}
             variant="outlined"
             inputRef={register}
           />
@@ -206,8 +250,8 @@ export default function SourceEdit(props: any) {
             multiline
             id="outlined-helperText"
             label="视频选集正则"
-            defaultValue={currentSource.playlistItemRegex}
-            helperText="ex:#playlist1 a.btn.btn-default"
+            defaultValue={getPropertyFromSource('playlistItemRegex')}
+            helperText={getHelpTextFromSource('playlistItemRegex')}
             variant="outlined"
             inputRef={register}
           />
@@ -221,8 +265,8 @@ export default function SourceEdit(props: any) {
             multiline
             id="outlined-helperText"
             label="视频窗口正则"
-            defaultValue={currentSource.videoRegex}
-            helperText="ex:div.myui-player__item.clearfix > div"
+            defaultValue={getPropertyFromSource('videoRegex')}
+            helperText={getHelpTextFromSource('videoRegex')}
             variant="outlined"
             inputRef={register}
           />

@@ -91,6 +91,20 @@
         ]
       },
       {
+        "from": "unActiveSource.json",
+        "to": "unActiveSource.json",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "workshopSourceLocal.json",
+        "to": "workshopSourceLocal.json",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
         "from": "preload.js",
         "to": "preload.js",
         "filter": [

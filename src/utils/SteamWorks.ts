@@ -13,8 +13,13 @@ export const unActiveSourcePath = path.join(
   path.dirname(__dirname),
   'unActiveSource.json'
 );
+export const workshopSourceLocalPath = path.join(
+  path.dirname(__dirname),
+  'workshopSourceLocal.json'
+);
 export default function getWorkShopItemsPathAndSetToState(setState: any) {
   const unActiveSource = jsonfile.readFileSync(unActiveSourcePath);
+  const workshopSourceLocal = jsonfile.readFileSync(workshopSourceLocalPath);
   const steamID = greenworks.getSteamId().steamId;
   greenworks.ugcGetUserItems(
     greenworks.UGCMatchingType.Items,
@@ -25,9 +30,11 @@ export default function getWorkShopItemsPathAndSetToState(setState: any) {
         if (_.isEmpty(greenworks.ugcGetItemInstallInfo(item.publishedFileId))) {
           return null;
         }
+        console.log(greenworks.ugcGetItemInstallInfo(item.publishedFileId));
         const source = jsonfile.readFileSync(
           greenworks.ugcGetItemInstallInfo(item.publishedFileId).folder
         );
+        console.log(source);
         source.publishedFileId = item.publishedFileId;
         source.steamIDOwner = item.steamIDOwner;
         if (steamID === item.steamIDOwner) {
@@ -48,6 +55,13 @@ export default function getWorkShopItemsPathAndSetToState(setState: any) {
           workshopSource.forEach((source: any) => {
             if (unActiveId === source.publishedFileId) {
               source.activeTag = false;
+            }
+          });
+        });
+        workshopSourceLocal.forEach((local: any) => {
+          workshopSource.forEach((source: any) => {
+            if (source.publishedFileId === local.publishedFileId) {
+              source.changedSource = workshopSourceLocal;
             }
           });
         });

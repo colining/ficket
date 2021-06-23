@@ -16,7 +16,10 @@ import path from 'path';
 import fs from 'fs';
 import greenworks from 'greenworks';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import jsonfile from 'jsonfile';
 import BackdropContainer from './BackdropContainer';
+import Source from '../utils/Source';
+import { workshopSourceLocalPath } from '../utils/SteamWorks';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,7 +45,26 @@ export default function WorkshopDialog(props: any) {
     setDialogOpen(false);
   };
   const classes = useStyles();
-
+  const clearSource = (sourceTemp: any) => {
+    if (sourceTemp.workshopTag) {
+      return new Source(
+        sourceTemp.name,
+        sourceTemp.method,
+        sourceTemp.formData,
+        sourceTemp.videoRegex,
+        sourceTemp.homepageUrl,
+        sourceTemp.searchUrlPrefix,
+        sourceTemp.videoDetailUrlRegex,
+        sourceTemp.playlistContainerRegex,
+        sourceTemp.playlistItemRegex,
+        sourceTemp.videoUrlRegex,
+        sourceTemp.imgUrlRegex,
+        sourceTemp.titleRegex,
+        sourceTemp.workshopTag
+      );
+    }
+    return sourceTemp;
+  };
   const onSubmit = (data: any) => {
     setOpen(true);
     const date = (+new Date()).toString(36);
@@ -50,54 +72,72 @@ export default function WorkshopDialog(props: any) {
       path.dirname(__dirname),
       `temp${date}.json`
     );
-    fs.writeFileSync(sourceFileName, JSON.stringify(source));
-    if (publishTag) {
-      greenworks.ugcPublish(
-        sourceFileName,
-        data.title,
-        data.detail,
-        data.picturePath,
-        (success: any) => {
-          console.log('上传已成功', success);
-          setOpen(false);
-          setSnackMessage('上传成功，订阅并刷新后即可见');
-          setOpenSnack(true);
-          setDialogOpen(false);
-        },
-        (error: any) => {
-          console.log(error);
-          setOpen(false);
-          setSnackMessage('上传失败，请检查图片是否唯一或源不符合json格式');
-          setOpenSnack(true);
-        }
-      );
-    } else {
-      console.log(source);
-      console.log(sourceFileName);
-      greenworks.ugcPublishUpdate(
-        source.publishedFileId,
-        sourceFileName,
-        '',
-        '',
-        '',
-        (success: any) => {
-          console.log('上传已成功', success);
-          setOpen(false);
-          setDialogOpen(false);
-          setSnackMessage('更新成功，请刷新源');
-          setOpenSnack(true);
-        },
-        (error: any) => {
-          console.log(error);
-          setOpen(false);
-          setSnackMessage('请检查源编写是否符合json格式');
-          setOpenSnack(true);
-        },
-        (progress: any) => {
-          console.log(progress);
-        }
-      );
+    fs.writeFileSync(sourceFileName, JSON.stringify(clearSource(source)));
+    try {
+      if (publishTag) {
+        greenworks.ugcPublish(
+          sourceFileName,
+          data.title,
+          data.detail,
+          data.picturePath,
+          (success: any) => {
+            console.log('上传已成功', success);
+            setOpen(false);
+            setSnackMessage('上传成功，订阅并刷新后即可见');
+            setOpenSnack(true);
+            setDialogOpen(false);
+          },
+          (error: any) => {
+            console.log(error);
+            setOpen(false);
+            setSnackMessage('上传失败，请检查图片是否唯一或源不符合json格式');
+            setOpenSnack(true);
+          }
+        );
+      } else {
+        console.log(source);
+        console.log(sourceFileName);
+        greenworks.ugcPublishUpdate(
+          source.publishedFileId,
+          sourceFileName,
+          '',
+          '',
+          '',
+          (success: any) => {
+            const workshopSourceLocal = jsonfile.readFileSync(
+              workshopSourceLocalPath
+            );
+            const temp = workshopSourceLocal.filter(
+              (localSource: any) =>
+                localSource.publishedFileId !== source.publishedFileId
+            );
+            jsonfile.writeFileSync(workshopSourceLocalPath, temp, {
+              spaces: 2,
+            });
+            console.log('上传已成功', success);
+            setOpen(false);
+            setDialogOpen(false);
+            setSnackMessage('更新成功，请重启应用以刷新');
+            setOpenSnack(true);
+          },
+          (error: any) => {
+            console.log(error);
+            setOpen(false);
+            setSnackMessage('请检查源编写是否符合json格式');
+            setOpenSnack(true);
+          },
+          (progress: any) => {
+            console.log(progress);
+          }
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      setOpen(false);
+      setSnackMessage('看起来发生了错误，请重试');
+      setOpenSnack(true);
     }
+
     fs.unlink(sourceFileName, (e) => {
       console.log(e);
     });
@@ -191,7 +231,7 @@ export default function WorkshopDialog(props: any) {
                   id="outlined-multiline-flexible"
                   label="源预览"
                   multiline
-                  value={JSON.stringify(source, null, 4)}
+                  value={JSON.stringify(clearSource(source), null, 4)}
                 />
               </div>
             </div>
