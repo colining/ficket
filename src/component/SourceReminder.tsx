@@ -1,8 +1,16 @@
-import { Card, CardMedia, Divider } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  CardMedia,
+  Divider,
+  Link,
+  Typography,
+} from '@material-ui/core';
 import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import _ from 'lodash';
 import path from 'path';
+import { shell } from 'electron';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,11 +31,31 @@ export default function SourceReminder(props: any) {
   const classes = useStyles();
   const { sources } = props;
 
+  function handleClick(event: any, href: string) {
+    event.preventDefault();
+    shell.openExternal(href);
+    return undefined;
+  }
+
   const renderSourceRemind = () => {
     if (_.isEmpty(sources)) {
       return (
         <div>
-          <h4>没有发现可用的源，请扫描二维码添加源</h4>
+          <h4>没有发现可用的源，您可以通过创意工坊或者扫码添加源</h4>
+          <Typography>
+            <Button
+              component={Link}
+              onClick={(e: any) =>
+                handleClick(
+                  e,
+                  'https://steamcommunity.com/app/1634680/workshop/'
+                )
+              }
+              style={{ textTransform: 'none' }}
+            >
+              创意工坊(魔法也是不错的选择)
+            </Button>
+          </Typography>
           <Card className={classes.root}>
             <CardMedia
               className={classes.media}
