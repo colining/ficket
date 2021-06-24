@@ -2,6 +2,7 @@ import TextField from '@material-ui/core/TextField';
 import {
   Button,
   Divider,
+  Fab,
   FormControlLabel,
   Radio,
   RadioGroup,
@@ -14,6 +15,7 @@ import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
 import jsonfile from 'jsonfile';
 import path from 'path';
+import { shell } from 'electron';
 import save from '../utils/JsonUtils';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -38,6 +40,11 @@ const useStyles = makeStyles((theme: Theme) =>
     button: {
       margin: theme.spacing(1, 10, 1, 1),
       float: 'right',
+    },
+    fab: {
+      position: 'absolute',
+      right: '1%',
+      top: '120px',
     },
   })
 );
@@ -96,6 +103,12 @@ export default function SourceEdit(props: any) {
     }
     return helperText[property];
   };
+
+  function handleClick(event: any, href: string) {
+    event.preventDefault();
+    shell.openExternal(href);
+    return undefined;
+  }
   return (
     <div>
       <form
@@ -282,6 +295,19 @@ export default function SourceEdit(props: any) {
           </Button>
         </div>
       </form>
+      <Fab
+        color="primary"
+        aria-label="add"
+        className={classes.fab}
+        onClick={(e: any) =>
+          handleClick(
+            e,
+            'https://steamcommunity.com/sharedfiles/filedetails/?id=2524760882'
+          )
+        }
+      >
+        指南
+      </Fab>
     </div>
   );
 }
