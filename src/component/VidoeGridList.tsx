@@ -117,6 +117,9 @@ export default function VideoGridList(props: any) {
       );
     }
     return infos.map((info: any) => {
+      if (_.isEmpty(info.result)) {
+        return '';
+      }
       return (
         <div ref={ref} key={info.videoSource + info.workshopTag}>
           <h4>以下结果来自：{info.videoSource}</h4>
