@@ -43,6 +43,7 @@ export default function WorkshopDialog(props: any) {
   const [snackMessage, setSnackMessage] = useState('');
   const handleClose = () => {
     setDialogOpen(false);
+    setOpen(false);
   };
   const classes = useStyles();
   const clearSource = (sourceTemp: any) => {
