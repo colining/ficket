@@ -10,7 +10,7 @@ import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import _ from 'lodash';
 import path from 'path';
-import { shell } from 'electron';
+import { handleClickAndOpenUrlInLocal } from '../utils/utils';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,12 +31,6 @@ export default function SourceReminder(props: any) {
   const classes = useStyles();
   const { sources } = props;
 
-  function handleClick(event: any, href: string) {
-    event.preventDefault();
-    shell.openExternal(href);
-    return undefined;
-  }
-
   const renderSourceRemind = () => {
     if (_.isEmpty(sources)) {
       return (
@@ -46,7 +40,7 @@ export default function SourceReminder(props: any) {
             <Button
               component={Link}
               onClick={(e: any) =>
-                handleClick(
+                handleClickAndOpenUrlInLocal(
                   e,
                   'https://steamcommunity.com/app/1634680/workshop/'
                 )

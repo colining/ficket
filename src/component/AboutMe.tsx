@@ -9,8 +9,7 @@ import {
 } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import path from 'path';
-
-import { shell } from 'electron';
+import { handleClickAndOpenUrlInLocal } from '../utils/utils';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -43,12 +42,6 @@ const useStyles = makeStyles((theme) =>
 export default function AboutMe() {
   const classes = useStyles();
 
-  function handleClick(event: any, href: string) {
-    event.preventDefault();
-    shell.openExternal(href);
-    return undefined;
-  }
-
   return (
     <div className={classes.root}>
       <Typography variant="h3">您可以通过以下方式联系到我</Typography>
@@ -58,7 +51,10 @@ export default function AboutMe() {
           <Button
             component={Link}
             onClick={(e: any) =>
-              handleClick(e, 'https://github.com/colining/ficket')
+              handleClickAndOpenUrlInLocal(
+                e,
+                'https://github.com/colining/ficket'
+              )
             }
             style={{ textTransform: 'none' }}
           >
@@ -70,7 +66,10 @@ export default function AboutMe() {
           <Button
             component={Link}
             onClick={(e: any) =>
-              handleClick(e, 'https://jq.qq.com/?_wv=1027&k=d8QmDZlH')
+              handleClickAndOpenUrlInLocal(
+                e,
+                'https://jq.qq.com/?_wv=1027&k=d8QmDZlH'
+              )
             }
             style={{ textTransform: 'none' }}
           >

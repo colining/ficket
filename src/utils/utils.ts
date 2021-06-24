@@ -1,4 +1,6 @@
 // eslint-disable-next-line import/prefer-default-export
+import { shell } from 'electron';
+
 export const removeAllUnusedNode = `function clear_html(videoRegex) {
 const keep = document.querySelector(videoRegex);
 
@@ -45,3 +47,9 @@ export const getFormData = (object: any) =>
     formData.append(key, object[key]);
     return formData;
   }, new FormData());
+
+export const handleClickAndOpenUrlInLocal = (event: any, href: string) => {
+  event.preventDefault();
+  shell.openExternal(href);
+  return undefined;
+};

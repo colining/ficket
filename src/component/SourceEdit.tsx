@@ -15,8 +15,8 @@ import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
 import jsonfile from 'jsonfile';
 import path from 'path';
-import { shell } from 'electron';
 import save from '../utils/JsonUtils';
+import { handleClickAndOpenUrlInLocal } from '../utils/utils';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -104,11 +104,6 @@ export default function SourceEdit(props: any) {
     return helperText[property];
   };
 
-  function handleClick(event: any, href: string) {
-    event.preventDefault();
-    shell.openExternal(href);
-    return undefined;
-  }
   return (
     <div>
       <form
@@ -300,7 +295,7 @@ export default function SourceEdit(props: any) {
         aria-label="add"
         className={classes.fab}
         onClick={(e: any) =>
-          handleClick(
+          handleClickAndOpenUrlInLocal(
             e,
             'https://steamcommunity.com/sharedfiles/filedetails/?id=2524760882'
           )
