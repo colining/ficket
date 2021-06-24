@@ -14,9 +14,9 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
 import jsonfile from 'jsonfile';
-import path from 'path';
 import save from '../utils/JsonUtils';
 import { handleClickAndOpenUrlInLocal } from '../utils/utils';
+import { workshopSourceLocalPath } from '../utils/SteamWorksUtils';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -67,10 +67,7 @@ export default function SourceEdit(props: any) {
   const { register, watch, handleSubmit, control } = useForm({
     defaultValues: { method: currentSource.method || 'get' },
   });
-  const sourcePath = path.join(
-    path.dirname(__dirname),
-    'workshopSourceLocal.json'
-  );
+
   const history = useHistory();
   const watchMethod = watch('method');
   const onSubmit = (data: any) => {
@@ -81,13 +78,17 @@ export default function SourceEdit(props: any) {
       delete changedSource.changedSource;
       currentSource.changedSource = changedSource;
       const oldData = jsonfile
-        .readFileSync(sourcePath)
+        .readFileSync(workshopSourceLocalPath)
         .filter(
           (item: any) => item.publishedFileId !== changedSource.publishedFileId
         );
-      jsonfile.writeFileSync(sourcePath, oldData.concat(changedSource), {
-        spaces: 2,
-      });
+      jsonfile.writeFileSync(
+        workshopSourceLocalPath,
+        oldData.concat(changedSource),
+        {
+          spaces: 2,
+        }
+      );
     }
     history.push('/main/source/list');
   };

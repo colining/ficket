@@ -4,7 +4,7 @@ import _ from 'lodash';
 import path from 'path';
 import assert from 'assert';
 import { plainToClass } from 'class-transformer';
-import Source from './Source';
+import Source from '../model/Source';
 
 const sourcePath = path.join(path.dirname(__dirname), 'source.json');
 

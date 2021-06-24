@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import MainContainer from './MainContainer';
 import DrawerContainer from './DrawerContainer';
 import AppBarContainer from './AppBarContainer';
-import getVideoInfo from '../utils/spider';
+import getVideoInfo from '../utils/SpiderUtils';
 import BackdropContainer from './BackdropContainer';
-import { WorkshopContext } from '../utils/SteamWorks';
+import { WorkshopContext } from '../utils/SteamWorksUtils';
 
 const useStyles = makeStyles({
   root: {

@@ -7,7 +7,7 @@ import _ from 'lodash';
 import path from 'path';
 import BackdropContainer from './BackdropContainer';
 import saveFavorite from '../utils/FavoriteUtils';
-import { getPlaylist } from '../utils/spider';
+import { getPlaylist } from '../utils/SpiderUtils';
 
 const useStyles = makeStyles({
   root: {

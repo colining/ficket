@@ -12,7 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useResizeDetector } from 'react-resize-detector';
 import _ from 'lodash';
 import path from 'path';
-import VideoInfo from '../utils/VideoInfo';
+import VideoInfo from '../model/VideoInfo';
 
 const useStyles = makeStyles({
   root: {

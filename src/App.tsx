@@ -10,7 +10,7 @@ import { amber, cyan } from '@material-ui/core/colors';
 import * as greenworks from 'greenworks';
 import getWorkShopItemsPathAndSetToState, {
   WorkshopContext,
-} from './utils/SteamWorks';
+} from './utils/SteamWorksUtils';
 import Ficket from './component/Ficket';
 
 const theme = createMuiTheme({

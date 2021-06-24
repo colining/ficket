@@ -2,10 +2,10 @@ import axios, { Method } from 'axios';
 import cheerio from 'cheerio';
 import parse from 'json-templates';
 import _ from 'lodash';
-import VideoInfo from './VideoInfo';
+import VideoInfo from '../model/VideoInfo';
 import { importData, read } from './JsonUtils';
 import { getFormData, withHttp } from './utils';
-import Source from './Source';
+import Source from '../model/Source';
 
 function getImgUrl(img: string | undefined, homepageUrl: string) {
   if (img === undefined) return '';

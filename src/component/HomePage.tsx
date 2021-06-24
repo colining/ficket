@@ -20,8 +20,8 @@ import path from 'path';
 import { read } from '../utils/JsonUtils';
 import SourceReminder from './SourceReminder';
 import { deleteFavourite, readFavorites } from '../utils/FavoriteUtils';
-import VideoInfo from '../utils/VideoInfo';
-import { WorkshopContext } from '../utils/SteamWorks';
+import VideoInfo from '../model/VideoInfo';
+import { WorkshopContext } from '../utils/SteamWorksUtils';
 
 const useStyles = makeStyles({
   favourites: {

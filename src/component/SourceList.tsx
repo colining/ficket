@@ -21,7 +21,7 @@ import getWorkShopItemsPathAndSetToState, {
   unsubscribeByPublishedFileId,
   WorkshopContext,
   workshopSourceLocalPath,
-} from '../utils/SteamWorks';
+} from '../utils/SteamWorksUtils';
 import WorkshopDialog from './WorkshopDialog';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -77,14 +77,9 @@ export default function SourceList(props: any) {
   const [sourceForPublish, setSourceForPublish] = useState({});
   const { setCurrentSource } = props;
   const workshopContext = useContext(WorkshopContext);
-
   const history = useHistory();
 
   useEffect(() => {
-    console.log(
-      'workshopContext.workshopSource',
-      workshopContext.workshopSource
-    );
     setSources(read());
   }, []);
 
@@ -98,7 +93,6 @@ export default function SourceList(props: any) {
     });
   });
   const classes = useStyles();
-
   // all state object is immutable
   const handleDelete = (index: number) => {
     const data = Array.from(sources);
@@ -112,13 +106,13 @@ export default function SourceList(props: any) {
     history.push('/main/source/edit');
   };
 
-  function handleCreate() {
+  const handleCreate = () => {
     setCurrentSource({});
     history.push('/main/source/edit');
-  }
-  function handleImport() {
+  };
+  const handleImport = () => {
     history.push('/main/source/import');
-  }
+  };
   const handleRefresh = () => {
     getWorkShopItemsPathAndSetToState(workshopContext.setState);
   };
@@ -132,12 +126,12 @@ export default function SourceList(props: any) {
     setSourceForPublish(workshopContext.workshopSource[index].changedSource);
     setDialogOpen(true);
   };
-  function openDialog(index: number) {
+  const openDialog = (index: number) => {
     console.log('sources[index]', sources[index]);
     setPublishTag(true);
     setDialogOpen(true);
     setSourceForPublish(sources[index]);
-  }
+  };
 
   const setContext = (tempContext: any, setState: any) => {
     setState(tempContext);
