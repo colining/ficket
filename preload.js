@@ -39,8 +39,6 @@ const clearHtml = (videoRegex) => {
 
 const { ipcRenderer } = require('electron');
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 ipcRenderer.on('videoRegex', (event, videoRegex) => {
   clearHtml(videoRegex);
 });
