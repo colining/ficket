@@ -62,6 +62,28 @@ export default function WebViewContainer(props: any) {
     setOpenSnack(true);
   };
 
+  const pipVideo = () => {
+    // webView.current.executeJavaScript(
+    //   'console.log(document.querySelector("video"));'
+    // );
+    webView.current.executeJavaScript(
+      "const iframe = document.querySelector('iframe');"
+    );
+    webView.current.executeJavaScript('console.log(iframe.contentDocument)');
+    webView.current.executeJavaScript('const temp = iframe.contentDocument');
+    webView.current.executeJavaScript(
+      'const video = temp.querySelector("video")'
+    );
+    webView.current.executeJavaScript('console.log(video)');
+    webView.current.executeJavaScript(
+      'console.log(temp.pictureInPictureEnabled);'
+    );
+    webView.current.executeJavaScript(
+      'video.requestPictureInPicture();0',
+      true
+    );
+  };
+
   useEffect(() => {
     const saveFavourite = setTimeout(() => {
       addFavorite();
@@ -73,6 +95,7 @@ export default function WebViewContainer(props: any) {
   const handleDomReady = async () => {
     console.log(info);
     webView.current.send('videoRegex', info.videoRegex);
+    webView.current.openDevTools();
     setOpen(false);
     setShowWebView(true);
     setMuted(false);
@@ -102,6 +125,8 @@ export default function WebViewContainer(props: any) {
           }}
           devtools
           plugins
+          nodeintegrationinsubframes
+          webpreferences="webSecurity=false"
         />
         <BackdropContainer
           open={open}
@@ -111,13 +136,21 @@ export default function WebViewContainer(props: any) {
           message="loading...."
         />
       </FullScreen>
+      {/* <Fab */}
+      {/*  color="primary" */}
+      {/*  aria-label="add" */}
+      {/*  className={classes.fab} */}
+      {/*  onClick={addFavorite} */}
+      {/* > */}
+      {/*  收藏 */}
+      {/* </Fab> */}
       <Fab
         color="primary"
         aria-label="add"
         className={classes.fab}
-        onClick={addFavorite}
+        onClick={pipVideo}
       >
-        收藏
+        画中画
       </Fab>
       <Snackbar
         open={openSnack}
