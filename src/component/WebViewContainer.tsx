@@ -63,25 +63,9 @@ export default function WebViewContainer(props: any) {
   };
 
   const pipVideo = () => {
-    // webView.current.executeJavaScript(
-    //   'console.log(document.querySelector("video"));'
-    // );
-    webView.current.executeJavaScript(
-      "const iframe = document.querySelector('iframe');"
-    );
-    webView.current.executeJavaScript('console.log(iframe.contentDocument)');
-    webView.current.executeJavaScript('const temp = iframe.contentDocument');
-    webView.current.executeJavaScript(
-      'const video = temp.querySelector("video")'
-    );
-    webView.current.executeJavaScript('console.log(video)');
-    webView.current.executeJavaScript(
-      'console.log(temp.pictureInPictureEnabled);'
-    );
-    webView.current.executeJavaScript(
-      'video.requestPictureInPicture();0',
-      true
-    );
+    // crete user gesture context for pip in ipcrenderer
+    webView.current.executeJavaScript('', true);
+    webView.current.send('pipVideo');
   };
 
   useEffect(() => {

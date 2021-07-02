@@ -37,8 +37,18 @@ const clearHtml = (videoRegex) => {
   removeAllUnusedNode(keepParent, keep);
 };
 
+const pipVideo = () => {
+  const iframe = document.querySelector('iframe');
+  const iframeDocument = iframe.contentDocument;
+  const video = iframeDocument.querySelector('video');
+  video.requestPictureInPicture();
+};
 const { ipcRenderer } = require('electron');
 
 ipcRenderer.on('videoRegex', (event, videoRegex) => {
   clearHtml(videoRegex);
+});
+
+ipcRenderer.on('pipVideo', (event, videoRegex) => {
+  pipVideo();
 });
