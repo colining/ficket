@@ -19,6 +19,11 @@ const useStyles = makeStyles({
     right: '1%',
     top: '120px',
   },
+  pip: {
+    position: 'absolute',
+    right: '1%',
+    top: '180px',
+  },
 });
 
 const preloadPath = path.join(path.dirname(__dirname), 'preload.js');
@@ -64,7 +69,7 @@ export default function WebViewContainer(props: any) {
 
   const pipVideo = () => {
     // crete user gesture context for pip in ipcrenderer
-    webView.current.executeJavaScript('', true);
+    webView.current.executeJavaScript('console.log("pipVideo()")', true);
     webView.current.send('pipVideo');
   };
 
@@ -121,18 +126,18 @@ export default function WebViewContainer(props: any) {
           message="loading...."
         />
       </FullScreen>
-      {/* <Fab */}
-      {/*  color="primary" */}
-      {/*  aria-label="add" */}
-      {/*  className={classes.fab} */}
-      {/*  onClick={addFavorite} */}
-      {/* > */}
-      {/*  收藏 */}
-      {/* </Fab> */}
       <Fab
         color="primary"
         aria-label="add"
         className={classes.fab}
+        onClick={addFavorite}
+      >
+        收藏
+      </Fab>
+      <Fab
+        color="primary"
+        aria-label="add"
+        className={classes.pip}
         onClick={pipVideo}
       >
         画中画
