@@ -17,6 +17,9 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 
 app.allowRendererProcessReuse = false;
+app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
+app.commandLine.appendSwitch('disable-site-isolation-trials');
+
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';

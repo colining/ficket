@@ -109,8 +109,9 @@ export default function WebViewContainer(props: any) {
           }}
           devtools
           plugins
+          // nodeintegration
           nodeintegrationinsubframes
-          webpreferences="webSecurity=false"
+          webpreferences="allowRunningInsecureContent,webSecurity=false"
         />
         <BackdropContainer
           open={open}
