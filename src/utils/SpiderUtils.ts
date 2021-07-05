@@ -65,6 +65,7 @@ export function getVideoInfoBySource(
       .map(
         (x) =>
           $(x).attr('data-original') ||
+          $(x).attr('data-src') ||
           $(x).attr('src') ||
           $(x)
             .attr('style')
