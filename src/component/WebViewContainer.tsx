@@ -84,7 +84,7 @@ export default function WebViewContainer(props: any) {
   const handleDomReady = async () => {
     console.log(info);
     webView.current.send('videoRegex', info.videoRegex);
-    webView.current.openDevTools();
+    // webView.current.openDevTools();
     setOpen(false);
     setShowWebView(true);
     setMuted(false);
