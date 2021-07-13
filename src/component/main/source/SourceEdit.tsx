@@ -14,9 +14,9 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
 import jsonfile from 'jsonfile';
-import save from '../utils/JsonUtils';
-import { handleClickAndOpenUrlInLocal } from '../utils/utils';
-import { workshopSourceLocalPath } from '../utils/SteamWorksUtils';
+import save from '../../../utils/JsonUtils';
+import { handleClickAndOpenUrlInLocal } from '../../../utils/utils';
+import { workshopSourceLocalPath } from '../../../utils/SteamWorksUtils';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

@@ -3,12 +3,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, ButtonGroup, Divider } from '@material-ui/core';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import VideoGridList from './VidoeGridList';
-import WebViewContainer from './WebViewContainer';
-import SourceContainer from './SourceContainer';
-import VideoDetail from './VideoDetail';
-import HomePage from './HomePage';
-import AboutMe from './AboutMe';
+import VideoGridList from './main/VidoeGridList';
+import WebViewContainer from './main/WebViewContainer';
+import SourceContainer from './main/source/SourceContainer';
+import VideoDetail from './main/VideoDetail';
+import HomePage from './main/HomePage';
+import AboutMe from './main/AboutMe';
 
 const useStyles = makeStyles({
   content: {

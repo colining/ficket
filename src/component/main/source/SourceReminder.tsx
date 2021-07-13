@@ -10,7 +10,7 @@ import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import _ from 'lodash';
 import path from 'path';
-import { handleClickAndOpenUrlInLocal } from '../utils/utils';
+import { handleClickAndOpenUrlInLocal } from '../../../utils/utils';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

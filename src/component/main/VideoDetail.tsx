@@ -11,8 +11,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import path from 'path';
 import _ from 'lodash';
-import { getPlaylist } from '../utils/SpiderUtils';
-import BackdropContainer from './BackdropContainer';
+import { getPlaylist } from '../../utils/SpiderUtils';
+import BackdropContainer from '../BackdropContainer';
 
 const useStyles = makeStyles({
   detail: {

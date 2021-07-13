@@ -17,11 +17,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ShareIcon from '@material-ui/icons/Share';
 import { useClipboard } from 'use-clipboard-copy';
 import path from 'path';
-import { read } from '../utils/JsonUtils';
-import SourceReminder from './SourceReminder';
-import { deleteFavourite, readFavorites } from '../utils/FavoriteUtils';
-import VideoInfo from '../model/VideoInfo';
-import { WorkshopContext } from '../utils/SteamWorksUtils';
+import { read } from '../../utils/JsonUtils';
+import SourceReminder from './source/SourceReminder';
+import { deleteFavourite, readFavorites } from '../../utils/FavoriteUtils';
+import VideoInfo from '../../model/VideoInfo';
+import { WorkshopContext } from '../../utils/SteamWorksUtils';
 
 const useStyles = makeStyles({
   favourites: {

@@ -5,9 +5,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Fab, Snackbar, Typography } from '@material-ui/core';
 import _ from 'lodash';
 import path from 'path';
-import BackdropContainer from './BackdropContainer';
-import saveFavorite from '../utils/FavoriteUtils';
-import { getPlaylist } from '../utils/SpiderUtils';
+import BackdropContainer from '../BackdropContainer';
+import saveFavorite from '../../utils/FavoriteUtils';
+import { getPlaylist } from '../../utils/SpiderUtils';
 
 const useStyles = makeStyles({
   root: {

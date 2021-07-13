@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import path from 'path';
-import { handleClickAndOpenUrlInLocal } from '../utils/utils';
+import { handleClickAndOpenUrlInLocal } from '../../utils/utils';
 
 const useStyles = makeStyles((theme) =>
   createStyles({

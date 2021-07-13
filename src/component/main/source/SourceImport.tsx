@@ -4,8 +4,8 @@ import { Button } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { updateSourcesFromUrl } from '../utils/SpiderUtils';
-import BackdropContainer from './BackdropContainer';
+import { updateSourcesFromUrl } from '../../../utils/SpiderUtils';
+import BackdropContainer from '../../BackdropContainer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

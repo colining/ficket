@@ -14,14 +14,14 @@ import {
 import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
 import * as jsonfile from 'jsonfile';
-import { read, update } from '../utils/JsonUtils';
+import { read, update } from '../../../utils/JsonUtils';
 import SourceReminder from './SourceReminder';
 import getWorkShopItemsPathAndSetToState, {
   unActiveSourcePath,
   unsubscribeByPublishedFileId,
   WorkshopContext,
   workshopSourceLocalPath,
-} from '../utils/SteamWorksUtils';
+} from '../../../utils/SteamWorksUtils';
 import WorkshopDialog from './WorkshopDialog';
 
 const useStyles = makeStyles((theme: Theme) =>

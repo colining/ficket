@@ -17,9 +17,9 @@ import fs from 'fs';
 import greenworks from 'greenworks';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import jsonfile from 'jsonfile';
-import BackdropContainer from './BackdropContainer';
-import Source from '../model/Source';
-import { workshopSourceLocalPath } from '../utils/SteamWorksUtils';
+import BackdropContainer from '../../BackdropContainer';
+import Source from '../../../model/Source';
+import { workshopSourceLocalPath } from '../../../utils/SteamWorksUtils';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
