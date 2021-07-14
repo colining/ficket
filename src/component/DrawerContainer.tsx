@@ -5,6 +5,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
+import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import Toolbar from '@material-ui/core/Toolbar';
 import MovieIcon from '@material-ui/icons/Movie';
 import React from 'react';
@@ -87,11 +88,11 @@ export default function DrawerContainer(props: any) {
           </ListItemIcon>
           <ListItemText primary="在线视频" />
         </ListItem>
-        <ListItem button key="online-video" component={Link} to="/main/book">
+        <ListItem button key="day-article" component={Link} to="/book">
           <ListItemIcon>
-            <MovieIcon color="primary" />
+            <LocalLibraryIcon color="primary" />
           </ListItemIcon>
-          <ListItemText primary="在线视频" />
+          <ListItemText primary="开卷有益" />
         </ListItem>
         <ListItem button key="about-me" component={Link} to="/main/about">
           <ListItemIcon>
