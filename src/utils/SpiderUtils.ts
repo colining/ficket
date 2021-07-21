@@ -10,6 +10,7 @@ import Source from '../model/Source';
 function getImgUrl(img: string | undefined, homepageUrl: string) {
   if (img === undefined) return '';
   if (img.startsWith('http')) return img;
+  if (img.startsWith('//')) return `http:${img}`;
   return homepageUrl + img;
 }
 
@@ -19,6 +20,10 @@ function getVideoDetailUrl(
   detailHref: string | undefined
 ) {
   return haveDetail ? homepageUrl + detailHref : '';
+}
+function getVideoUrl(homepageUrl: string, href: string | undefined) {
+  if (href?.startsWith('http')) return href;
+  return homepageUrl + href;
 }
 
 export function getVideoInfoBySource(
@@ -48,7 +53,6 @@ export function getVideoInfoBySource(
       timeout: 10000,
     });
   }
-
   return res.then((response: any) => {
     const haveDetail = !_.isEmpty(detailHrefRule);
     const result = [];
@@ -79,7 +83,7 @@ export function getVideoInfoBySource(
         new VideoInfo(
           homepageUrl,
           getVideoDetailUrl(haveDetail, homepageUrl, detailHrefs[i]),
-          homepageUrl + hrefs[i],
+          getVideoUrl(homepageUrl, hrefs[i]),
           getImgUrl(imgs[i], homepageUrl),
           titles[i],
           videoPlaylistContainerRegex,
