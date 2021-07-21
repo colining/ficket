@@ -23,6 +23,7 @@ import getWorkShopItemsPathAndSetToState, {
   workshopSourceLocalPath,
 } from '../../../utils/SteamWorksUtils';
 import WorkshopDialog from './WorkshopDialog';
+import LoginDialog from './LoginDialog';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -73,6 +74,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function SourceList(props: any) {
   const [sources, setSources] = useState(read());
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [loginDialogOpen, setLoginDialogOpen] = useState(false);
+  const [loginUrl, setLoginUrl] = useState('');
   const [publishTag, setPublishTag] = useState(true);
   const [sourceForPublish, setSourceForPublish] = useState({});
   const { setCurrentSource } = props;
@@ -161,6 +164,10 @@ export default function SourceList(props: any) {
     });
     handleRefresh();
   };
+  const loginAndSaveCookie = (url: string) => {
+    setLoginDialogOpen(true);
+    setLoginUrl(url);
+  };
 
   const renderRow = () => {
     const workshopSources = workshopContext.workshopSource.map(
@@ -195,15 +202,18 @@ export default function SourceList(props: any) {
             </CardContent>
           </CardActionArea>
           <CardActions style={{ float: 'left' }}>
-            <Button
-              disabled={!source.publishByMyself}
-              size="small"
-              color="primary"
-              variant="outlined"
-              onClick={() => handleEditWorkShopSource(index)}
-            >
-              编辑
-            </Button>
+            {source.publishByMyself ? (
+              <Button
+                size="small"
+                color="primary"
+                variant="outlined"
+                onClick={() => handleEditWorkShopSource(index)}
+              >
+                编辑
+              </Button>
+            ) : (
+              ''
+            )}
             <Button
               onClick={() => handleUnsubscribe(index)}
               size="small"
@@ -212,16 +222,32 @@ export default function SourceList(props: any) {
             >
               取消订阅
             </Button>
-            <Button
-              disabled={!source.publishByMyself || !source.changedSource}
-              onClick={() => handleUpdate(index)}
-              size="small"
-              color="primary"
-              variant="outlined"
-            >
-              更新源
-            </Button>
+            {source.publishedFileId && source.changedSource ? (
+              <Button
+                disabled={!source.publishByMyself || !source.changedSource}
+                onClick={() => handleUpdate(index)}
+                size="small"
+                color="primary"
+                variant="outlined"
+              >
+                更新源
+              </Button>
+            ) : (
+              ''
+            )}
           </CardActions>
+          {source.authorized === undefined ? (
+            ''
+          ) : (
+            <Button
+              size="small"
+              color="secondary"
+              variant="outlined"
+              onClick={() => loginAndSaveCookie(source.homepageUrl)}
+            >
+              配置授权
+            </Button>
+          )}
           <CardActions style={{ float: 'right' }}>
             {source && source.changedSource ? (
               <Button
@@ -285,6 +311,18 @@ export default function SourceList(props: any) {
           >
             上传至创意工坊
           </Button>
+          {source.authorized === undefined ? (
+            ''
+          ) : (
+            <Button
+              size="small"
+              color="secondary"
+              variant="outlined"
+              onClick={() => loginAndSaveCookie(source.homepageUrl)}
+            >
+              配置授权
+            </Button>
+          )}
         </CardActions>
       </Card>
     ));
@@ -321,6 +359,11 @@ export default function SourceList(props: any) {
         dialogOpen={dialogOpen}
         setDialogOpen={setDialogOpen}
         publishTag={publishTag}
+      />
+      <LoginDialog
+        url={loginUrl}
+        dialogOpen={loginDialogOpen}
+        setDialogOpen={setLoginDialogOpen}
       />
     </div>
   );
