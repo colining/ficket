@@ -1,6 +1,15 @@
 const { ipcRenderer } = require('electron');
 
-const clearHtml = (videoRegex) => {
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const clearHtml = async (videoRegex) => {
+  console.log(document.URL);
+  if (document.URL.startsWith('https://v.qq.com')) {
+    console.log('sleep');
+    await sleep(5000);
+  }
   const keep = document.querySelector(videoRegex);
 
   const keepParent = keep.parentNode;
@@ -19,7 +28,11 @@ const clearHtml = (videoRegex) => {
         return;
       }
       if (child.tagName === 'STYLE') {
-        console.log('脚本');
+        console.log('样式');
+        return;
+      }
+      if (child.tagName === 'svg') {
+        console.log('图标');
         return;
       }
       console.log('不同，删除节点', child);
@@ -46,6 +59,7 @@ ipcRenderer.on('videoRegex', (event, videoRegex) => {
 function findAllVideoTag() {
   const videoResults = [];
   const documentList = [document];
+  videoResults.push(Array.from(document.querySelectorAll('video')));
   while (documentList.length > 0) {
     Array.from(documentList.shift().querySelectorAll('iframe')).forEach(
       (iframe) => {
@@ -62,12 +76,13 @@ function findAllVideoTag() {
 }
 
 function findLargestPlayingVideo() {
-  let videos = findAllVideoTag();
-  document.querySelectorAll('iframe').forEach((iframe) => {
-    videos = videos.concat(
-      Array.from(iframe.contentWindow.document.body.querySelectorAll('video'))
-    );
-  });
+  const videos = findAllVideoTag();
+  // need delete ?
+  // document.querySelectorAll('iframe').forEach((iframe) => {
+  //   videos = videos.concat(
+  //     Array.from(iframe.contentWindow.document.body.querySelectorAll('video'))
+  //   );
+  // });
   // code from google picture in picture
   const videosResult = videos
     .filter((video) => video.readyState !== 0)

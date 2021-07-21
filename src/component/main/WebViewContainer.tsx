@@ -107,7 +107,11 @@ export default function WebViewContainer(props: any) {
           }}
           src={info.videoUrl}
           onDomReady={handleDomReady}
-          onEnterHtmlFullScreen={handle.enter}
+          onEnterHtmlFullScreen={() => {
+            if (!info.videoUrl.startsWith('https://v.qq.com/')) {
+              handle.enter();
+            }
+          }}
           onLeaveHtmlFullScreen={handle.exit}
           onIpcMessage={(event: any) => {
             console.log(event.channel);
