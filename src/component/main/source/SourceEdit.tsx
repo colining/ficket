@@ -64,10 +64,17 @@ const helperText: { [index: string]: any } = {
 export default function SourceEdit(props: any) {
   const classes = useStyles();
   const { currentSource } = props;
+  const getPropertyFromSource = (property: string) => {
+    if (currentSource.changedSource) {
+      return currentSource.changedSource[property];
+    }
+    return currentSource[property];
+  };
+
   const { register, watch, handleSubmit, control } = useForm({
     defaultValues: {
-      method: currentSource.method || 'get',
-      authorized: currentSource.authorized ? 'need' : 'noNeed',
+      method: getPropertyFromSource('method') || 'get',
+      authorized: getPropertyFromSource('authorized') ? 'need' : 'noNeed',
     },
   });
 
@@ -96,12 +103,7 @@ export default function SourceEdit(props: any) {
     }
     history.push('/main/source/list');
   };
-  const getPropertyFromSource = (property: string) => {
-    if (currentSource.changedSource) {
-      return currentSource.changedSource[property];
-    }
-    return currentSource[property];
-  };
+
   const getHelpTextFromSource = (property: string) => {
     if (currentSource.workshopTag) {
       return currentSource[property];
