@@ -33,7 +33,7 @@ export default function LoginDialog(props: any) {
         <div className={classes.tips}>
           <div style={{ float: 'left', width: '60%' }}>
             <Typography variant="h5" align="right">
-              请在本页面进行登录授权
+              请在本页面进行账号密码登录授权
             </Typography>
           </div>
           <div style={{ float: 'left', marginLeft: '20px' }}>
