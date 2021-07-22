@@ -27,20 +27,6 @@
     "titleRegex": "div.detail > h4 > a"
   },
   {
-    "name": "美剧鸟",
-    "method": "post",
-    "formData": "{\n\"wd\":\"{{searchKey}}\"\n}",
-    "videoRegex": "#zanpiancms_player",
-    "homepageUrl": "http://www.meijuniao.com/",
-    "searchUrlPrefix": "http://www.meijuniao.com/search/",
-    "videoDetailUrlRegex": "#contents > ul > li > div > h2 > a",
-    "playlistContainerRegex": "body",
-    "playlistItemRegex": "#jsyun2-pl-list > div > a",
-    "videoUrlRegex": "#contents > ul > li > div > h2 > a",
-    "imgUrlRegex": "#contents > ul > li > a > img",
-    "titleRegex": "#contents > ul > li > div > h2 > a"
-  },
-  {
     "name": "韩剧tv",
     "method": "get",
     "videoRegex": "body > div.warp > div.playWarp > div > div.playMain",
@@ -107,17 +93,17 @@
     "titleRegex": " div.left_row.fl > div > ul > li > div.searchlist_titbox > h4 > a"
   },
   {
-    "name": "awslTV",
+    "name": "AWSLTV",
     "method": "get",
-    "videoRegex": "#play_page > div.play_boxbg > div.play_box.play_video > div.left_row.fl",
-    "homepageUrl": "https://awsltv.com/",
-    "searchUrlPrefix": "https://awsltv.com/vodsearch/-------------.html?wd={{searchKey}}",
-    "videoDetailUrlRegex": "div.left_row.fl > div > ul > li> div.searchlist_titbox > h4 > a",
-    "playlistContainerRegex": "#bofy > div.tabs > div > section",
-    "playlistItemRegex": "ul > li > a",
-    "videoUrlRegex": "div.left_row.fl > div > ul > li> div.searchlist_titbox > h4 > a",
-    "imgUrlRegex": "div.left_row.fl > div > ul > li> div.searchlist_img > a",
-    "titleRegex": "div.left_row.fl > div > ul > li> div.searchlist_titbox > h4 > a"
+    "videoRegex": "#player-left",
+    "homepageUrl": "http://www.awsltv.net/",
+    "searchUrlPrefix": "http://www.awsltv.net/vodsearch/-------------.html?wd={{searchKey}}",
+    "videoDetailUrlRegex": "#searchList > li > div.detail > h4 > a",
+    "playlistContainerRegex": " div.tab-pane.fade.in.clearfix > ul",
+    "playlistItemRegex": "li > a",
+    "videoUrlRegex": "#searchList > li> div.thumb > a",
+    "imgUrlRegex": "#searchList > li> div.thumb > a",
+    "titleRegex": "#searchList > li > div.detail > h4 > a"
   },
   {
     "name": "99美剧",
