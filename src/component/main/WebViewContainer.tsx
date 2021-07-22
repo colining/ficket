@@ -107,8 +107,11 @@ export default function WebViewContainer(props: any) {
           }}
           src={info.videoUrl}
           onDomReady={handleDomReady}
-          onEnterHtmlFullScreen={() => {
-            if (!info.videoUrl.startsWith('https://v.qq.com/')) {
+          onEnterHtmlFullScreen={(event: any) => {
+            if (info.videoUrl.startsWith('https://v.qq.com/')) {
+              event.preventDefault();
+              // need full screen in here
+            } else {
               handle.enter();
             }
           }}

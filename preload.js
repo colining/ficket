@@ -5,10 +5,9 @@ function sleep(ms) {
 }
 
 const clearHtml = async (videoRegex) => {
-  console.log(document.URL);
   if (document.URL.startsWith('https://v.qq.com')) {
     console.log('sleep');
-    await sleep(5000);
+    await sleep(3000);
   }
   const keep = document.querySelector(videoRegex);
 
