@@ -5,7 +5,6 @@ import _ from 'lodash';
 import VideoInfo from '../model/VideoInfo';
 import { importData, read } from './JsonUtils';
 import { getFormData, withHttp } from './utils';
-import Source from '../model/Source';
 
 function getImgUrl(img: string | undefined, homepageUrl: string) {
   if (img === undefined) return '';
@@ -103,7 +102,12 @@ export default async function getVideoInfo(
   searchKey: string,
   workshopSource: Array<any>
 ) {
-  const sources: Source[] = workshopSource.concat(read());
+  const sources: any[] = workshopSource.concat(read());
+  for (let i = 0; i < sources.length; i += 1) {
+    if (!_.isNil(sources[i].changedSource)) {
+      sources[i] = sources[i].changedSource;
+    }
+  }
   const results = [];
   for (let i = 0; i < sources.length; i += 1) {
     results.push(
