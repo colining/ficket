@@ -65,12 +65,16 @@ export default function SourceEdit(props: any) {
   const classes = useStyles();
   const { currentSource } = props;
   const { register, watch, handleSubmit, control } = useForm({
-    defaultValues: { method: currentSource.method || 'get' },
+    defaultValues: {
+      method: currentSource.method || 'get',
+      authorized: currentSource.authorized ? 'need' : 'noNeed',
+    },
   });
 
   const history = useHistory();
   const watchMethod = watch('method');
   const onSubmit = (data: any) => {
+    data.authorized = data.authorized !== 'noNeed';
     if (!currentSource.activeTag) {
       save(data);
     } else {
@@ -138,6 +142,31 @@ export default function SourceEdit(props: any) {
           />
         </div>
         <div className={classes.container}>
+          <Typography>是否需要配置授权</Typography>
+          <Controller
+            as={
+              <RadioGroup
+                className={classes.radioGroup}
+                aria-label="gender"
+                row
+              >
+                <FormControlLabel
+                  value="noNeed"
+                  control={<Radio color="primary" />}
+                  label="不需要"
+                />
+                <FormControlLabel
+                  value="need"
+                  control={<Radio color="primary" />}
+                  label="需要"
+                />
+              </RadioGroup>
+            }
+            name="authorized"
+            control={control}
+          />
+        </div>
+        <div className={classes.container}>
           <Typography>网站基本信息</Typography>
           <TextField
             name="name"
@@ -195,7 +224,6 @@ export default function SourceEdit(props: any) {
           <Typography>搜索结果</Typography>
           <TextField
             name="videoDetailUrlRegex"
-            required
             multiline
             id="outlined-helperText"
             label="视频详情页链接正则"

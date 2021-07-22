@@ -235,19 +235,19 @@ export default function SourceList(props: any) {
             ) : (
               ''
             )}
+            {source.authorized ? (
+              <Button
+                size="small"
+                color="secondary"
+                variant="outlined"
+                onClick={() => loginAndSaveCookie(source.homepageUrl)}
+              >
+                配置授权
+              </Button>
+            ) : (
+              ''
+            )}
           </CardActions>
-          {source.authorized === undefined ? (
-            ''
-          ) : (
-            <Button
-              size="small"
-              color="secondary"
-              variant="outlined"
-              onClick={() => loginAndSaveCookie(source.homepageUrl)}
-            >
-              配置授权
-            </Button>
-          )}
           <CardActions style={{ float: 'right' }}>
             {source && source.changedSource ? (
               <Button
@@ -311,9 +311,7 @@ export default function SourceList(props: any) {
           >
             上传至创意工坊
           </Button>
-          {source.authorized === undefined ? (
-            ''
-          ) : (
+          {source.authorized ? (
             <Button
               size="small"
               color="secondary"
@@ -322,6 +320,8 @@ export default function SourceList(props: any) {
             >
               配置授权
             </Button>
+          ) : (
+            ''
           )}
         </CardActions>
       </Card>
