@@ -24,6 +24,11 @@ const useStyles = makeStyles({
     right: '1%',
     top: '180px',
   },
+  fullScreen: {
+    position: 'absolute',
+    right: '1%',
+    top: '240px',
+  },
 });
 
 const preloadPath = path.join(path.dirname(__dirname), 'preload.js');
@@ -71,6 +76,9 @@ export default function WebViewContainer(props: any) {
     // crete user gesture context for pip in ipcrenderer
     webView.current.executeJavaScript('console.log("pipVideo()")', true);
     webView.current.send('pipVideo');
+  };
+  const fullScreen = () => {
+    handle.enter();
   };
 
   useEffect(() => {
@@ -148,6 +156,14 @@ export default function WebViewContainer(props: any) {
         onClick={pipVideo}
       >
         画中画
+      </Fab>
+      <Fab
+        color="primary"
+        aria-label="add"
+        className={classes.fullScreen}
+        onClick={fullScreen}
+      >
+        全屏
       </Fab>
       <Snackbar
         open={openSnack}
