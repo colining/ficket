@@ -18,7 +18,12 @@ function getVideoDetailUrl(
   homepageUrl: string,
   detailHref: string | undefined
 ) {
-  return haveDetail ? homepageUrl + detailHref : '';
+  if (!haveDetail) {
+    return '';
+  }
+  if (detailHref === undefined) return '';
+  if (detailHref.startsWith('//')) return `http:${detailHref}`;
+  return homepageUrl + detailHref;
 }
 function getVideoUrl(homepageUrl: string, href: string | undefined) {
   if (href?.startsWith('http')) return href;
@@ -74,6 +79,9 @@ export function getVideoInfoBySource(
             .attr('style')
             ?.match(/\((.*?)\)/)![1]
       );
+    $(imgRule)
+      .get()
+      .map((x) => console.log(x));
     const titles = $(titleRule)
       .get()
       .map((x) => $(x).text());
