@@ -41,6 +41,7 @@ export default function WebViewContainer(props: any) {
   const { info, playlists, setPlaylists } = props;
   const [openSnack, setOpenSnack] = useState(false);
   const handle = useFullScreenHandle();
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   const classes = useStyles();
 
@@ -103,7 +104,18 @@ export default function WebViewContainer(props: any) {
   };
   return (
     <div className={classes.root}>
-      <Typography>若加载时间过长，建议重新选择视频来源</Typography>
+      {isFullScreen ? (
+        ''
+      ) : (
+        <div>
+          <Typography align="center">
+            若加载时间过长，建议重新选择视频来源
+          </Typography>
+          <Typography align="center">
+            若各个源皆卡顿，请检查您是否开了代理软件
+          </Typography>
+        </div>
+      )}
       <FullScreen handle={handle} className={classes.root}>
         <WebView
           preload={preloadPath}
@@ -116,6 +128,7 @@ export default function WebViewContainer(props: any) {
           src={info.videoUrl}
           onDomReady={handleDomReady}
           onEnterHtmlFullScreen={(event: any) => {
+            setIsFullScreen(true);
             if (info.videoUrl.startsWith('https://v.qq.com/')) {
               event.preventDefault();
               // need full screen in here
@@ -123,7 +136,10 @@ export default function WebViewContainer(props: any) {
               handle.enter();
             }
           }}
-          onLeaveHtmlFullScreen={handle.exit}
+          onLeaveHtmlFullScreen={() => {
+            setIsFullScreen(false);
+            handle.exit();
+          }}
           onIpcMessage={(event: any) => {
             console.log(event.channel);
           }}
