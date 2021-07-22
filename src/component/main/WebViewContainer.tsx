@@ -132,6 +132,10 @@ export default function WebViewContainer(props: any) {
             if (info.videoUrl.startsWith('https://v.qq.com/')) {
               event.preventDefault();
               // need full screen in here
+            }
+            if (info.videoUrl.startsWith('http://www.iqiyi.com')) {
+              event.preventDefault();
+              // need full screen in here
             } else {
               handle.enter();
             }
