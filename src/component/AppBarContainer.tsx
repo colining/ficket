@@ -61,10 +61,22 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
       transition: theme.transitions.create('width'),
       width: '100%',
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up('xs')]: {
         width: '20ch',
         '&:focus': {
           width: '30ch',
+        },
+      },
+      [theme.breakpoints.between('sm', 'lg')]: {
+        width: '60ch',
+        '&:focus': {
+          width: '70ch',
+        },
+      },
+      [theme.breakpoints.up('xl')]: {
+        width: '100ch',
+        '&:focus': {
+          width: '150ch',
         },
       },
     },
@@ -94,7 +106,7 @@ export default function AppBarContainer(props: any) {
           <HomeIcon />
         </IconButton>
         <Typography className={classes.title} variant="h6" noWrap>
-          Ficket
+          Ficket:追剧引擎
         </Typography>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
