@@ -80,6 +80,7 @@ export default function SourceEdit(props: any) {
 
   const history = useHistory();
   const watchMethod = watch('method');
+  const watchDetail = watch('videoDetailUrlRegex');
   const onSubmit = (data: any) => {
     data.authorized = data.authorized !== 'noNeed';
     if (!currentSource.activeTag) {
@@ -273,7 +274,7 @@ export default function SourceEdit(props: any) {
           <Typography>详情页/选集</Typography>
           <TextField
             name="playlistContainerRegex"
-            required
+            required={!_.isEmpty(watchDetail)}
             multiline
             id="outlined-helperText"
             label="视频选集容器正则"
@@ -285,7 +286,7 @@ export default function SourceEdit(props: any) {
 
           <TextField
             name="playlistItemRegex"
-            required
+            required={!_.isEmpty(watchDetail)}
             multiline
             id="outlined-helperText"
             label="视频选集正则"
