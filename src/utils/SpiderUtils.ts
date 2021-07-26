@@ -53,132 +53,139 @@ export async function getVideoInfoBySource(
   videoRegex: string
 ) {
   let res;
-  if (method === 'get') {
-    const searchUrl = encodeURI(parse(searchUrlPrefix)({ searchKey }));
+  const searchUrl = encodeURI(parse(searchUrlPrefix)({ searchKey }));
+  // const request1 = net.request('https://youku.com');
+  // request1.on('response', (response) => {
+  //   console.log(`STATUS: ${response.statusCode}`);
+  //   console.log(`HEADERS: ${JSON.stringify(response.headers)}`);
+  //   response.on('data', (chunk) => {
+  //     console.log(`BODY: ${chunk}`);
+  //   });
+  //   response.on('end', () => {
+  //     console.log('No more data in response.');
+  //   });
+  // });
+  // request1.end();
 
-    if (searchUrl.startsWith('https://so.youku')) {
-      const request = net.request(searchUrl);
-      const cookieArray = [
-        '_m_h5_tk',
-        '_m_h5_tk_enc',
-        'UM_distinctid',
-        'cna',
-        '__ysuid',
-        '__ayft',
-        '__aysid',
-        '__ayscnt',
-        'P_ck_ctl',
-        'modalFrequency',
-        'xlly_s',
-        'P_sck',
-        'P_gck',
-        'disrd',
-        'youku_history_word',
-        'ctoken',
-        '__arpvid',
-        '__aypstp',
-        '__ayspstp',
-        'isg',
-        'tfstk',
-        'l',
-      ];
-      const cookieString = await session.defaultSession.cookies
-        .get({ domain: '.youku.com' })
-        .then((cookies) =>
-          cookies
-            .map((cookie) => {
-              if (cookieArray.includes(cookie.name)) {
-                return `${cookie.name}=${cookie.value}`;
-              }
-              return null;
-            })
-            .join(';')
-        );
-      console.log(cookieString);
-      request.setHeader('Cookie', cookieString);
-      request.setHeader('authority', 'so.youku.com');
-      request.setHeader('cache-control', 'max-age=0');
-      request.setHeader('upgrade-insecure-requests', '1');
-      request.setHeader(
-        'user-agent',
-        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.25 Safari/537.36 Core/1.70.3872.400 QQBrowser/10.8.4455.400'
+  if (searchUrl.startsWith('https://so.youku')) {
+    const request = net.request(searchUrl);
+    const cookieArray = [
+      '_m_h5_tk',
+      '_m_h5_tk_enc',
+      'UM_distinctid',
+      'cna',
+      '__ysuid',
+      '__ayft',
+      '__aysid',
+      '__ayscnt',
+      'P_ck_ctl',
+      'modalFrequency',
+      'xlly_s',
+      'P_sck',
+      'P_gck',
+      'disrd',
+      'youku_history_word',
+      'ctoken',
+      '__arpvid',
+      '__aypstp',
+      '__ayspstp',
+      'isg',
+      'tfstk',
+      'l',
+    ];
+    const cookieString = await session.defaultSession.cookies
+      .get({ domain: '.youku.com' })
+      .then((cookies) =>
+        cookies
+          .map((cookie) => {
+            if (cookieArray.includes(cookie.name)) {
+              return `${cookie.name}=${cookie.value}`;
+            }
+            return null;
+          })
+          .join(';')
       );
-      request.setHeader(
-        'accept',
-        'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
-      );
-      request.setHeader('referer', 'https://www.youku.com/');
-      request.setHeader('accept-encoding', 'gzip, deflate, br');
-      request.setHeader('accept-language', 'zh-CN,zh;q=0.9');
+    request.setHeader('Cookie', cookieString);
+    request.setHeader('authority', 'so.youku.com');
+    request.setHeader('cache-control', 'max-age=0');
+    request.setHeader('upgrade-insecure-requests', '1');
+    request.setHeader(
+      'user-agent',
+      'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.25 Safari/537.36 Core/1.70.3872.400 QQBrowser/10.8.4455.400'
+    );
+    request.setHeader(
+      'accept',
+      'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
+    );
+    request.setHeader('referer', 'https://www.youku.com/');
+    request.setHeader('accept-encoding', 'gzip, deflate, br');
+    request.setHeader('accept-language', 'zh-CN,zh;q=0.9');
 
-      console.log(request);
-      request.on('response', (response) => {
-        response.on('data', (chunk) => {
-          console.log(`BODY: ${chunk}`);
+    function a() {
+      return new Promise(function (resolve, reject) {
+        request.on('response', (response) => {
+          response.on('data', (chunk) => {
+            resolve(cheerio.load(chunk));
+          });
+          response.on('end', () => {});
         });
+        request.end();
       });
-      request.end();
     }
-
-    res = axios.get(searchUrl, { timeout: 10000 });
-
-    console.log(searchUrl);
-  } else {
-    const data = JSON.parse(parse(formData)({ searchKey }));
-    res = axios({
-      method: method as Method,
-      url: searchUrlPrefix,
-      data: getFormData(data),
-      timeout: 10000,
-    });
+    return a()
+      .then(
+        (r) => {
+          return r;
+        },
+        (e) => console.log(e)
+      )
+      .then(($: any) => {
+        const haveDetail = !_.isEmpty(detailHrefRule);
+        const result = [];
+        const hrefs = $(hrefRule)
+          .get()
+          .map((x) => $(x).attr('href'));
+        const detailHrefs = $(detailHrefRule)
+          .get()
+          .map((x) => $(x).attr('href'));
+        const imgs = $(imgRule)
+          .get()
+          .map(
+            (x) =>
+              $(x).attr('data-original') ||
+              $(x).attr('data-src') ||
+              $(x).attr('src') ||
+              $(x)
+                .attr('style')
+                ?.match(/\((.*?)\)/)![1]
+          );
+        $(imgRule)
+          .get()
+          .map((x) => console.log(x));
+        const titles = $(titleRule)
+          .get()
+          .map((x) => $(x).text());
+        console.log(hrefs, titles);
+        for (let i = 0; i < hrefs.length; i += 1) {
+          result.push(
+            new VideoInfo(
+              homepageUrl,
+              getVideoDetailUrl(haveDetail, homepageUrl, detailHrefs[i]),
+              getVideoUrl(homepageUrl, hrefs[i]),
+              getImgUrl(imgs[i], homepageUrl),
+              titles[i],
+              videoPlaylistContainerRegex,
+              videoPlaylistRegex,
+              videoRegex
+            )
+          );
+        }
+        if (_.isEmpty(result)) {
+          throw new Error('result is empty perhaps regex wrong');
+        }
+        return result;
+      });
   }
-  return res.then((response: any) => {
-    const haveDetail = !_.isEmpty(detailHrefRule);
-    const result = [];
-    const html = response.data;
-    const $ = cheerio.load(html);
-    const hrefs = $(hrefRule)
-      .get()
-      .map((x) => $(x).attr('href'));
-    const detailHrefs = $(detailHrefRule)
-      .get()
-      .map((x) => $(x).attr('href'));
-    const imgs = $(imgRule)
-      .get()
-      .map(
-        (x) =>
-          $(x).attr('data-original') ||
-          $(x).attr('data-src') ||
-          $(x).attr('src') ||
-          $(x)
-            .attr('style')
-            ?.match(/\((.*?)\)/)![1]
-      );
-    $(imgRule)
-      .get()
-      .map((x) => console.log(x));
-    const titles = $(titleRule)
-      .get()
-      .map((x) => $(x).text());
-    for (let i = 0; i < hrefs.length; i += 1) {
-      result.push(
-        new VideoInfo(
-          homepageUrl,
-          getVideoDetailUrl(haveDetail, homepageUrl, detailHrefs[i]),
-          getVideoUrl(homepageUrl, hrefs[i]),
-          getImgUrl(imgs[i], homepageUrl),
-          titles[i],
-          videoPlaylistContainerRegex,
-          videoPlaylistRegex,
-          videoRegex
-        )
-      );
-    }
-    if (_.isEmpty(result)) {
-      throw new Error('result is empty perhaps regex wrong');
-    }
-    return result;
-  });
 }
 
 export default async function getVideoInfo(
