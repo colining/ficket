@@ -2,10 +2,14 @@ import axios, { Method } from 'axios';
 import cheerio from 'cheerio';
 import parse from 'json-templates';
 import _ from 'lodash';
+import electron from 'electron';
 import VideoInfo from '../model/VideoInfo';
 import { importData, read } from './JsonUtils';
 import { getFormData, withHttp } from './utils';
 
+const { remote } = electron;
+const { net, session } = remote;
+axios.defaults.withCredentials = true;
 function getImgUrl(img: string | undefined, homepageUrl: string) {
   if (img === undefined) return '';
   if (img.startsWith('http')) return img;
@@ -26,11 +30,15 @@ function getVideoDetailUrl(
   return homepageUrl + detailHref;
 }
 function getVideoUrl(homepageUrl: string, href: string | undefined) {
+  if (!href) {
+    return '';
+  }
   if (href?.startsWith('http')) return href;
+  if (href.startsWith('//')) return `http:${href}`;
   return homepageUrl + href;
 }
 
-export function getVideoInfoBySource(
+export async function getVideoInfoBySource(
   searchKey: string,
   method: string,
   formData: string,
@@ -47,7 +55,74 @@ export function getVideoInfoBySource(
   let res;
   if (method === 'get') {
     const searchUrl = encodeURI(parse(searchUrlPrefix)({ searchKey }));
+
+    if (searchUrl.startsWith('https://so.youku')) {
+      const request = net.request(searchUrl);
+      const cookieArray = [
+        '_m_h5_tk',
+        '_m_h5_tk_enc',
+        'UM_distinctid',
+        'cna',
+        '__ysuid',
+        '__ayft',
+        '__aysid',
+        '__ayscnt',
+        'P_ck_ctl',
+        'modalFrequency',
+        'xlly_s',
+        'P_sck',
+        'P_gck',
+        'disrd',
+        'youku_history_word',
+        'ctoken',
+        '__arpvid',
+        '__aypstp',
+        '__ayspstp',
+        'isg',
+        'tfstk',
+        'l',
+      ];
+      const cookieString = await session.defaultSession.cookies
+        .get({ domain: '.youku.com' })
+        .then((cookies) =>
+          cookies
+            .map((cookie) => {
+              if (cookieArray.includes(cookie.name)) {
+                return `${cookie.name}=${cookie.value}`;
+              }
+              return null;
+            })
+            .join(';')
+        );
+      console.log(cookieString);
+      request.setHeader('Cookie', cookieString);
+      request.setHeader('authority', 'so.youku.com');
+      request.setHeader('cache-control', 'max-age=0');
+      request.setHeader('upgrade-insecure-requests', '1');
+      request.setHeader(
+        'user-agent',
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.25 Safari/537.36 Core/1.70.3872.400 QQBrowser/10.8.4455.400'
+      );
+      request.setHeader(
+        'accept',
+        'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
+      );
+      request.setHeader('referer', 'https://www.youku.com/');
+      request.setHeader('accept-encoding', 'gzip, deflate, br');
+      request.setHeader('accept-language', 'zh-CN,zh;q=0.9');
+
+      console.log(request);
+      request.on('response', (response) => {
+        response.on('data', (chunk) => {
+          console.log(`BODY: ${chunk}`);
+        });
+      });
+      request.end();
+    }
+
     res = axios.get(searchUrl, { timeout: 10000 });
+
+    console.log(searchUrl);
   } else {
     const data = JSON.parse(parse(formData)({ searchKey }));
     res = axios({
