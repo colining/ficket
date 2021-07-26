@@ -10,6 +10,7 @@ import VideoDetail from './main/VideoDetail';
 import HomePage from './main/HomePage';
 import AboutMe from './main/AboutMe';
 import Book from './book/Book';
+import Parsing from './parsing/Parsing';
 
 const useStyles = makeStyles({
   content: {
@@ -81,6 +82,7 @@ export default function MainContainer(props: any) {
           <Route path="/main/source" render={() => <SourceContainer />} />
           <Route path="/main/about" component={AboutMe} />
           <Route path="/book" component={Book} />
+          <Route path="/parsing" component={Parsing} />
           <Route
             path="/"
             render={() => (

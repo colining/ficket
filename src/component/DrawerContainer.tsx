@@ -94,6 +94,12 @@ export default function DrawerContainer(props: any) {
           </ListItemIcon>
           <ListItemText primary="开卷有益" />
         </ListItem>
+        <ListItem button key="day-article" component={Link} to="/parsing">
+          <ListItemIcon>
+            <LocalLibraryIcon color="primary" />
+          </ListItemIcon>
+          <ListItemText primary="解析" />
+        </ListItem>
         <ListItem button key="about-me" component={Link} to="/main/about">
           <ListItemIcon>
             <HelpIcon color="primary" />
