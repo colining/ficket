@@ -69,6 +69,7 @@ export default function Parsing() {
         <FullScreen handle={handle} className={classes.fullScreen}>
           <WebView
             src={url}
+            allowpopups
             style={{
               height: '100%',
             }}

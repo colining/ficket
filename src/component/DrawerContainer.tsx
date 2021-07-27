@@ -10,6 +10,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import MovieIcon from '@material-ui/icons/Movie';
 import React from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import GolfCourseIcon from '@material-ui/icons/GolfCourse';
 import HelpIcon from '@material-ui/icons/Help';
 import { Link, Route, Switch } from 'react-router-dom';
 import _ from 'lodash';
@@ -93,12 +94,14 @@ export default function DrawerContainer(props: any) {
             <LocalLibraryIcon color="primary" />
           </ListItemIcon>
           <ListItemText primary="开卷有益" />
+          <ListItemText secondary="预览版" />
         </ListItem>
-        <ListItem button key="day-article" component={Link} to="/parsing">
+        <ListItem button key="video-parsing" component={Link} to="/parsing">
           <ListItemIcon>
-            <LocalLibraryIcon color="primary" />
+            <GolfCourseIcon color="primary" />
           </ListItemIcon>
           <ListItemText primary="解析" />
+          <ListItemText secondary="预览版" />
         </ListItem>
         <ListItem button key="about-me" component={Link} to="/main/about">
           <ListItemIcon>
