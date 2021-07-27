@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import WebView from 'react-electron-web-view';
 import InputBase from '@material-ui/core/InputBase';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
@@ -37,6 +37,8 @@ const useStyles = makeStyles((theme: Theme) =>
 const playM3u8Prefix = 'https://www.playm3u8.cn/jiexi.php?url=';
 export default function Parsing() {
   const classes = useStyles();
+  const [value, setValue] = useState('');
+  const webView = useRef(WebView);
   const handle = useFullScreenHandle();
   const [url, setUrl] = useState('http://www.baidu.com');
 
@@ -44,20 +46,26 @@ export default function Parsing() {
     if (e.keyCode && e.keyCode !== 13) {
       return;
     }
-
     setUrl(playM3u8Prefix + e.target.value);
   };
+  const handleClick = (event: any) => {
+    setUrl(playM3u8Prefix + value);
+    event.preventDefault();
+  };
   return (
-    <div style={{ width: '100%', height: '100%' }}>
-      <Paper component="form" className={classes.root}>
+    <div style={{ height: '100%' }}>
+      <Paper className={classes.root}>
         <InputBase
+          value={value}
           className={classes.input}
           placeholder="请输入视频链接地址"
-          inputProps={{ 'aria-label': 'search google maps' }}
+          onChange={(event) => {
+            setValue(event.target.value);
+          }}
           onKeyDown={keyPress}
         />
         <IconButton
-          onClick={keyPress}
+          onClick={(event) => handleClick(event)}
           className={classes.iconButton}
           aria-label="search"
         >
@@ -68,6 +76,7 @@ export default function Parsing() {
       <div style={{ height: '95%' }}>
         <FullScreen handle={handle} className={classes.fullScreen}>
           <WebView
+            ref={webView}
             src={url}
             allowpopups
             style={{
