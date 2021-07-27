@@ -1,90 +1,86 @@
 import React, { useState } from 'react';
 import WebView from 'react-electron-web-view';
 import InputBase from '@material-ui/core/InputBase';
-import {
-  createStyles,
-  fade,
-  makeStyles,
-  Theme,
-} from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Divider, IconButton, Paper } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
+import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    search: {
-      position: 'relative',
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.black, 0.15),
-      '&:hover': {
-        backgroundColor: fade(theme.palette.common.black, 0.25),
-      },
-      marginLeft: 0,
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
-      },
+    root: {
+      padding: '2px 4px',
+      display: 'flex',
+      alignItems: 'center',
+      marginLeft: '20%',
+      marginRight: '20%',
+      marginBottom: '2ch',
+      marginTop: '2ch',
     },
-    inputRoot: {
-      color: 'inherit',
+    input: {
+      marginLeft: theme.spacing(1),
+      flex: 1,
     },
-    inputInput: {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-      transition: theme.transitions.create('width'),
+    iconButton: {
+      padding: 10,
+    },
+    divider: {
+      height: 28,
+      margin: 4,
+    },
+    fullScreen: {
       width: '100%',
-      [theme.breakpoints.up('xs')]: {
-        width: '20ch',
-        '&:focus': {
-          width: '30ch',
-        },
-      },
-      [theme.breakpoints.between('sm', 'lg')]: {
-        width: '60ch',
-        '&:focus': {
-          width: '70ch',
-        },
-      },
-      [theme.breakpoints.up('xl')]: {
-        width: '100ch',
-        '&:focus': {
-          width: '150ch',
-        },
-      },
+      height: '100%',
     },
   })
 );
 const playM3u8Prefix = 'https://www.playm3u8.cn/jiexi.php?url=';
 export default function Parsing() {
   const classes = useStyles();
+  const handle = useFullScreenHandle();
   const [url, setUrl] = useState('http://www.baidu.com');
 
   const keyPress = (e: any) => {
-    if (e.keyCode !== 13) {
+    if (e.keyCode && e.keyCode !== 13) {
       return;
     }
 
     setUrl(playM3u8Prefix + e.target.value);
   };
   return (
-    <div>
-      <div className={classes.search}>
+    <div style={{ width: '100%', height: '100%' }}>
+      <Paper component="form" className={classes.root}>
         <InputBase
-          placeholder="Search…"
-          classes={{
-            root: classes.inputRoot,
-            input: classes.inputInput,
-          }}
-          inputProps={{ 'aria-label': 'search' }}
+          className={classes.input}
+          placeholder="请输入视频链接地址"
+          inputProps={{ 'aria-label': 'search google maps' }}
           onKeyDown={keyPress}
         />
+        <IconButton
+          onClick={keyPress}
+          className={classes.iconButton}
+          aria-label="search"
+        >
+          <SearchIcon />
+        </IconButton>
+      </Paper>
+      <Divider />
+      <div style={{ height: '95%' }}>
+        <FullScreen handle={handle} className={classes.fullScreen}>
+          <WebView
+            src={url}
+            style={{
+              height: '100%',
+            }}
+            onEnterHtmlFullScreen={() => {
+              handle.enter();
+            }}
+            onLeaveHtmlFullScreen={() => {
+              handle.exit();
+            }}
+          />
+        </FullScreen>
       </div>
-      <WebView
-        src={url}
-        style={{
-          height: '100%',
-        }}
-      />
     </div>
   );
 }
