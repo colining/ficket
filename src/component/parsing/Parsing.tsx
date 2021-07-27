@@ -42,19 +42,13 @@ export default function Parsing() {
   const handle = useFullScreenHandle();
   const [url, setUrl] = useState('http://www.baidu.com');
 
-  const keyPress = (e: any) => {
-    if (e.keyCode && e.keyCode !== 13) {
-      return;
-    }
-    setUrl(playM3u8Prefix + e.target.value);
-  };
-  const handleClick = (event: any) => {
+  const handleSubmit = (event: any) => {
     setUrl(playM3u8Prefix + value);
     event.preventDefault();
   };
   return (
     <div style={{ height: '100%' }}>
-      <Paper className={classes.root}>
+      <Paper component="form" onSubmit={handleSubmit} className={classes.root}>
         <InputBase
           value={value}
           className={classes.input}
@@ -62,10 +56,9 @@ export default function Parsing() {
           onChange={(event) => {
             setValue(event.target.value);
           }}
-          onKeyDown={keyPress}
         />
         <IconButton
-          onClick={(event) => handleClick(event)}
+          type="submit"
           className={classes.iconButton}
           aria-label="search"
         >
