@@ -141,6 +141,7 @@ export default function WebViewContainer(props: any) {
               event.preventDefault();
               // need full screen in here
             } else {
+              webView.current.send('fullscreen');
               handle.enter();
             }
           }}

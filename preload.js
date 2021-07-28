@@ -76,12 +76,6 @@ function findAllVideoTag() {
 
 function findLargestPlayingVideo() {
   const videos = findAllVideoTag();
-  // need delete ?
-  // document.querySelectorAll('iframe').forEach((iframe) => {
-  //   videos = videos.concat(
-  //     Array.from(iframe.contentWindow.document.body.querySelectorAll('video'))
-  //   );
-  // });
   // code from google picture in picture
   const videosResult = videos
     .filter((video) => video.readyState !== 0)
@@ -108,4 +102,24 @@ const pipVideo = () => {
 ipcRenderer.on('pipVideo', (event) => {
   console.log('pipVideo', 'renderer');
   pipVideo();
+});
+const findVideoParentIframe = (node) => {
+  console.log(node);
+  if (node.tagName === 'BODY') {
+    return node;
+  }
+  return findVideoParentIframe(node.parentNode);
+};
+const handleEscWithIframe = () => {
+  const video = findLargestPlayingVideo();
+  const iframeBody = findVideoParentIframe(video);
+  iframeBody.addEventListener('keydown', function (e) {
+    if (e.keyCode === 27) {
+      document.exitFullscreen();
+    }
+  });
+};
+
+ipcRenderer.on('fullscreen', (event) => {
+  handleEscWithIframe();
 });
