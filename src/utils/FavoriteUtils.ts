@@ -22,13 +22,22 @@ const sourcePath = greenworks.init()
   ? getCloudSourcePath(greenworks.getSteamId().accountId.toString())
   : defaultSourcePath;
 
-export default function saveFavorite(newData: any) {
+export default function saveFavorite(newData: any, url: string) {
+  if (url && url !== newData.videoUrl) {
+    newData.videoUrl = url;
+  }
   if (!fs.existsSync(sourcePath)) {
     fs.writeFileSync(sourcePath, JSON.stringify([]));
   }
-  const oldData = jsonfile
-    .readFileSync(sourcePath)
-    .filter((item: any) => item.videoDetail !== newData.videoDetail);
+  const oldData = jsonfile.readFileSync(sourcePath).filter((item: any) => {
+    if (newData.videoSource !== item.videoSource) {
+      return true;
+    }
+    if (newData.videoDetail) {
+      return item.videoDetail !== newData.videoDetail;
+    }
+    return item.title !== newData.title;
+  });
   jsonfile.writeFileSync(sourcePath, oldData.concat(newData), {
     spaces: 2,
   });

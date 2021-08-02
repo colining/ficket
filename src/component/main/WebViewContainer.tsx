@@ -93,7 +93,7 @@ export default function WebViewContainer(props: any) {
   }, [info]);
 
   const addFavorite = () => {
-    saveFavorite(info);
+    saveFavorite(info, webView.current.getURL());
     setOpenSnack(true);
   };
 
