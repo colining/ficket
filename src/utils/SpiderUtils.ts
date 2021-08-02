@@ -218,7 +218,7 @@ export async function getVideoInfoBySource(
     const data = JSON.parse(parse(formData)({ searchKey }));
     res = axios({
       method: method as Method,
-      url: searchUrlPrefix,
+      url: searchUrl,
       data: getFormData(data),
       timeout: 10000,
     });
@@ -341,7 +341,9 @@ export async function getPlaylist(
               const href = $(y).attr('href');
               array.push({ title, href: getImgUrl(href, homepageUrl) });
             });
-          playlists.push(array);
+          if (!_.isEmpty(array)) {
+            playlists.push(array);
+          }
         });
       return playlists;
     });
