@@ -73,7 +73,7 @@ export default function AboutMe() {
             }
             style={{ textTransform: 'none' }}
           >
-            6651582868
+            661582868
           </Button>
         </Typography>
         <Typography>微信公众号：</Typography>
