@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Fab, Snackbar, Typography } from '@material-ui/core';
 import _ from 'lodash';
 import path from 'path';
+import electron, { webContents } from 'electron';
 import BackdropContainer from '../BackdropContainer';
 import saveFavorite from '../../utils/FavoriteUtils';
 import { getPlaylist } from '../../utils/SpiderUtils';
@@ -30,6 +31,9 @@ const useStyles = makeStyles({
     top: '240px',
   },
 });
+
+const { remote } = electron;
+const { mainWindow } = remote;
 
 const preloadPath = path.join(path.dirname(__dirname), 'preload.js');
 
@@ -130,7 +134,26 @@ export default function WebViewContainer(props: any) {
           onEnterHtmlFullScreen={(event: any) => {
             setIsFullScreen(true);
             if (info.videoUrl.startsWith('https://v.qq.com/')) {
+              // webContents
+              //   .getFocusedWebContents()
+              //   .executeJavaScript(
+              //     'fetch("https://jsonplaceholder.typicode.com/users/1").then(resp => resp.json())',
+              //     true
+              //   )
+              //   .then((result) => {
+              //     console.log(result); // Will be the JSON object from the fetch call
+              //   });
               event.preventDefault();
+              // .executeJavaScript(
+              //   "const a = document.querySelector('div.fullscreen');" +
+              //     'console.log(a)' +
+              //     ' a?.requestFullscreen();',
+              //   true
+              // );
+              // webContents.getFocusedWebContents();
+              // const a = document.querySelector('div.fullscreen');
+              // a?.requestFullscreen();
+              // event.preventDefault();
               // need full screen in here
             }
             if (info.videoUrl.startsWith('http://www.iqiyi.com')) {
@@ -138,7 +161,13 @@ export default function WebViewContainer(props: any) {
               // need full screen in here
             }
             if (info.videoUrl.startsWith('http://v.youku.com/')) {
-              event.preventDefault();
+              webContents
+                .getFocusedWebContents()
+                .executeJavaScript('console.log(document);', true)
+                .then((result) => {
+                  console.log(result); // Will be the JSON object from the fetch call
+                });
+              // event.preventDefault();
               // need full screen in here
             } else {
               webView.current.send('fullscreen');
