@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Fab, Snackbar, Typography } from '@material-ui/core';
 import _ from 'lodash';
 import path from 'path';
-import electron, { webContents } from 'electron';
+import electron from 'electron';
 import BackdropContainer from '../BackdropContainer';
 import saveFavorite from '../../utils/FavoriteUtils';
 import { getPlaylist } from '../../utils/SpiderUtils';
@@ -33,9 +33,34 @@ const useStyles = makeStyles({
 });
 
 const { remote } = electron;
-const { mainWindow } = remote;
+const { webContents } = remote;
 
 const preloadPath = path.join(path.dirname(__dirname), 'preload.js');
+
+const cantFullScreenWebsite = ['v.qq.com', 'v.youku.com', 'iqiyi.com'];
+function enterFullScreen() {
+  webContents
+    .getAllWebContents()
+    .filter((w) => w.getTitle() === 'Ficket')[0]
+    .executeJavaScript(
+      'console.log(document); ' +
+        " console.log(document.querySelector('#root > div > div > main > div > div > div > div:nth-child(1)'));" +
+        "document.querySelector('#root > div > div > main > div > div > div > div:nth-child(1)').requestFullscreen()",
+      true
+    )
+    .catch((e) => {
+      console.log(e);
+    });
+}
+function exitFullScreen() {
+  webContents
+    .getAllWebContents()
+    .filter((w) => w.getTitle() === 'Ficket')[0]
+    .executeJavaScript('document.exitFullscreen()', true)
+    .catch((e) => {
+      console.log(e);
+    });
+}
 
 export default function WebViewContainer(props: any) {
   const webView = useRef(WebView);
@@ -131,44 +156,17 @@ export default function WebViewContainer(props: any) {
           }}
           src={info.videoUrl}
           onDomReady={handleDomReady}
-          onEnterHtmlFullScreen={(event: any) => {
+          onEnterHtmlFullScreen={() => {
             setIsFullScreen(true);
-            if (info.videoUrl.startsWith('https://v.qq.com/')) {
-              // webContents
-              //   .getFocusedWebContents()
-              //   .executeJavaScript(
-              //     'fetch("https://jsonplaceholder.typicode.com/users/1").then(resp => resp.json())',
-              //     true
-              //   )
-              //   .then((result) => {
-              //     console.log(result); // Will be the JSON object from the fetch call
-              //   });
-              event.preventDefault();
-              // .executeJavaScript(
-              //   "const a = document.querySelector('div.fullscreen');" +
-              //     'console.log(a)' +
-              //     ' a?.requestFullscreen();',
-              //   true
-              // );
-              // webContents.getFocusedWebContents();
-              // const a = document.querySelector('div.fullscreen');
-              // a?.requestFullscreen();
-              // event.preventDefault();
-              // need full screen in here
-            }
-            if (info.videoUrl.startsWith('http://www.iqiyi.com')) {
-              event.preventDefault();
-              // need full screen in here
-            }
-            if (info.videoUrl.startsWith('http://v.youku.com/')) {
-              webContents
-                .getFocusedWebContents()
-                .executeJavaScript('console.log(document);', true)
-                .then((result) => {
-                  console.log(result); // Will be the JSON object from the fetch call
-                });
-              // event.preventDefault();
-              // need full screen in here
+            if (
+              !_.isEmpty(
+                cantFullScreenWebsite.filter((website) =>
+                  info.videoUrl.includes(website)
+                )
+              )
+            ) {
+              webView.current.send('fullscreen');
+              enterFullScreen();
             } else {
               webView.current.send('fullscreen');
               handle.enter();
@@ -176,6 +174,15 @@ export default function WebViewContainer(props: any) {
           }}
           onLeaveHtmlFullScreen={() => {
             setIsFullScreen(false);
+            if (
+              !_.isEmpty(
+                cantFullScreenWebsite.filter((website) =>
+                  info.videoUrl.includes(website)
+                )
+              )
+            ) {
+              exitFullScreen();
+            }
             handle.exit();
           }}
           onIpcMessage={(event: any) => {
