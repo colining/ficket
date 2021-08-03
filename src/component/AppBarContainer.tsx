@@ -124,6 +124,7 @@ export default function AppBarContainer(props: any) {
         </div>
         <IconButton
           className={classes.editSourceButton}
+          id="sourceButton"
           color="inherit"
           aria-label="edit source"
           component={Link}

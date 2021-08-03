@@ -346,7 +346,7 @@ export default function SourceList(props: any) {
         <Button onClick={() => handleCreate()}>创建新源</Button>
         <Button onClick={() => handleRefresh()}>刷新源</Button>
       </ButtonGroup>
-      <div className={classes.sources}>
+      <div className={classes.sources} id="sourceList">
         <List component="nav" aria-label="secondary mailbox folders">
           {renderRow()}
         </List>
