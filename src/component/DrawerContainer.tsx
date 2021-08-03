@@ -107,7 +107,7 @@ export default function DrawerContainer(props: any) {
           <ListItemIcon>
             <HelpIcon color="primary" />
           </ListItemIcon>
-          <ListItemText primary="联系我" />
+          <ListItemText primary="有疑问" />
         </ListItem>
         <Divider />
         <Switch>

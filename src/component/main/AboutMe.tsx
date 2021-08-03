@@ -1,14 +1,6 @@
 import React from 'react';
-import {
-  Button,
-  Card,
-  CardMedia,
-  Divider,
-  Link,
-  Typography,
-} from '@material-ui/core';
+import { Button, Divider, Link, Typography } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import path from 'path';
 import { handleClickAndOpenUrlInLocal } from '../../utils/utils';
 
 const useStyles = makeStyles((theme) =>
@@ -44,60 +36,65 @@ export default function AboutMe() {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h3">您可以通过以下方式联系到我</Typography>
-      <div className={classes.contactMe}>
-        <Typography>
-          个人主页：
-          <Button
-            component={Link}
-            onClick={(e: any) =>
-              handleClickAndOpenUrlInLocal(
-                e,
-                'https://github.com/colining/ficket'
-              )
-            }
-            style={{ textTransform: 'none' }}
-          >
-            https://github.com/colining/ficket
-          </Button>
+      <Typography variant="h3" align="center">
+        Q/A
+      </Typography>
+      <Typography variant="h4">这软件咋用</Typography>
+      <Typography>
+        如果这是你第一次打开软件，就直接在搜索框搜自己想看的剧就好
+      </Typography>
+      <br />
+      <Typography variant="h4">搜到的资源都不能看啊</Typography>
+      <Typography>建议搜搜热门剧集，如果都不能用，多半是你挂代理了</Typography>
+      <Typography>
+        资源网站并不财大气粗，买不了那么多服务器，你在北京，他在深圳，每个人得到的体验自然不一样
+      </Typography>
+      <br />
+      <Typography variant="h4">你这软件有啥用？</Typography>
+      <Typography variant="body1">
+        如果你经常追剧的话，应该会遇到下列问题：
+      </Typography>
+      <Typography>1. 一直用的追剧网站倒了，不能看了，速度慢了</Typography>
+      <Typography>2. 想看的剧更新了，网站却没更新 </Typography>
+      <Typography>3. 本来看着好好的，就第30集不能看了</Typography>
+      <Typography>4. 追番几个网站，国产剧好几个，美剧就别说了</Typography>
+      <Typography>5. 买vip我心甘情愿，超前点播是啥？？？</Typography>
+      <br />
+      <Typography variant="h4">以后打算更新啥</Typography>
+      <Typography>大一点的更新，小说，漫画的支持</Typography>
+      <Typography>小一点的更新，引入R18+模式</Typography>
+      <Typography>
+        其实建立社区最重要，你不催，他不催，天天空洞骑士了
+      </Typography>
+      <br />
+      <Divider />
+      <Typography variant="h3" align="center">
+        你可以加群进行反馈
+      </Typography>
+      <Typography variant="h4" align="center">
+        QQ内测群：
+        <Button
+          component={Link}
+          onClick={(e: any) =>
+            handleClickAndOpenUrlInLocal(
+              e,
+              'https://jq.qq.com/?_wv=1027&k=d8QmDZlH'
+            )
+          }
+          style={{ textTransform: 'none' }}
+        >
+          <Typography variant="h4">661582868</Typography>
+        </Button>
+      </Typography>
+      <Divider className={classes.divider} />
+
+      <div>
+        <Typography variant="h4" align="center">
+          本软件只建议用于播放国内无版权剧集
         </Typography>
-        <Typography>
-          QQ内测群：
-          <Button
-            component={Link}
-            onClick={(e: any) =>
-              handleClickAndOpenUrlInLocal(
-                e,
-                'https://jq.qq.com/?_wv=1027&k=d8QmDZlH'
-              )
-            }
-            style={{ textTransform: 'none' }}
-          >
-            661582868
-          </Button>
-        </Typography>
-        <Typography>微信公众号：</Typography>
-        <Card className={classes.mediaRoot}>
-          <CardMedia
-            className={classes.media}
-            component="img"
-            image={path.join(path.dirname(__dirname), 'assets', 'qrcode.png')}
-            title="Contemplative Reptile"
-          />
-        </Card>
-        <Divider className={classes.divider} />
-        <Typography variant="h4">本软件只建议用于播放国内无版权剧集</Typography>
-        <Typography variant="h4">
+        <Typography variant="h4" align="center">
           所有数据收集于互联网，请勿做分享使用
         </Typography>
-        <Divider className={classes.divider} />
-        <Typography>
-          2021年了，国内依旧没有任何一个正式渠道可以看权游的最后一集
-        </Typography>
-        <Typography>就算它烂尾，你起码也得让我看吧</Typography>
-        <Typography>某些企业，独家版权，独播，没有最后一集</Typography>
-        <Typography>剪辑，上线速度慢，超前点播</Typography>
-        <Typography>我无所谓花钱，可能让我花痛快嘛！！！！</Typography>
       </div>
     </div>
   );
