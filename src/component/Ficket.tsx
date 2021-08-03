@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Joyride, { ACTIONS, CallBackProps, STATUS } from 'react-joyride';
 import { Fab } from '@material-ui/core';
+import { Route } from 'react-router-dom';
 import MainContainer from './MainContainer';
 import DrawerContainer from './DrawerContainer';
 import AppBarContainer from './AppBarContainer';
@@ -91,6 +92,9 @@ export default function Ficket(props: any) {
     if (index === 1) {
       props.history.push('/main/source/list');
     }
+    if (index === 3) {
+      props.history.push('/');
+    }
   };
   return (
     <div className={classes.root}>
@@ -136,14 +140,20 @@ export default function Ficket(props: any) {
         }}
         message="搜索中....请稍后"
       />
-      <Fab
-        color="primary"
-        aria-label="add"
-        className={classes.tour}
-        onClick={() => setRun(true)}
-      >
-        教程
-      </Fab>
+      <Route
+        path={['/', '/main/source']}
+        exact
+        render={() => (
+          <Fab
+            color="primary"
+            aria-label="add"
+            className={classes.tour}
+            onClick={() => setRun(true)}
+          >
+            教程
+          </Fab>
+        )}
+      />
     </div>
   );
 }
