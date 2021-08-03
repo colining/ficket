@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
-import BuildIcon from '@material-ui/icons/Build';
 import { Link } from 'react-router-dom';
 import {
   createStyles,
@@ -113,7 +112,7 @@ export default function AppBarContainer(props: any) {
             <SearchIcon />
           </div>
           <InputBase
-            placeholder="Search…"
+            placeholder="搜索…"
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,
@@ -130,7 +129,7 @@ export default function AppBarContainer(props: any) {
           component={Link}
           to="/main/source/list"
         >
-          <BuildIcon />
+          <Typography variant="h5">源</Typography>
         </IconButton>
       </Toolbar>
     </AppBar>

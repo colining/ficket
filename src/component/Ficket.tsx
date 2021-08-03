@@ -134,7 +134,7 @@ export default function Ficket(props: any) {
         onClick={() => {
           setOpen(false);
         }}
-        message="search...."
+        message="搜索中....请稍后"
       />
       <Fab
         color="primary"

@@ -191,7 +191,7 @@ export default function WebViewContainer(props: any) {
           onClick={() => {
             setOpen(false);
           }}
-          message="loading...."
+          message="正在加载....，请稍后"
         />
       </FullScreen>
       <Fab
