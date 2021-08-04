@@ -130,6 +130,7 @@ export default function Ficket(props: any) {
       />
       <MainContainer
         infos={infos}
+        setInfos={setInfos}
         setPlaylists={setPlaylists}
         playlists={playlists}
         currentInfo={currentInfo}

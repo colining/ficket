@@ -5,6 +5,8 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Chip,
+  Divider,
   IconButton,
   Snackbar,
   Typography,
@@ -22,6 +24,8 @@ import SourceReminder from './source/SourceReminder';
 import { deleteFavourite, readFavorites } from '../../utils/FavoriteUtils';
 import VideoInfo from '../../model/VideoInfo';
 import { WorkshopContext } from '../../utils/SteamWorksUtils';
+import getVideoInfo, { getRecommendFromDouban } from '../../utils/SpiderUtils';
+import BackdropContainer from '../BackdropContainer';
 
 const useStyles = makeStyles({
   favourites: {
@@ -31,9 +35,17 @@ const useStyles = makeStyles({
     minWidth: 200,
     minHeight: 300,
   },
+  recommendRoot: {
+    minWidth: 150,
+    minHeight: 215,
+  },
   actionArea: {
     width: 200,
     height: 300,
+  },
+  actionAreaRecommend: {
+    width: 150,
+    height: 215,
   },
   cardTitle: {
     padding: '8px 0px 0px 8px',
@@ -65,19 +77,46 @@ const style = {
   textShadow: '1px 1px 0px #ab9a3c',
   userSelect: 'none',
 };
+const recommendStyle = {
+  width: 150,
+  height: 265,
+  cursor: 'default',
+  color: '#000000',
+  fontSize: '80px',
+  lineHeight: '100px',
+  textAlign: 'center',
+  fontWeight: 'bold',
+  userSelect: 'none',
+  overflow: 'hidden',
+};
 
+const tvShowTagArray = [
+  {
+    tag: 'us',
+    title: '美剧',
+  },
+  {
+    tag: 'anime',
+    title: '日漫',
+  },
+];
 export default function HomePage(props: any) {
   const [sources, setSources] = useState(read());
   const workshopContext = useContext(WorkshopContext);
   const [favorites, setFavourites] = useState(readFavorites());
   const { width, ref } = useResizeDetector();
-  const { setCurrentInfo, setPlaylists } = props;
+  const [open, setOpen] = useState(false);
+  const { setCurrentInfo, setPlaylists, setInfos } = props;
   const [openSnack, setOpenSnack] = useState(false);
+  const [tvShowTag, setTvShowTag] = useState(tvShowTagArray[0]);
 
   const history = useHistory();
   const classes = useStyles();
   const clipboard = useClipboard();
 
+  useEffect(() => {
+    console.log(tvShowTag);
+  }, [tvShowTag]);
   useEffect(() => {
     setSources(read());
     setFavourites(readFavorites());
@@ -174,9 +213,76 @@ export default function HomePage(props: any) {
           itemClassName="item"
           transitionDuration=".5"
           transitionTimingFunction="easeIn"
-          itemMargin={15}
+          itemMargin={25}
         >
           {renderItem(favorites)}
+        </AutoResponsive>
+      </div>
+    );
+  }
+  const handleRecommendClick = async (searchKey: string) => {
+    setOpen(true);
+    const videoInfos = await getVideoInfo(
+      searchKey,
+      workshopContext.workshopSource.filter((source) => source.activeTag)
+    );
+    console.log('videoInfos', videoInfos);
+    setInfos(videoInfos);
+    setOpen(false);
+    history.push('/main/searchResult');
+  };
+
+  const renderRecommendItem = (recommends: any) => {
+    return recommends.map((recommend: any) => {
+      return (
+        // It' must be a style here otherwise there is a bug in production
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        <div key={recommend.videoUrl} className="item" style={recommendStyle}>
+          <Card className={classes.recommendRoot} variant="outlined">
+            <CardActionArea
+              onClick={() => handleRecommendClick(recommend.title)}
+              className={classes.actionAreaRecommend}
+            >
+              <CardMedia
+                className={recommend.cover ? '' : classes.errorImage}
+                component="img"
+                image={recommend.cover}
+                alt="图片加载失败"
+                onError={(e: any) => {
+                  e.target.onerror = null;
+                  e.target.src = path.join(
+                    path.dirname(__dirname),
+                    'assets',
+                    'error.png'
+                  );
+                }}
+              />
+            </CardActionArea>
+          </Card>
+          <Typography align="center" variant="body1" color="primary">
+            {recommend.title}
+          </Typography>
+          <Typography align="center" variant="body1" color="secondary">
+            {recommend.rate}
+          </Typography>
+        </div>
+      );
+    });
+  };
+
+  function renderRecommend() {
+    const recommends = getRecommendFromDouban();
+    return (
+      <div ref={ref} style={{ marginTop: '20px' }}>
+        <AutoResponsive
+          containerWidth={width}
+          itemClassName="item"
+          transitionDuration=".5"
+          transitionTimingFunction="easeIn"
+          itemMargin={15}
+        >
+          {renderRecommendItem(recommends.get(tvShowTag.tag).subjects)}
         </AutoResponsive>
       </div>
     );
@@ -197,14 +303,41 @@ export default function HomePage(props: any) {
       )}
 
       <div className={classes.favourites}>
-        <Typography>我的收藏</Typography>
+        <Typography variant="h5">我的收藏</Typography>
         {renderFavorites()}
+      </div>
+      <Divider />
+      <br />
+      <div>
+        <Typography variant="h5" style={{ float: 'left' }}>
+          推荐
+        </Typography>
+        {tvShowTagArray.map((tag) => (
+          <Chip
+            key={tag.title}
+            label={tag.title}
+            color="primary"
+            style={{ marginLeft: '20px' }}
+            onMouseEnter={() => {
+              console.log(tag);
+              setTvShowTag(tag);
+            }}
+          />
+        ))}
+        {renderRecommend()}
       </div>
       <Snackbar
         open={openSnack}
         onClose={handleClose}
         autoHideDuration={2000}
         message="已复制到剪切板，快去分享一下吧"
+      />
+      <BackdropContainer
+        open={open}
+        onClick={() => {
+          setOpen(false);
+        }}
+        message="搜索中....请稍后"
       />
     </div>
   );

@@ -28,7 +28,7 @@ export default function MainContainer(props: any) {
   const { currentInfo, setCurrentInfo } = props;
   const history = useHistory();
   const classes = useStyles();
-  const { infos } = props;
+  const { infos, setInfos } = props;
   const { playlists, setPlaylists } = props;
 
   return (
@@ -87,6 +87,7 @@ export default function MainContainer(props: any) {
             path="/"
             render={() => (
               <HomePage
+                setInfos={setInfos}
                 setCurrentInfo={setCurrentInfo}
                 setPlaylists={setPlaylists}
               />
