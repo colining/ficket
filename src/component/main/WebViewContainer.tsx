@@ -94,7 +94,9 @@ export default function WebViewContainer(props: any) {
 
   const addFavorite = () => {
     saveFavorite(info, webView.current.getURL());
-    setOpenSnack(true);
+    if (!isFullScreen) {
+      setOpenSnack(true);
+    }
   };
 
   const pipVideo = () => {
