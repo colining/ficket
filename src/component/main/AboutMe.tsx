@@ -42,9 +42,10 @@ export default function AboutMe() {
       <Typography variant="h4">这软件咋用</Typography>
       <Typography>
         如果这是你第一次打开软件，就直接在搜索框搜自己想看的剧就好
+        当前的版本，软件内置了很多视频源
       </Typography>
       <br />
-      <Typography variant="h4">搜到的资源都不能看啊</Typography>
+      <Typography variant="h4">搜到的资源不能看啊</Typography>
       <Typography>建议搜搜热门剧集，如果都不能用，多半是你挂代理了</Typography>
       <Typography>
         资源网站并不财大气粗，买不了那么多服务器，你在北京，他在深圳，每个人得到的体验自然不一样
@@ -64,12 +65,12 @@ export default function AboutMe() {
       <Typography>大一点的更新，小说，漫画的支持</Typography>
       <Typography>小一点的更新，引入R18+模式</Typography>
       <Typography>
-        其实建立社区最重要，你不催，他不催，天天空洞骑士了
+        其实建立社区最重要，你不催，他不催，天天摸鱼空洞骑士了
       </Typography>
       <br />
       <Divider />
       <Typography variant="h3" align="center">
-        你可以加群进行反馈
+        不吐不快
       </Typography>
       <Typography variant="h4" align="center">
         QQ内测群：
