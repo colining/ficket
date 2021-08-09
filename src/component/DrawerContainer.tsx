@@ -8,7 +8,7 @@ import {
 import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import Toolbar from '@material-ui/core/Toolbar';
 import MovieIcon from '@material-ui/icons/Movie';
-import React from 'react';
+import React, { useState } from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import GolfCourseIcon from '@material-ui/icons/GolfCourse';
 import HelpIcon from '@material-ui/icons/Help';
@@ -35,6 +35,7 @@ const useStyles = makeStyles(() =>
 export default function DrawerContainer(props: any) {
   const classes = useStyles();
   const { currentInfo, changeCurrentInfo, playlists } = props;
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleChangeEpisode = (href: string, index: number) => {
     if (currentInfo.videoUrl === href) {
@@ -73,6 +74,9 @@ export default function DrawerContainer(props: any) {
       }
     );
   };
+  const handleListItemClick = (index: number) => {
+    setSelectedIndex(index);
+  };
   return (
     <Drawer
       className={classes.drawer}
@@ -83,27 +87,55 @@ export default function DrawerContainer(props: any) {
     >
       <Toolbar />
       <div className={classes.drawerContainer}>
-        <ListItem button key="online-video" component={Link} to="/">
+        <ListItem
+          button
+          key="online-video"
+          component={Link}
+          to="/"
+          selected={selectedIndex === 0}
+          onClick={() => handleListItemClick(0)}
+        >
           <ListItemIcon>
             <MovieIcon color="primary" />
           </ListItemIcon>
           <ListItemText primary="在线视频" />
         </ListItem>
-        <ListItem button key="day-article" component={Link} to="/book">
+        <ListItem
+          button
+          key="day-article"
+          component={Link}
+          to="/book"
+          selected={selectedIndex === 1}
+          onClick={() => handleListItemClick(1)}
+        >
           <ListItemIcon>
             <LocalLibraryIcon color="primary" />
           </ListItemIcon>
           <ListItemText primary="开卷有益" />
           <ListItemText secondary="预览版" />
         </ListItem>
-        <ListItem button key="video-parsing" component={Link} to="/parsing">
+        <ListItem
+          button
+          key="video-parsing"
+          component={Link}
+          to="/parsing"
+          selected={selectedIndex === 2}
+          onClick={() => handleListItemClick(2)}
+        >
           <ListItemIcon>
             <GolfCourseIcon color="primary" />
           </ListItemIcon>
           <ListItemText primary="解析" />
           <ListItemText secondary="预览版" />
         </ListItem>
-        <ListItem button key="about-me" component={Link} to="/main/about">
+        <ListItem
+          button
+          key="about-me"
+          component={Link}
+          to="/main/about"
+          selected={selectedIndex === 3}
+          onClick={() => handleListItemClick(3)}
+        >
           <ListItemIcon>
             <HelpIcon color="primary" />
           </ListItemIcon>
