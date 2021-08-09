@@ -93,7 +93,7 @@ export default function WebViewContainer(props: any) {
   }, [info]);
 
   const addFavorite = () => {
-    saveFavorite(info, webView.current.getURL());
+    saveFavorite(_.clone(info), webView.current.getURL());
     if (!isFullScreen) {
       setOpenSnack(true);
     }
