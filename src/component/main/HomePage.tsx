@@ -316,7 +316,7 @@ export default function HomePage(props: any) {
           <Chip
             key={tag.title}
             label={tag.title}
-            color="primary"
+            color={tag === tvShowTag ? 'primary' : 'default'}
             style={{ marginLeft: '20px' }}
             onMouseEnter={() => {
               console.log(tag);
