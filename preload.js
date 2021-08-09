@@ -22,7 +22,19 @@ const clearHtml = async (videoRegex) => {
         console.log('相同');
         return;
       }
-      if (child.tagName === 'SCRIPT') {
+      if (
+        !document.URL.startsWith('http://www.yhdm.so') &&
+        child.tagName === 'SCRIPT'
+      ) {
+        console.log('脚本');
+        return;
+      }
+      // todo need change other way
+      if (
+        document.URL.startsWith('http://www.yhdm.so') &&
+        !body.isSameNode(keepParent) &&
+        child.tagName === 'SCRIPT'
+      ) {
         console.log('脚本');
         return;
       }
@@ -44,6 +56,7 @@ const clearHtml = async (videoRegex) => {
     if (body.isSameNode(keep)) {
       return;
     }
+
     removeUnusedChildUnless(keepParent, keep);
     removeAllUnusedNode(keepParent.parentNode, keepParent);
   }
