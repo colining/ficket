@@ -62,7 +62,7 @@ export default function WebViewContainer(props: any) {
   const [showWebView, setShowWebView] = useState(false);
   const [open, setOpen] = useState(true);
   const [muted, setMuted] = useState(true);
-  const { info, playlists, setPlaylists } = props;
+  const { info, playlists, setPlaylists, setPlayListsActiveIndex } = props;
   const [openSnack, setOpenSnack] = useState(false);
   const handle = useFullScreenHandle();
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -78,13 +78,23 @@ export default function WebViewContainer(props: any) {
   useEffect(() => {
     async function getList() {
       setPlaylists([]);
-      const list = await getPlaylist(
+      const lists = await getPlaylist(
         info.videoDetail,
         info.videoSource,
         info.videoPlaylistContainerRegex,
         info.videoPlaylistRegex
       );
-      setPlaylists(list);
+      let activeIndex = 0;
+      lists.forEach((list, index) => {
+        if (
+          list
+            .map((episode: any) => episode.href.replace(/[/]/g, ''))
+            .includes(info.videoUrl.replace(/[/]/g, ''))
+        ) {
+          activeIndex = index;
+        }
+      });
+      setPlayListsActiveIndex(lists, activeIndex);
     }
     if (_.isEmpty(playlists)) {
       console.log('jump from homepage');

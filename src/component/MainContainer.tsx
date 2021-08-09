@@ -29,7 +29,7 @@ export default function MainContainer(props: any) {
   const history = useHistory();
   const classes = useStyles();
   const { infos, setInfos } = props;
-  const { playlists, setPlaylists } = props;
+  const { playlists, setPlaylists, setPlayListsActiveIndex } = props;
 
   return (
     <main className={classes.content}>
@@ -74,6 +74,7 @@ export default function MainContainer(props: any) {
               <WebViewContainer
                 info={currentInfo}
                 setPlaylists={setPlaylists}
+                setPlayListsActiveIndex={setPlayListsActiveIndex}
                 playlists={playlists}
               />
             )}

@@ -60,6 +60,11 @@ export default function Ficket(props: any) {
   ]);
   const [run, setRun] = useState(false);
 
+  const setPlayListsActiveIndex = (lists: any, index: number) => {
+    lists.activeIndex = index;
+    setPlaylists(lists);
+  };
+
   const handleCurrentInfoChange = (info: any) => {
     setCurrentInfo(info);
   };
@@ -133,6 +138,7 @@ export default function Ficket(props: any) {
         setInfos={setInfos}
         setPlaylists={setPlaylists}
         playlists={playlists}
+        setPlayListsActiveIndex={setPlayListsActiveIndex}
         currentInfo={currentInfo}
         setCurrentInfo={handleCurrentInfoChange}
       />
