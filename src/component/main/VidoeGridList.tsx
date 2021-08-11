@@ -209,9 +209,10 @@ export default function VideoGridList(props: any) {
   return (
     <InfiniteScroll
       pageStart={0}
-      threshold={500}
+      threshold={250}
       loadMore={loadItems}
       hasMore={hasMoreItems}
+      useWindow={false}
       loader={
         <div className="loader" key={0}>
           Loading ...
