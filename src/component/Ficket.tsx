@@ -26,7 +26,7 @@ const useStyles = makeStyles({
 export default function Ficket(props: any) {
   const classes = useStyles();
   const workshopContext = useContext(WorkshopContext);
-  const [infos, setInfos] = useState(new Array<any>());
+  const [infos, setInfos] = useState({});
   const [playlists, setPlaylists] = useState([]);
   const [currentInfo, setCurrentInfo] = useState({});
   const [open, setOpen] = useState(false);
@@ -75,7 +75,7 @@ export default function Ficket(props: any) {
     }
     setOpen(true);
     const searchKey = e.target.value;
-    const videoInfos = await getVideoInfo(
+    const videoInfos = getVideoInfo(
       searchKey,
       workshopContext.workshopSource.filter((source) => source.activeTag)
     );

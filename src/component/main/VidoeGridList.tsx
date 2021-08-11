@@ -1,5 +1,5 @@
 import AutoResponsive from 'autoresponsive-react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardActionArea,
@@ -12,6 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useResizeDetector } from 'react-resize-detector';
 import _ from 'lodash';
 import path from 'path';
+import InfiniteScroll from 'react-infinite-scroller';
+import asyncPool from 'tiny-async-pool';
 import VideoInfo from '../../model/VideoInfo';
 
 const useStyles = makeStyles({
@@ -68,6 +70,26 @@ export default function VideoGridList(props: any) {
       props.history.push('/main/videoDetail');
     }
   };
+  const [finish, setFinish] = useState(false);
+  const [test, setTest] = useState(Array<any>());
+  useEffect(() => {
+    (async function () {
+      const timeout = (i: any) => {
+        return i
+          .then((v: any) => {
+            // eslint-disable-next-line @typescript-eslint/no-shadow
+            return setTest((test: any) => [...test, v]);
+          })
+          .catch((e: any) => console.log(e));
+      };
+      await asyncPool(2, infos, timeout);
+      setFinish(true);
+    })();
+  }, [infos]);
+
+  useEffect(() => {
+    console.log('infos', infos);
+  }, [infos]);
 
   const renderItem = (info: any) => {
     return info.map((videoInfo: VideoInfo) => {
@@ -107,36 +129,96 @@ export default function VideoGridList(props: any) {
     });
   };
 
-  function renderVideoInfo() {
-    if (infos.length === 0) {
-      return (
-        <div>
-          <h4>木有搜索结果</h4>
-          <h4>请添加源，或者换个关键词</h4>
-        </div>
-      );
-    }
-    return infos.map((info: any) => {
-      if (_.isEmpty(info.result)) {
-        return '';
-      }
-      return (
-        <div ref={ref} key={info.videoSource + info.workshopTag}>
-          <h4>以下结果来自：{info.videoSource}</h4>
-          <AutoResponsive
-            containerWidth={width}
-            itemClassName="item"
-            transitionDuration=".5"
-            transitionTimingFunction="easeIn"
-            itemMargin={15}
-          >
-            {renderItem(info.result)}
-          </AutoResponsive>
-          <Divider />
-        </div>
-      );
-    });
-  }
+  // function renderVideoInfo() {
+  //   if (infos.length === 0) {
+  //     return (
+  //       <div>
+  //         <h4>木有搜索结果</h4>
+  //         <h4>请添加源，或者换个关键词</h4>
+  //       </div>
+  //     );
+  //   }
+  //   return infos.map((info: any) => {
+  //     if (_.isEmpty(info.result)) {
+  //       return '';
+  //     }
+  //     return (
+  //       <div ref={ref} key={info.videoSource + info.workshopTag}>
+  //         <h4>以下结果来自：{info.videoSource}</h4>
+  //         <AutoResponsive
+  //           containerWidth={width}
+  //           itemClassName="item"
+  //           transitionDuration=".5"
+  //           transitionTimingFunction="easeIn"
+  //           itemMargin={15}
+  //         >
+  //           {renderItem(info.result)}
+  //         </AutoResponsive>
+  //         <Divider />
+  //       </div>
+  //     );
+  //   });
+  // }
+  const [hasMoreItems, setHasMoreItems] = useState(true);
+  const [tracks, setTracks] = useState(Array<any>());
+  const items = new Array<any>();
+  // const loader = <div className="loader">Loading ...</div>;
 
-  return renderVideoInfo();
+  useEffect(() => {
+    console.log('test', test);
+  }, [test]);
+
+  useEffect(() => {
+    console.log('tracks', tracks);
+  }, [tracks]);
+  const loadItems = () => {
+    console.log('loadItems');
+    if (finish && _.isEmpty(test)) {
+      setHasMoreItems(false);
+    }
+    console.log('loadItems', test);
+    if (!_.isEmpty(test) && test.length > tracks.length) {
+      setTracks([...tracks, test[tracks.length]]);
+    }
+  };
+
+  const renderItems = () => {
+    tracks.forEach((track: any) => {
+      if (track && track.result) {
+        items.push(
+          <div ref={ref} key={track.videoSource}>
+            <h4 style={{ display: 'inline-block' }}>
+              以下结果来自：{track.videoSource}
+            </h4>
+            <AutoResponsive
+              containerWidth={width}
+              itemClassName="item"
+              transitionDuration=".5"
+              transitionTimingFunction="easeIn"
+              itemMargin={15}
+            >
+              {renderItem(track.result)}
+            </AutoResponsive>
+            <Divider />
+          </div>
+        );
+      }
+    });
+    return <div>{items}</div>;
+  };
+  return (
+    <InfiniteScroll
+      pageStart={0}
+      threshold={500}
+      loadMore={loadItems}
+      hasMore={hasMoreItems}
+      loader={
+        <div className="loader" key={0}>
+          Loading ...
+        </div>
+      }
+    >
+      {renderItems()}
+    </InfiniteScroll>
+  );
 }

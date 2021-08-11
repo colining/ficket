@@ -195,7 +195,8 @@ export async function getVideoInfoBySource(
   titleRule: string,
   videoPlaylistContainerRegex: string,
   videoPlaylistRegex: string,
-  videoRegex: string
+  videoRegex: string,
+  workshopTag: string
 ) {
   let res;
   const searchUrl = encodeURI(parse(searchUrlPrefix)({ searchKey }));
@@ -245,9 +246,6 @@ export async function getVideoInfoBySource(
             .attr('style')
             ?.match(/\((.*?)\)/)![1]
       );
-    $(imgRule)
-      .get()
-      .map((x) => console.log(x));
     const titles = $(titleRule)
       .get()
       .map((x) => $(x).text());
@@ -265,14 +263,18 @@ export async function getVideoInfoBySource(
         )
       );
     }
-    if (_.isEmpty(result)) {
-      throw new Error('result is empty perhaps regex wrong');
-    }
-    return result;
+    // if (_.isEmpty(result)) {
+    //   throw new Error('result is empty perhaps regex wrong');
+    // }
+    return {
+      videoSource: homepageUrl,
+      workshopTag,
+      result,
+    };
   });
 }
 
-export default async function getVideoInfo(
+export default function getVideoInfo(
   searchKey: string,
   workshopSource: Array<any>
 ) {
@@ -284,37 +286,37 @@ export default async function getVideoInfo(
   }
   const results = [];
   for (let i = 0; i < sources.length; i += 1) {
-    results.push(
-      getVideoInfoBySource(
-        searchKey,
-        sources[i].method,
-        sources[i].formData,
-        sources[i].homepageUrl,
-        sources[i].searchUrlPrefix,
-        sources[i].videoDetailUrlRegex,
-        sources[i].videoUrlRegex,
-        sources[i].imgUrlRegex,
-        sources[i].titleRegex,
-        sources[i].playlistContainerRegex,
-        sources[i].playlistItemRegex,
-        sources[i].videoRegex
-      )
+    results[i] = getVideoInfoBySource(
+      searchKey,
+      sources[i].method,
+      sources[i].formData,
+      sources[i].homepageUrl,
+      sources[i].searchUrlPrefix,
+      sources[i].videoDetailUrlRegex,
+      sources[i].videoUrlRegex,
+      sources[i].imgUrlRegex,
+      sources[i].titleRegex,
+      sources[i].playlistContainerRegex,
+      sources[i].playlistItemRegex,
+      sources[i].videoRegex,
+      sources[i].workshopTag
     );
   }
 
-  const videoInfos = await Promise.allSettled(results);
-
-  return _.zipWith(sources, videoInfos, (source, videoInfo) => {
-    let result: VideoInfo[] = [];
-    if (videoInfo.status === 'fulfilled') {
-      result = videoInfo.value;
-    }
-    return {
-      videoSource: source.homepageUrl,
-      workshopTag: source.workshopTag,
-      result,
-    };
-  });
+  // const videoInfos = await Promise.allSettled(results);
+  //
+  // return _.zipWith(sources, videoInfos, (source, videoInfo) => {
+  //   let result: VideoInfo[] = [];
+  //   if (videoInfo.status === 'fulfilled') {
+  //     result = videoInfo.value;
+  //   }
+  //   return {
+  //     videoSource: source.homepageUrl,
+  //     workshopTag: source.workshopTag,
+  //     result,
+  //   };
+  // });
+  return results;
 }
 
 export async function getPlaylist(
