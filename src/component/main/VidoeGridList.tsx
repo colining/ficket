@@ -72,7 +72,15 @@ export default function VideoGridList(props: any) {
   };
   const [finish, setFinish] = useState(false);
   const [test, setTest] = useState(Array<any>());
+  const [tracks, setTracks] = useState(Array<any>());
+  const [hasMoreItems, setHasMoreItems] = useState(true);
+
   useEffect(() => {
+    console.log('info changed');
+    setTracks([]);
+    setTest([]);
+    setFinish(false);
+    setHasMoreItems(true);
     (async function () {
       const timeout = (i: any) => {
         return i
@@ -129,56 +137,28 @@ export default function VideoGridList(props: any) {
     });
   };
 
-  // function renderVideoInfo() {
-  //   if (infos.length === 0) {
-  //     return (
-  //       <div>
-  //         <h4>木有搜索结果</h4>
-  //         <h4>请添加源，或者换个关键词</h4>
-  //       </div>
-  //     );
-  //   }
-  //   return infos.map((info: any) => {
-  //     if (_.isEmpty(info.result)) {
-  //       return '';
-  //     }
-  //     return (
-  //       <div ref={ref} key={info.videoSource + info.workshopTag}>
-  //         <h4>以下结果来自：{info.videoSource}</h4>
-  //         <AutoResponsive
-  //           containerWidth={width}
-  //           itemClassName="item"
-  //           transitionDuration=".5"
-  //           transitionTimingFunction="easeIn"
-  //           itemMargin={15}
-  //         >
-  //           {renderItem(info.result)}
-  //         </AutoResponsive>
-  //         <Divider />
-  //       </div>
-  //     );
-  //   });
-  // }
-  const [hasMoreItems, setHasMoreItems] = useState(true);
-  const [tracks, setTracks] = useState(Array<any>());
   const items = new Array<any>();
   // const loader = <div className="loader">Loading ...</div>;
 
   useEffect(() => {
-    console.log('test', test);
+    // console.log('test', test);
   }, [test]);
 
   useEffect(() => {
     console.log('tracks', tracks);
   }, [tracks]);
+
+  useEffect(() => {
+    console.log('hasmore', hasMoreItems);
+  }, [hasMoreItems]);
   const loadItems = () => {
-    console.log('loadItems');
     if (finish && _.isEmpty(test)) {
       setHasMoreItems(false);
-    }
-    console.log('loadItems', test);
-    if (!_.isEmpty(test) && test.length > tracks.length) {
+    } else if (!_.isEmpty(test) && test.length > tracks.length) {
       setTracks([...tracks, test[tracks.length]]);
+    } else {
+      setTracks(tracks);
+      setHasMoreItems(true);
     }
   };
 

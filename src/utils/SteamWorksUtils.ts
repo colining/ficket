@@ -21,6 +21,7 @@ export default function getWorkShopItemsPathAndSetToState(setState: any) {
   const unActiveSource = jsonfile.readFileSync(unActiveSourcePath);
   const workshopSourceLocal = jsonfile.readFileSync(workshopSourceLocalPath);
   const steamID = greenworks.getSteamId().steamId;
+  console.log(steamID);
   greenworks.ugcGetUserItems(
     greenworks.UGCMatchingType.Items,
     greenworks.UserUGCListSortOrder.CreationOrderDesc,
