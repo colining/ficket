@@ -224,54 +224,56 @@ export async function getVideoInfoBySource(
       timeout: 10000,
     });
   }
-  return res.then((response: any) => {
-    const haveDetail = !_.isEmpty(detailHrefRule);
-    const result = [];
-    const html = response.data;
-    const $ = cheerio.load(html);
-    const hrefs = $(hrefRule)
-      .get()
-      .map((x) => $(x).attr('href'));
-    const detailHrefs = $(detailHrefRule)
-      .get()
-      .map((x) => $(x).attr('href'));
-    const imgs = $(imgRule)
-      .get()
-      .map(
-        (x) =>
-          $(x).attr('data-original') ||
-          $(x).attr('data-src') ||
-          $(x).attr('src') ||
-          $(x)
-            .attr('style')
-            ?.match(/\((.*?)\)/)![1]
-      );
-    const titles = $(titleRule)
-      .get()
-      .map((x) => $(x).text());
-    for (let i = 0; i < hrefs.length; i += 1) {
-      result.push(
-        new VideoInfo(
-          homepageUrl,
-          getVideoDetailUrl(haveDetail, homepageUrl, detailHrefs[i]),
-          getVideoUrl(homepageUrl, hrefs[i]),
-          getImgUrl(imgs[i], homepageUrl),
-          titles[i],
-          videoPlaylistContainerRegex,
-          videoPlaylistRegex,
-          videoRegex
-        )
-      );
-    }
-    // if (_.isEmpty(result)) {
-    //   throw new Error('result is empty perhaps regex wrong');
-    // }
-    return {
-      videoSource: homepageUrl,
-      workshopTag,
-      result,
-    };
-  });
+  return res
+    .then((response: any) => {
+      const haveDetail = !_.isEmpty(detailHrefRule);
+      const result = [];
+      const html = response.data;
+      const $ = cheerio.load(html);
+      const hrefs = $(hrefRule)
+        .get()
+        .map((x) => $(x).attr('href'));
+      const detailHrefs = $(detailHrefRule)
+        .get()
+        .map((x) => $(x).attr('href'));
+      const imgs = $(imgRule)
+        .get()
+        .map(
+          (x) =>
+            $(x).attr('data-original') ||
+            $(x).attr('data-src') ||
+            $(x).attr('src') ||
+            $(x)
+              .attr('style')
+              ?.match(/\((.*?)\)/)![1]
+        );
+      const titles = $(titleRule)
+        .get()
+        .map((x) => $(x).text());
+      for (let i = 0; i < hrefs.length; i += 1) {
+        result.push(
+          new VideoInfo(
+            homepageUrl,
+            getVideoDetailUrl(haveDetail, homepageUrl, detailHrefs[i]),
+            getVideoUrl(homepageUrl, hrefs[i]),
+            getImgUrl(imgs[i], homepageUrl),
+            titles[i],
+            videoPlaylistContainerRegex,
+            videoPlaylistRegex,
+            videoRegex
+          )
+        );
+      }
+
+      return {
+        videoSource: homepageUrl,
+        workshopTag,
+        result,
+      };
+    })
+    .catch(() => {
+      throw new Error('网络请求错误');
+    });
 }
 
 export default function getVideoInfo(

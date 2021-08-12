@@ -73,10 +73,14 @@ const style = {
 
 export default function VideoGridList(props: any) {
   const { width, ref } = useResizeDetector();
+  const [searchResult, setSearchResult] = useState(Array<any>());
+  const [tracks, setTracks] = useState(Array<any>());
+  const [hasMoreItems, setHasMoreItems] = useState(true);
 
   const { infos, setCurrentInfo } = props;
-
   const classes = useStyles();
+
+  let items = new Array<any>();
 
   const handleClick = (info: VideoInfo) => {
     console.log('current info is ', info);
@@ -88,28 +92,25 @@ export default function VideoGridList(props: any) {
       props.history.push('/main/videoDetail');
     }
   };
-  const [finish, setFinish] = useState(false);
-  const [test, setTest] = useState(Array<any>());
-  const [tracks, setTracks] = useState(Array<any>());
-  const [hasMoreItems, setHasMoreItems] = useState(true);
 
   useEffect(() => {
-    console.log('info changed');
+    items = [];
     setTracks([]);
-    setTest([]);
-    setFinish(false);
+    setSearchResult([]);
     setHasMoreItems(true);
     (async function () {
-      const timeout = (i: any) => {
+      const loadSearchResult = (i: any) => {
         return i
           .then((v: any) => {
             // eslint-disable-next-line @typescript-eslint/no-shadow
-            return setTest((test: any) => [...test, v]);
+            return setSearchResult((test: any) => [...test, v]);
           })
-          .catch((e: any) => console.log(e));
+          .catch((e: any) => {
+            console.log('setTest发生错误', e);
+            return setSearchResult((test: any) => [...test, undefined]);
+          });
       };
-      await asyncPool(2, infos, timeout);
-      setFinish(true);
+      await asyncPool(4, infos, loadSearchResult);
     })();
   }, [infos]);
 
@@ -155,25 +156,14 @@ export default function VideoGridList(props: any) {
     });
   };
 
-  const items = new Array<any>();
-  // const loader = <div className="loader">Loading ...</div>;
-
-  useEffect(() => {
-    // console.log('test', test);
-  }, [test]);
-
-  useEffect(() => {
-    console.log('tracks', tracks);
-  }, [tracks]);
-
-  useEffect(() => {
-    console.log('hasmore', hasMoreItems);
-  }, [hasMoreItems]);
-  const loadItems = () => {
-    if (finish && test.length === tracks.length) {
+  const loadMoreSearchResult = () => {
+    if (infos.length === tracks.length) {
       setHasMoreItems(false);
-    } else if (!_.isEmpty(test) && test.length > tracks.length) {
-      setTracks([...tracks, test[tracks.length]]);
+    } else if (
+      !_.isEmpty(searchResult) &&
+      searchResult.length > tracks.length
+    ) {
+      setTracks([...tracks, searchResult[tracks.length]]);
     } else {
       setTracks(tracks);
       setHasMoreItems(true);
@@ -182,9 +172,9 @@ export default function VideoGridList(props: any) {
 
   const renderItems = () => {
     tracks.forEach((track: any) => {
-      if (track && track.result) {
+      if (track && !_.isEmpty(track.result)) {
         items.push(
-          <div ref={ref} key={track.videoSource}>
+          <div key={track.videoSource}>
             <h4 style={{ display: 'inline-block' }}>
               以下结果来自：{track.videoSource}
             </h4>
@@ -202,22 +192,33 @@ export default function VideoGridList(props: any) {
         );
       }
     });
-    return <div>{items}</div>;
+    return <div ref={ref}>{items}</div>;
   };
   return (
     <InfiniteScroll
       pageStart={0}
       threshold={250}
-      loadMore={loadItems}
+      loadMore={loadMoreSearchResult}
       hasMore={hasMoreItems}
       useWindow={false}
       loader={
-        <div className={classes.loader} key={tracks.length}>
-          Loading ...
-        </div>
+        hasMoreItems ? (
+          <div className={classes.loader} key={tracks.length}>
+            Loading ...
+          </div>
+        ) : (
+          <div />
+        )
       }
     >
       {renderItems()}
+      {hasMoreItems ? (
+        ''
+      ) : (
+        <Typography variant="h4" align="center" style={{ marginTop: '1ch' }}>
+          下面木有了呦~
+        </Typography>
+      )}
     </InfiniteScroll>
   );
 }
