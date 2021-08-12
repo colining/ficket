@@ -39,6 +39,24 @@ const useStyles = makeStyles({
     height: 300,
     width: 200,
   },
+  loader: {
+    animation: '$gradientAnimation 2s linear infinite',
+    background: 'linear-gradient(45deg, #298fee, #11c958, #a120bb, #d6612a)',
+    backgroundSize: '600% 600%',
+    color: '#fff',
+    padding: '8px',
+  },
+  '@keyframes gradientAnimation': {
+    '0%': {
+      backgroundPosition: '0% 50%',
+    },
+    '50%': {
+      backgroundPosition: '100% 50%',
+    },
+    '100%': {
+      backgroundPosition: '0% 50%',
+    },
+  },
 });
 const style = {
   width: 200,
@@ -152,7 +170,7 @@ export default function VideoGridList(props: any) {
     console.log('hasmore', hasMoreItems);
   }, [hasMoreItems]);
   const loadItems = () => {
-    if (finish && _.isEmpty(test)) {
+    if (finish && test.length === tracks.length) {
       setHasMoreItems(false);
     } else if (!_.isEmpty(test) && test.length > tracks.length) {
       setTracks([...tracks, test[tracks.length]]);
@@ -194,7 +212,7 @@ export default function VideoGridList(props: any) {
       hasMore={hasMoreItems}
       useWindow={false}
       loader={
-        <div className="loader" key={0}>
+        <div className={classes.loader} key={tracks.length}>
           Loading ...
         </div>
       }
