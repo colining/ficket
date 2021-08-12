@@ -305,19 +305,6 @@ export default function getVideoInfo(
     );
   }
 
-  // const videoInfos = await Promise.allSettled(results);
-  //
-  // return _.zipWith(sources, videoInfos, (source, videoInfo) => {
-  //   let result: VideoInfo[] = [];
-  //   if (videoInfo.status === 'fulfilled') {
-  //     result = videoInfo.value;
-  //   }
-  //   return {
-  //     videoSource: source.homepageUrl,
-  //     workshopTag: source.workshopTag,
-  //     result,
-  //   };
-  // });
   return results;
 }
 
